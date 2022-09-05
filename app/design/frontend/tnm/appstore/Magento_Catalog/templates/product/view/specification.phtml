@@ -1,0 +1,8 @@
+<?php // Get current product
+$product = $block->getProduct();
+?>
+ 
+<?php echo $product->getData('specifications'); ?>
+<div id="popup-modal" style="display:none;">
+    <?php echo $this->getLayout()->createBlock("FME\Quickrfq\Block\Postform")->setTemplate("FME_Quickrfq::postform.phtml")->toHtml();?>
+</div>

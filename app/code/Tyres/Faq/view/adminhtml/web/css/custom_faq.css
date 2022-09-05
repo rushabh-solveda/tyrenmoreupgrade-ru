@@ -1,0 +1,17 @@
+h1.page-title{color: #ffc34f;}
+.category-select ul{
+    margin: 0;
+}
+.category-select ul .mage-suggest-search-field input{
+    width: 100%;
+    height: 38px;
+    padding: 0 8px;
+    border: 1px solid #adadad;
+    color: #303030;
+}
+#add_category_button{
+  display: none;
+}
+.category-select .admin__scope-old .mage-suggest:after{
+top: 7px
+}

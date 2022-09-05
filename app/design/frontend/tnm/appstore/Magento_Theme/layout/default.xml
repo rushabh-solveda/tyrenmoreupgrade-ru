@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="header.panel">
+            <block class="Magento\Framework\View\Element\Html\Links" name="header.links">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">header links</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logo_img_width" xsi:type="number">148</argument>
+                <argument name="logo_img_height" xsi:type="number">43</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceContainer name="page.wrapper">
+            <block class="Magento\Theme\Block\Html\Header" name="theme_header" template="html/header.phtml"
+                   before="main.content">
+                <block class="Magento\Framework\View\Element\Html\Links" name="header.links">
+                    <arguments>
+                        <argument name="css_class" xsi:type="string">header links</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Framework\View\Element\Template" name="top.search" as="topSearch"
+                       template="Magento_Search::form.mini.phtml"/>
+                <block class="Magento\Framework\View\Element\Template" name="top.search.mobile" as="topsearchmobile" template="Magento_Search::form.mini-mobile.phtml" />
+            </block>
+        </referenceContainer>
+
+        <move element="catalog.topnav" destination="theme_header"/>
+        <move element="top.search" destination="theme_header"/>
+        <move element="minicart" destination="theme_header"/>
+        <move element="currency" destination="theme_header"/>
+        <move element="store_language" destination="theme_header"/>
+        <!-- <move element="store_switcher" destination="theme_header"/> -->
+        <move element="logo" destination="theme_header"/>
+        <move element="skip_to_content" destination="theme_header"/>
+
+        <move element="page.top" destination="page.wrapper" after="theme_header"/>
+
+        <referenceContainer name="header.container" remove="1"/> 
+         <referenceContainer name="header.panel" remove="1"/>
+        <referenceContainer name="header-wrapper" remove="1"/> 
+        <!-- <referenceContainer name="navigation.sections" remove="1"/> -->
+        <referenceBlock name="wishlist_sidebar" remove="true"/> 
+        <referenceBlock name="sale.reorder.sidebar" remove="true"/>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/> 
+	<referenceBlock name="store.settings" remove="true" />
+	<referenceBlock name="store.links" remove="true" />
+
+        <referenceContainer name="footer" remove="true"/>
+        <referenceBlock name="report.bugs" remove="true"/>
+       <referenceBlock name="copyright" remove="true"/>
+        <referenceContainer name="footer-container">
+            <block class="Magento\Theme\Block\Html\Footer" name="footer_block" template="html/footer.phtml">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

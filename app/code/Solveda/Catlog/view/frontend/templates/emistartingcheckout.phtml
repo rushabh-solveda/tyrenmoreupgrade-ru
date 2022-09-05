@@ -1,0 +1,25 @@
+<?php 
+	$bankcollection = $block->getBankName();
+	$grandTotalPrice =  $this->getTotalprice();
+	$EMIArray = array();
+	foreach($bankcollection as $bank):
+		$bankDetails = $block->getBankDetails($bank->getBankId());
+?>
+<?php foreach($bankDetails as $details):
+	if($details->getIntrestRate() != 0 && $grandTotalPrice >= $bank->getMinAmt()){
+		$EMI = $block->getPmt($details->getIntrestRate()/1200,
+		$details->getPlan(),
+		$grandTotalPrice,0,0);
+		$EMIArray[] = $EMI;
+	}
+	?>
+<?php endforeach;?>
+<?php endforeach;?>
+<div class="starting-emitext">
+	<div class="text">EMI Starting from <?php
+		if(!empty($EMIArray)){
+			$price = $block->getFormatedPrice(round(min($EMIArray)));
+			echo $emiPrice = $block->getSymbol() . $price;
+		} 
+	?></div>
+</div>

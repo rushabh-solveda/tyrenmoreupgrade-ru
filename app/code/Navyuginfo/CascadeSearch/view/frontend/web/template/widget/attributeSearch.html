@@ -1,0 +1,14 @@
+<div class = "row" >
+	<div class = "col-xs-12 col-sm-12 col-md-12 small-bottom-padding select-options">
+		<select class = "styled-select"  data-bind="options: firstDropDownAttributes, optionsCaption: attribute1Label, optionsValue: function(self) { return self.id }, value: selectedAttribute1, optionsText: function(self) { return self.value }"></select>
+	</div>
+	<div class = "col-xs-12 col-sm-12 col-md-12 small-bottom-padding select-options">
+		<select class = "styled-select"  data-bind="options: secondDropDownAttributes, optionsCaption: attribute2Label, optionsValue: function(self) { return self.id }, value: selectedAttribute2, optionsText: function(self) { return self.value }, enable: secondDropDownAttributes().length"></select>
+	</div>
+	<div class = "col-xs-12 col-sm-12 col-md-12 small-bottom-padding select-options">
+		<select class = "styled-select"  data-bind="options: thirdDropDownAttributes, optionsCaption: attribute3Label, optionsValue: function(self) { return self.id }, value: selectedAttribute3, optionsText: function(self) { return self.value }, enable: thirdDropDownAttributes().length"></select>
+	</div>
+	<div class = "col-xs-12 col-sm-12 col-md-12 center-align search-button-go">
+		<button class = "red-button rounded-corners action attributeSearchButton" data-bind="click: showSearchResults, enable: selectedAttribute3">Search</button>
+	</div>
+</div>

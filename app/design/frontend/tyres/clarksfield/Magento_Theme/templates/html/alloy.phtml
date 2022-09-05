@@ -1,0 +1,612 @@
+<?php /*Car and Bike Section start*/ ?>
+<?php
+$data = file_get_contents(BP.'/api/alloy.json');
+?>
+<script>
+var api_data = <?php echo $data; ?>;
+require(["jquery", "js/select2"], function($) {
+
+    // function for support ie and safari
+    if (!Array.prototype.find) {
+        Object.defineProperty(Array.prototype, 'find', {
+            value: function (predicate) {
+            // 1. Let O be ? ToObject(this value).
+            if (this == null) {
+                throw new TypeError('"this" is null or not defined');
+            }
+        
+            var o = Object(this);
+        
+            // 2. Let len be ? ToLength(? Get(O, "length")).
+            var len = o.length >>> 0;
+        
+            // 3. If IsCallable(predicate) is false, throw a TypeError exception.
+            if (typeof predicate !== 'function') {
+                throw new TypeError('predicate must be a function');
+            }
+        
+            // 4. If thisArg was supplied, let T be thisArg; else let T be undefined.
+            var thisArg = arguments[1];
+        
+            // 5. Let k be 0.
+            var k = 0;
+        
+            // 6. Repeat, while k < len
+            while (k < len) {
+                // a. Let Pk be ! ToString(k).
+                // b. Let kValue be ? Get(O, Pk).
+                // c. Let testResult be ToBoolean(? Call(predicate, T, « kValue, k, O »)).
+                // d. If testResult is true, return kValue.
+                var kValue = o[k];
+                if (predicate.call(thisArg, kValue, k, o)) {
+                return kValue;
+                }
+                // e. Increase k by 1.
+                k++;
+            }
+        
+            // 7. Return undefined.
+            return undefined;
+            }
+        });
+    }
+
+    var local = false;
+    var availableModes = {
+        brand: "brand",
+        size: "size"
+    };
+    var searchMode;
+    var brandOrWidthSelector, modelOrProfileSelector,variantOrRimSelector;
+    var currentToggleState, _selected, _id, _level, _globalResponse;
+    var getData = function() {};
+    var CACHE = {};
+
+    function __ddmap(o) {
+        var obj = {
+            id: o.entity_id,
+            text: o.name
+        };
+        return obj;
+    }
+
+    function __find(id) {
+        return function(o) {
+            return o.entity_id == id;
+        };
+    }
+
+    function __formatForSize(level, path, entities) {
+        return function(obj) {
+            var id = obj[entities[level]];
+            var nextPath = path + "/" + id;
+            // Get non numerical keys
+            var children = Object.keys(obj)
+                .filter(function(k) {
+                    return !isNaN(parseInt(k));
+                })
+                .map(function(k) {
+                    return obj[k];
+                });
+            return {
+                entity_id: id,
+                name: obj.label,
+                path: nextPath,
+                is_active: "1",
+                is_anchor: obj.url ? "1" : "0",
+                request_path: obj.url || null,
+                childes: children.map(__formatForSize(level + 1, nextPath, entities))
+            };
+        };
+    }
+
+    function formatData(data) {
+        if (searchMode === availableModes.brand) {
+            return data;
+        } 
+    }
+
+    function _init(response) {
+        if (typeof response === "string") {
+            response = formatData(JSON.parse(response));
+            console.log(response);
+        }
+        _globalResponse = response;
+        _level = 0;
+        refresh();
+    }
+
+    function fromSelected(level) {
+        var ps = _selected.path.split("/");
+        ps.shift();
+        ps.shift();
+        //ps.shift();
+    ps.shift();
+        var e = _globalResponse.find(__find(currentToggleState));
+        for (var i = 0; i < level; i++) {
+            e = e.childes.find(__find(ps[i]));
+        }
+        return e;
+    }
+
+    function switchMode(el) {
+        var placeholder = "";
+        var mode = el.data("selector");
+        switch (mode) {
+            case "brand width":
+                if (searchMode === availableModes.brand) {
+                    placeholder = "Select Brand";
+                } else if (searchMode === availableModes.size) {
+                    placeholder = "Select Width";
+                }
+                break;
+            case "model profile":
+                if (searchMode === availableModes.brand) {
+                    placeholder = "Select Model";
+                } else if (searchMode === availableModes.size) {
+                    placeholder = "Select Profile";
+                }
+                break;
+            case "variant rim":
+                if (searchMode === availableModes.brand) {
+                    placeholder = "Select Variant";
+                } else if (searchMode === availableModes.size) {
+                    placeholder = "Select Rim";
+                }
+                break;
+        }
+        $('[data-label="' + mode + '"]').html(placeholder);
+        el.html("").select2({
+            placeholder: placeholder,
+            //sortResults: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            sortResults: function(data) { 
+                data.sort(function(a, b) { return a.text.localeCompare(b.text)})
+            },
+            minimumResultsForSearch: -1
+        });
+        return placeholder;
+    }
+
+    function initSelect(el) {
+        var placeholder = switchMode(el);
+        return function(_e) {
+            var entry = _e.childes.map(__ddmap);
+            entry.unshift({
+                id: "",
+                text: ""
+            });
+            el.html("").select2({
+                //data: entry.sort((a, b) => a.text.localeCompare(b.text)),
+                data: entry.sort(function(a, b) { return a.text.localeCompare(b.text)}),
+                placeholder: placeholder,
+                minimumResultsForSearch: -1
+            });
+            // Trigger Change Event
+            el.trigger("change");
+        };
+    }
+
+    function refresh() {
+        _selected = _globalResponse.find(__find(currentToggleState));
+        if (_selected !== undefined) {
+            initSelect(brandOrWidthSelector)(_selected);
+            initSelect(modelOrProfileSelector);
+            initSelect(variantOrRimSelector);
+            _level = 0;
+        }
+    }
+
+    function submitSearch(e) {
+        console.log("submitSearch", e);
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch (err) {
+            console.error(err);
+        }
+        var next = undefined;
+            next = _selected;
+        if (next) {
+            window.location.href = next.request_path;
+        }
+    }
+
+    function toggleState(e) {
+        console.log("toggleState", e);
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch (err) {
+            console.error(err);
+        }
+        currentToggleState = $(this).data("state");
+        $("[data-state-toggle]").removeClass("active");
+        $(this).addClass("active");
+        getData().then(_init);
+    }
+
+    function updateSelector(level, nselector) {
+        return function(e) {
+            try {
+                e.preventDefault();
+                e.stopPropagation();
+            } catch(err) {}
+            console.log(_selected);
+            var current = $(this).val();
+            if (current === "") {
+                if (nselector !== null && nselector !== undefined) {
+                    switchMode(nselector);
+                }
+                return;
+            }
+            var next;
+            if (level == _level) {
+                next = _selected;
+            } else {
+                next = fromSelected(level);
+            }
+            next = next.childes.find(__find(current));
+            if (next !== undefined) {
+                _id = next.childes.length > 0 ? current : null;
+                _selected = next;
+                _level++;
+                if (nselector !== null) {
+                    initSelect(nselector)(next);
+                    console.log(next);
+                }
+            } else {
+                console.log("Something's amiss");
+            }
+        };
+    }
+
+    function toggleSearchMode(e) {
+        console.log("toggleSearchMode", e);
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch (err) {
+            console.error(err);
+        }
+        searchMode = $(this).data("mode");
+        $("[data-mode-toggle]").removeClass("active");
+        $(this).addClass("active");
+        getData().then(_init);
+    }
+
+    function getPath() {
+        console.log(currentToggleState);
+        if (currentToggleState === 4766) {
+            return "Carsearch";
+        } else {
+            return "Bikebatterysearch";
+        }
+    }
+
+    function _cachedGetData() {
+        // Setup Initial Cache
+        CACHE = {};
+        return function() {
+            $("#overlay").fadeOut();
+            //return new Promise(function(resolve, reject) {
+                var promise = $.Deferred();
+                var url;
+                var urlPrefix = window.location.origin;
+                if (local) {
+                    urlPrefix = "https://tyress.clarksfield.com";
+                }
+                if (searchMode === availableModes.brand) {
+                    url = urlPrefix + "/api/alloy.json";
+                } else if (searchMode === availableModes.size) {
+                    url = urlPrefix + "/tyreadvanceserch/index/" + getPath();
+                } else {
+                    promise.reject(new Error("No Mode Available for " + searchMode));
+                }
+                // Check if CACHED data exists
+                if (CACHE[url] !== undefined) {
+                    promise.resolve(CACHE[url]);
+                } else {
+                    // CACHE[url] = api_data;
+                    // promise.resolve(api_data);
+                    
+                    // $("#overlay").fadeIn();
+                    console.log('SENDING: ', url);
+                    $.get(url)
+                        .then(function(response) {
+                            // Store in Cache
+                            console.log('RESPONSE:', response);
+                            CACHE[url] = response;
+                            // $("#overlay").fadeOut();
+                            promise.resolve(response);
+                        }, function(err) {
+                            // $("#overlay").fadeOut();
+                            console.error(err);
+                            promise.reject(err);
+                        });
+                    
+                }
+                return promise;
+            //});
+        };
+    }
+
+    getData = _cachedGetData();
+
+    // Script Entry Point
+    // Dropdowns with Select2
+    $("[data-selector]").select2();
+    brandOrWidthSelector = $('[data-selector="brand width"]').first();
+    modelOrProfileSelector = $('[data-selector="model profile"]').first();
+    variantOrRimSelector = $('[data-selector="variant rim"]').first();
+    // Add Event Listener on Dropdowns
+    brandOrWidthSelector.on("change", updateSelector(0, modelOrProfileSelector));
+    //modelOrProfileSelector.on("change", updateSelector(1, null));   /* this line it will remove when added varrient*/
+    modelOrProfileSelector.on("change", updateSelector(1, variantOrRimSelector));
+    variantOrRimSelector.on("change", updateSelector(2, null));
+    // Toggle Event Listeners
+    $("[data-mode-toggle]").on("click", toggleSearchMode);
+    $("[data-search-toggle]").on("click", toggleState);
+    // Configure Search Button
+    $("[data-search-init]").on("click", submitSearch);
+    // Set search Mode
+    searchMode = $("[data-mode-toggle].active")
+        .first()
+        .data("mode");
+    // Set current State
+    currentToggleState = $("[data-search-toggle].active")
+        .first()
+        .data("state");
+    getData().then(_init);
+});
+</script>
+
+<!-- carousel start -->
+<style>
+.owl-stage-outer {
+    width: 100%;
+}
+@media (max-width: 767px) {
+    .mob-nopad {
+        float:none !important;
+    }
+}
+</style>
+<div class="car_bike_section" style="position:relative">
+    <div class="battery-page-slider hidden-xs hidden-sm">
+            <?= $block->getLayout()->createBlock('Mageplaza\BannerSlider\Block\Widget')->setSliderId(6)->toHtml();?>
+    </div>
+    <div class="battery-page-form">
+        <div class="">
+            <div class="row">   
+                <div class="col-md-12 mob-nopad">
+                    <div id="overlay" style="display:none;">
+                        <div class="spinner"></div>
+                        <br/>
+                    </div>
+                    <div class="find_tyre_sec2">
+                        <div class="tyre_title" style=" background: #f2f2f2; text-align: center;padding:5px; ">
+                            <h1 class="form-heading-h2" style="font-size:18px;padding: 0px;">Get Alloy Wheels Fitted at Your Home</h1>
+                            <p  style="font-size: 13px;padding: 0px;margin:0px;">In Bengaluru, Chennai, Delhi NCR, Hyderabad, Mumbai & Pune</p>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 hidden">
+                                <div class="row brd_vichle_1">
+                                    <p>Search By</p>
+                                    <div class="col-xs-6">
+                                    <button data-mode-toggle data-mode="brand" class="vech_btn_1 active">Vehicle Brands</button>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="col-xs-12 hidden" >
+                                <div class="brd_vichle_1 tt1 row">
+                                    <div class="btn_second col-xs-6">
+                                    <button data-search-toggle data-state="4766"  class="vech_btn_2 active tt"><h2>Car Alloy</h2></button>
+                                    </div>                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-6 col-xs-6 col-sm-6">
+                                <div class="select_brand_sec">
+                                    <label data-label="brand width">Select Brand </label>
+                                    <select data-selector="brand width"></select>
+                                </div>
+                            </div>
+                            <div class="col-lg-12  col-md-6 col-xs-6 col-sm-6">
+                                <div class="select_brand_sec">
+                                    <label data-label="model profile">Select Model</label>
+                                    <select data-selector="model profile"></select>
+                                </div>
+                            </div>
+                             <!--  <div class="col-md-12 col-xs-12 col-sm-12">
+                                <div class="select_brand_sec">
+                                    <label data-label="variant rim">Select Variant</label>
+                                    <select data-selector="variant rim"></select>
+                                </div>
+                            </div> -->
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <div class="find_tyre_btn" data-search-init>
+                                    <a data-search-init href="#"><h3>Find Alloy Wheels</h3></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                <!-- Mobile Slider Homepage -->
+                <div class="home-page-slider hidden-lg hidden-md ">
+                    <?= $block->getLayout()->createBlock('Mageplaza\BannerSlider\Block\Widget')->setSliderId(7)->toHtml();?>
+                </div>
+</div>
+
+                <!--   How it Work Section -->
+               <div class="hw_section">
+                  <?php echo $this->getLayout() ->createBlock('Magento\Cms\Block\Block')->setBlockId('how_it_works_alloy')->toHtml(); ?>
+                </div> 
+
+                <!-- What You Get Section  --> 
+               <div class="hw_section">
+                  <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('what-you-get-alloy')->toHtml(); ?>
+               </div>
+
+               <!-- Alloy By Brands Car & Bike -->
+              <div class="tyrsbrand_section">
+                  <div class="container">
+                      <div class="row">
+                            <div class="col-md-12">
+                                <div class="hw_tittle">
+                                    <p class="h1"><span class="text_color">Alloys</span> By Brands</p>
+                                </div>
+                                
+                                <div class="title_img"><img loading="lazy" src="<?php echo $this->getViewFileUrl('images/line.png'); ?>" alt="section-start" ></div>
+                            </div>
+                           <!--  <ul class="tabs">
+                                <li class="car_bt"><a class="tab active" rel="#tabcontent1">Car Brands</a></li>
+                                <li class="bikes_bt"><a class="tab" rel="#tabcontent2">Bikes Brands</a></li>
+                            </ul> -->
+                            <div class="tab_content_container">
+                                <div id="tabcontent1" class="tab_content tab_content_active">
+                                <!--car phtml-->
+                                    <div class="brd_col4 bbb_l_r owl-carousel col-md-12" id="owl-carousel-car-battery">
+                                    <?php echo $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")->setTemplate("Magento_Theme::html/alloy-cars.phtml")->toHtml();?>
+                                    </div>
+                                <!-- close section -->
+                                </div>
+                                <div id="tabcontent2" class="tab-wrapper tab_content">
+                                    <div class="brd_col4 bbb_l_r_1 owl-carousel col-md-12"  id="owl-carousel-bike-battery">
+                                    <?php  echo $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")->setTemplate("Magento_Theme::html/alloy-bikes.phtml")->toHtml();?>
+                                    <!-- close section -->
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                          </div>
+                        </div>
+  
+                        <!-- Wide Range Section -->
+                    <!--    <div class="tyrswiderange_section">
+                          <div class="container">
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <div class="hw_tittle">
+                                          <p class="h1"><span class="text_color">Our Wide Range</span> Of Alloy Brands</p>
+                                      </div>
+                                      <div class="title_img">
+                                          <img loading="lazy" src="<?php echo $this->getViewFileUrl('images/line.png'); ?>" alt="section-start">
+                                      </div>
+                                  </div>
+                            <div class="wide-range-tyres-battery owl-carousel col-md-12" id="owl-carousel-battery-wide-range">
+                                 <?php 
+                                 /*echo $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")->setTemplate("Magento_Theme::html/alloy-brand.phtml")->toHtml(); */ ?>
+                            </div>
+                              </div>
+                          </div>
+                      </div> -->
+ 
+                <!-- Top Selling Section -->
+        <div class="container-fluid">
+            <div class="top-selling" style="background-color: #fff;">
+                <div class="container">
+                <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('top_seller_alloy') ->toHtml();?>
+                </div>
+            </div>
+        </div>
+                <div class="container-fluid">
+                        <div class="sustom_spk_sec">
+                        <div class="container">
+                          <div class="cust_speak">
+                            <div class="hw_tittle cust_spek_title">
+                              <p class="h1"><span>Customers</span> Speak</p>
+                            </div>
+                            <div class="image_title_botom">
+                              <img loading="lazy" src="<?php echo $this->getViewFileUrl('images/line.png'); ?>" alt="section-start">
+                            </div>
+                            </div>
+                    <div class="cust_speak_bottom">
+                    <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('alloy-testimonial')->toHtml();?>
+                    </div>
+                      </div>
+                    </div>
+                </div>
+
+               <!--  Fitment Section & Faq -->
+                      <div class="container-fluid">
+                         <div class="page-bottom">
+                            <div class="container">
+                               <div class="row">
+                                   <div class="col-md-12">
+                                     <h2 class="title section-title zero-contact-fitment">Zero-Contact Alloy Fitment Service</h2>
+                                     <div class="">
+                                    <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('zero_contact_alloy')->toHtml(); ?>
+                                     </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                     <h2 class="title section-title faq">Frequently Asked Questions</h2>
+                                     <div class="accordion">
+                                          <?php
+                                           echo $this->getLayout()->createBlock("Tyres\Faq\Block\FaqListData")->setTemplate("Magento_Theme::html/Faq/alloy-list.phtml")->toHtml();
+                                           ?>
+                                           
+                                        </div>
+                                     </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+ 
+ <script>
+  require(["jquery"],function($){
+  $(document).ready(function(){
+      $(".tabs li a").click(function() {
+  
+          // Active state for tabs
+          $(".tabs li a").removeClass("active");
+          $(this).addClass("active");
+  
+          // Active state for Tabs Content
+          $(".tab_content_container > .tab_content_active").removeClass("tab_content_active").fadeOut(200);
+          $(this.rel).fadeIn(500).addClass("tab_content_active");
+      });
+  });
+
+  });
+     
+     requirejs(['jquery','owlcarousel'], function(jQuery, owl){
+        jQuery(function($) {
+              var owl = $('#owl-carousel-car-battery, #owl-carousel-bike-battery, #owl-carousel-battery-wide-range');
+                owl.owlCarousel({
+                    margin: 10,
+                    lazyLoad:true,
+                    loop: false,
+                    autoWidth: false,
+                    responsiveClass:true,
+                    responsive:{
+                        0:{
+                            items:2,
+                            dots: true,
+                            nav: false
+                        },
+                        767:{
+                            items:6,
+                            nav:true,
+                            dots: false
+                        }
+                    }
+                });
+        });
+    });
+
+   
+  </script>
+
+
+<style>
+.brand_section_last{
+display:none;
+}
+.catalog-category-view div#layered-filter-block {
+    display: none;
+}
+</style>

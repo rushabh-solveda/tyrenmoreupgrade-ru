@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="content">
+           <!-- <block class="Magento\Backend\Block\Template" name="extra_shipping_cost"/> -->
+           <block class="Dev\Testing\Block\Order\CustomFields" name="sales_order_view_custom" template="order/view/custom_fields.phtml" />   
+        </referenceBlock>
+    </body>
+</page>

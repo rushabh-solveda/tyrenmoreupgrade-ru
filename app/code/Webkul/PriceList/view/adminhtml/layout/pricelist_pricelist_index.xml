@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_PriceList
+ * @author    Webkul
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="styles"/>
+    <body>
+        <referenceBlock name="menu">
+            <action method="setActive">
+                <argument name="itemId" xsi:type="string">Webkul_PriceList::list</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="page.title">
+            <action method="setTitleClass">
+                <argument name="class" xsi:type="string">complex</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <!--<block class="Magento\Sales\Block\Adminhtml\Order\View" name="pricelist.test" template="Webkul_PriceList::test.phtml" after="-" />-->
+            <uiComponent name="pricelist_list_list"/>
+            <!--<uiComponent name="pricelist_form"/>-->
+        </referenceContainer>
+    </body>
+</page>

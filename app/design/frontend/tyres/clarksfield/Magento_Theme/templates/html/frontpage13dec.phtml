@@ -1,0 +1,1051 @@
+<?php /*Car and Bike Section start*/ ?>
+<script>
+require(["jquery", "js/select2"], function($) {
+    var local = false;
+    var availableModes = {
+        brand: "brand",
+        size: "size"
+    };
+    var searchMode;
+    var brandOrWidthSelector, modelOrProfileSelector, variantOrRimSelector;
+    var currentToggleState, _selected, _id, _level, _globalResponse;
+    var getData = function() {};
+    var CACHE = {};
+
+    function __ddmap(o) {
+        var obj = {
+            id: o.entity_id,
+            text: o.name
+        };
+        return obj;
+    }
+
+    function __find(id) {
+        return function(o) {
+            return o.entity_id == id;
+        };
+    }
+
+    function __formatForSize(level, path, entities) {
+        return function(obj) {
+            var id = obj[entities[level]];
+            var nextPath = path + "/" + id;
+            // Get non numerical keys
+            var children = Object.keys(obj)
+                .filter(function(k) {
+                    return !isNaN(parseInt(k));
+                })
+                .map(function(k) {
+                    return obj[k];
+                });
+            return {
+                entity_id: id,
+                name: obj.label,
+                path: nextPath,
+                is_active: "1",
+                is_anchor: obj.url ? "1" : "0",
+                request_path: obj.url || null,
+                childes: children.map(__formatForSize(level + 1, nextPath, entities))
+            };
+        };
+    }
+
+    function formatData(data) {
+        if (searchMode === availableModes.brand) {
+            return data;
+        } else if (searchMode === availableModes.size) {
+            var path = "1/375/3161/" + currentToggleState.toString();
+            var ientity = currentToggleState == 42 ? "bikeid" : "carid";
+            var name = currentToggleState == 42 ? "Bike Search" : "Car Search";
+            var wrapper = [{
+                entity_id: currentToggleState.toString(),
+                name: name,
+                path: path,
+                is_active: "1",
+                is_anchor: "1",
+                request_path: "",
+                childes: data.map(
+                    __formatForSize(0, path, [ientity, "profileid", "rimid"])
+                )
+            }];
+            return wrapper;
+        }
+    }
+
+    function _init(response) {
+        if (typeof response === "string") {
+            response = formatData(JSON.parse(response));
+            console.log(response);
+        }
+        _globalResponse = response;
+        _level = 0;
+        refresh();
+    }
+
+    function fromSelected(level) {
+        var ps = _selected.path.split("/");
+        ps.shift();
+        ps.shift();
+        ps.shift();
+	ps.shift();
+        var e = _globalResponse.find(__find(currentToggleState));
+        for (var i = 0; i < level; i++) {
+            e = e.childes.find(__find(ps[i]));
+        }
+        return e;
+    }
+
+    function switchMode(el) {
+        var placeholder = "";
+        var mode = el.data("selector");
+        switch (mode) {
+            case "brand width":
+                if (searchMode === availableModes.brand) {
+                    placeholder = "Select Brand";
+                } else if (searchMode === availableModes.size) {
+                    placeholder = "Select Width";
+                }
+                break;
+            case "model profile":
+                if (searchMode === availableModes.brand) {
+                    placeholder = "Select Model";
+                } else if (searchMode === availableModes.size) {
+                    placeholder = "Select Profile";
+                }
+                break;
+            case "variant rim":
+                if (searchMode === availableModes.brand) {
+                    placeholder = "Select Variant";
+                } else if (searchMode === availableModes.size) {
+                    placeholder = "Select Rim";
+                }
+                break;
+        }
+        $('[data-label="' + mode + '"]').html(placeholder);
+        el.html("").select2({
+            placeholder: placeholder,
+            sortResults: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            minimumResultsForSearch: -1
+        });
+        return placeholder;
+    }
+
+    function initSelect(el) {
+        var placeholder = switchMode(el);
+        return function(_e) {
+            var entry = _e.childes.map(__ddmap);
+            entry.unshift({
+                id: "",
+                text: ""
+            });
+            el.html("").select2({
+                data: entry.sort((a, b) => a.text.localeCompare(b.text)),
+                placeholder: placeholder,
+                minimumResultsForSearch: -1
+            });
+            // Trigger Change Event
+            el.trigger("change");
+        };
+    }
+
+    function refresh() {
+        _selected = _globalResponse.find(__find(currentToggleState));
+        if (_selected !== undefined) {
+            initSelect(brandOrWidthSelector)(_selected);
+            initSelect(modelOrProfileSelector);
+            initSelect(variantOrRimSelector);
+            _level = 0;
+        }
+    }
+
+    function submitSearch(e) {
+        console.log("submitSearch", e);
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch (err) {
+            console.error(err);
+        }
+        var next = undefined;
+        if (_id !== null) {
+            next = _selected.childes.find(__find(_id));
+        } else {
+            next = _selected;
+        }
+        if (next) {
+            window.location.href = next.request_path;
+        }
+    }
+
+    function toggleState(e) {
+        console.log("toggleState", e);
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch (err) {
+            console.error(err);
+        }
+        currentToggleState = $(this).data("state");
+        $("[data-state-toggle]").removeClass("active");
+        $(this).addClass("active");
+        if (searchMode === availableModes.brand) {
+            refresh();
+        } else {
+            getData().then(_init);
+        }
+    }
+
+    function updateSelector(level, nselector) {
+        return function(e) {
+            try {
+                e.preventDefault();
+                e.stopPropagation();
+            } catch {}
+            console.log(_selected);
+            var current = $(this).val();
+            if (current === "") {
+                if (nselector !== null && nselector !== undefined) {
+                    switchMode(nselector);
+                }
+                return;
+            }
+            var next;
+            if (level == _level) {
+                next = _selected;
+            } else {
+                next = fromSelected(level);
+            }
+            next = next.childes.find(__find(current));
+            if (next !== undefined) {
+                _id = next.childes.length > 0 ? current : null;
+                _selected = next;
+                _level++;
+                if (nselector !== null) {
+                    initSelect(nselector)(next);
+                    console.log(next);
+                }
+            } else {
+                console.log("Something's amiss");
+            }
+        };
+    }
+
+    function toggleSearchMode(e) {
+        console.log("toggleSearchMode", e);
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch (err) {
+            console.error(err);
+        }
+        searchMode = $(this).data("mode");
+        $("[data-mode-toggle]").removeClass("active");
+        $(this).addClass("active");
+        getData().then(_init);
+    }
+
+    function getPath() {
+        console.log(currentToggleState);
+        if (currentToggleState === 46) {
+            return "Carsearch";
+        } else {
+            return "Bikesearch";
+        }
+    }
+
+    function _cachedGetData() {
+        // Setup Initial Cache
+        CACHE = {};
+        return function() {
+            $("#overlay").fadeOut();
+            return new Promise(function(resolve, reject) {
+                var url;
+                var urlPrefix = window.location.origin;
+                if (local) {
+                    urlPrefix = "https://tyres.clarksfield.com";
+                }
+                if (searchMode === availableModes.brand) {
+                   // url = urlPrefix + "/tyreadvanceserch/index/parentcetegory";
+		     url = urlPrefix + "/api/all-data.json";
+                } else if (searchMode === availableModes.size) {
+                    url = urlPrefix + "/tyreadvanceserch/index/" + getPath();
+                } else {
+                    reject(new Error("No Mode Available for " + searchMode));
+                }
+                // Check if CACHED data exists
+                if (CACHE[url] !== undefined) {
+                    resolve(CACHE[url]);
+                } else {
+                    $("#overlay").fadeIn();
+		    console.log('SENDING: ', url);
+                    $.get(url)
+                        .then(function(response) {
+		            // Store in Cache
+			    console.log('RESPONSE:', response);
+                            CACHE[url] = response;
+                            $("#overlay").fadeOut();
+                            resolve(response);
+                        }, function(err) {
+                            $("#overlay").fadeOut();
+                            console.error(err);
+                            reject(err);
+                        });
+                }
+            });
+        };
+    }
+
+    getData = _cachedGetData();
+
+    // Script Entry Point
+    // Dropdowns with Select2
+    $("[data-selector]").select2();
+    brandOrWidthSelector = $('[data-selector="brand width"]').first();
+    modelOrProfileSelector = $('[data-selector="model profile"]').first();
+    variantOrRimSelector = $('[data-selector="variant rim"]').first();
+    // Add Event Listener on Dropdowns
+    brandOrWidthSelector.on("change", updateSelector(0, modelOrProfileSelector));
+    modelOrProfileSelector.on("change", updateSelector(1, variantOrRimSelector));
+    variantOrRimSelector.on("change", updateSelector(2, null));
+    // Toggle Event Listeners
+    $("[data-mode-toggle]").on("click", toggleSearchMode);
+    $("[data-search-toggle]").on("click", toggleState);
+    // Configure Search Button
+    $("[data-search-init]").on("click", submitSearch);
+    // Set search Mode
+    searchMode = $("[data-mode-toggle].active")
+        .first()
+        .data("mode");
+    // Set current State
+    currentToggleState = $("[data-search-toggle].active")
+        .first()
+        .data("state");
+    getData().then(_init);
+});
+</script>
+<div class="car_bike_section">
+    <div class="container">
+      <div class="section_second">
+      <div class="row">   
+          <div class="col-md-5 pull-right mob-nopad">
+<div id="overlay" style="display:none;">
+    <div class="spinner"></div>
+    <br/>
+</div>
+<!--            <div class="find_tyre_sec2">
+              <div class="tyre_title" style=" background: #f2f2f2; text-align: center; "> -->
+             <!--   <p class="form-heading-h2">Tyres fitted at your doorstep</p> -->
+	<!--	 <p class="form-heading-h2">Zero-Contact Tyre Fitment Service</p>
+                <p>In Hyderabad, Bangalore, Pune  & Delhi NCR</p>
+              </div>
+          <p style="text-align: center;font-size: 17px;border-bottom: 1px solid #f3f3f3;
+      padding: .6rem 0;">Tyres home delivered in major cities in India
+      </p> -->
+<div class="find_tyre_sec2">
+              <div class="tyre_title" style=" background: #f2f2f2; text-align: center;padding-top:0px; ">
+             <!--   <p class="form-heading-h2">Tyres fitted at your doorstep</p> -->
+                 <p class="form-heading-h2" style="font-size:18px;padding: 0px;">Get Tyres Fitted at Your Home</p>
+
+<p  style="font-size: 14px;padding: 0px;">In Delhi NCR,Bangalore,Hyderabad And Pune</p>
+
+
+<!--                <p style="font-size: 15px; padding-bottom: 0; margin: 0;font-weight:700;">Safe - Zero Contact - Tyre Fitment at your Doorstep </p>
+                <p  style="font-size: 15px;">In Hyderabad, Banglore, Pune & Delhi NCR</p>
+    -->          </div>
+       <!--   <p style="text-align: center;font-size: 13px;border-bottom: 1px solid #f3f3f3;
+      padding: .6rem 0;">We Also Provide Home Delivery of Tyres in All Other Major cities of india.
+      </p>-->
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="row brd_vichle_1">
+                    <p>Search By</p>
+                    <div class="col-xs-6">
+                      <button data-mode-toggle data-mode="brand" class="vech_btn_1 active">Vehicle Brands</button>
+                    </div>
+                    <div class="col-xs-6">
+                      <button data-mode-toggle data-mode="size" class="vech_btn_1">Tyres Size</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xs-12">
+                  <div class="brd_vichle_1 tt1 row">
+                    <p>Tyres for?</p>
+                    <div class="btn_second col-xs-6">
+                      <button data-search-toggle data-state="46" id="bike46" class="vech_btn_2 active tt">Car</button>
+                    </div>
+                    <div class="btn_first col-xs-6">
+                      <button data-search-toggle data-state="42" id="bike42" class="vech_btn_1 tt">Bike</button>
+                    </div>
+  
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+              <div class="select_brand_sec">
+                  <label data-label="brand width">Select Brand</label>
+                  <select data-selector="brand width"></select>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="select_brand_sec">
+                  <label data-label="model profile">Select Model</label>
+                  <select data-selector="model profile"></select>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="select_brand_sec">
+                  <label data-label="variant rim">Select Variant</label>
+                  <select data-selector="variant rim"></select>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="find_tyre_btn" data-search-init>
+                  <a data-search-init href="#">Find Tyres</a>
+                </div>
+              </div>
+               <div class="col-md-12">
+                <div class="expert_sec">
+             <!--     <i class="fa fa-volume-control-phone expert" aria-hidden="true"></i> <a href="#">Talk to our tyres expert</a> -->
+                </div>
+              </div>
+            </div>
+
+
+
+<div class="car_sec1" style=" padding-top: 0px; ">
+<div class="text_sec1">
+<h1><span class="text_color" style="font-size: 16px !important;">Buy Car Tyres Online,&nbsp;Buy Bike Tyres Online<br></span></h1>
+<!--<h2 style="font-size: 20px; color: #fcc624;">Tyres changed at your doorstep* <a href=" https://tyres.clarksfield.com/checkout/#shipping"> --> <!--<h1><span class="text_color">Buy Car &amp; Bike</span> Tyres Online.</h1>
+<h4 style="font-size: 24px; color: #d31e23;">Tyres fitted at your doorstep*</h4> --></a></h2>
+<!--<p class="banner-subheading">What you get :</p>-->
+</div>
+<div class="inner_text_sec">
+<ul>
+<li style="margin: unset;">
+<h2 class="tick" style="font-size: 16px !important;">Best Tyre Prices | All Tyre Sizes available</h2>
+</li>
+<li style="margin: unset;">
+<h6 class="tick" style="font-size: 16px !important;">Online Tyre Purchase made easy</h6>
+</li>
+<li style="margin: unset;">
+<h6 class="tick" style="font-size: 16px !important;" >TyresNmore The Tyre Shop Near You</h6>
+</li>
+<li style="margin: unset;">
+<h6 class="tick" style="font-size: 16px !important;" >Home Delivery of Tyres in India</h6>
+</li>
+<li style="display: none; margin: unset; list-style-type: '✓   ';">
+<h4>Hot deals and discounts on tyres</h4>
+</li>
+<li style="display: none; margin: unset; list-style-type: '✓   ';">
+<h5>Convenience of tyres fitted at home or office</h5>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+
+
+
+<?php echo $this->getLayout()
+                                ->createBlock('Magento\Cms\Block\Block')
+                                ->setBlockId('buycarbike')
+                                ->toHtml();
+                                ?>
+      </div>
+      </div>
+    </div>
+</div>
+   <!-- ==================Car and Bike Section end================== -->
+  <!-- =================How it work section start==================== -->
+  <div class="hw_section">
+      <?php echo $this->getLayout()
+                                ->createBlock('Magento\Cms\Block\Block')
+                                ->setBlockId('how_it_works')
+                                ->toHtml();
+                                ?>
+  
+  
+  </div>
+   <div class="hw_section">
+      <?php echo $this->getLayout()
+                                ->createBlock('Magento\Cms\Block\Block')
+                                ->setBlockId('what-you-get')
+                                ->toHtml();
+                                ?>
+     </div>
+</div>
+
+<!-- =================Tyres brand section satrt================== -->
+  <div class="tyrsbrand_section">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+              <div class="hw_tittle">
+              <p class="h1"><span class="text_color">Tyres</span> By Brands</p>
+              </div>
+
+              <div class="title_img"><img src="<?php echo $this->getViewFileUrl('images/line.png'); ?>" alt="section-start" ></div>
+              </div>
+              <ul class="tabs">
+              <li class="car_bt"><a class="tab active" rel="#tabcontent1">Car Brands</a></li>
+              <li class="bikes_bt"><a class="tab" rel="#tabcontent2">Bikes Brands</a></li>
+              </ul>
+              <div class="tab_content_container">
+              <div id="tabcontent1" class="tab_content tab_content_active">
+              <!--car phtml-->
+              <div class="brd_col4 bbb_l_r">
+               <?php echo $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")->setTemplate("Magento_Theme::html/cars.phtml")->toHtml();?>
+              </div>
+              <!-- close section -->
+              </div>
+                <div id="tabcontent2" class="tab_content">
+              <div class="brd_col4 bbb_l_r_1">
+               <!--Bikes phtml-->
+              <?php echo $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")->setTemplate("Magento_Theme::html/bikes.phtml")->toHtml();?>
+               <!-- close section -->
+              </div>
+              </div>
+              </div>
+              </div>
+              </div>
+              </div>
+      </div>
+
+  <!-- ================Tyres brand section end======================== -->
+
+
+ <div class="tyrswiderange_section">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="hw_tittle">
+                      <p class="h1"><span class="text_color">Our Wide Range</span> Of Tyres Brands</p>
+                  </div>
+                  <div class="title_img">
+                      <img src="<?php echo $this->getViewFileUrl('images/line.png'); ?>" alt="section-start">
+                  </div>
+              </div>
+             <?php echo $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")->setTemplate("Magento_Theme::html/tyres.phtml")->toHtml();?>
+          </div>
+      </div>
+  </div>
+
+
+  <!-- ========================Top Selling Tyres======================= -->
+  <div class="container-fluid">
+      <div class="top-selling">
+          <div class="container">
+           <?php echo $this->getLayout()
+                                ->createBlock('Magento\Cms\Block\Block')
+                                ->setBlockId('top_seller')
+                                ->toHtml();
+                                ?>
+
+          </div>
+      </div>
+  </div>
+  <!-- ===================top selling tyres end================ -->
+
+
+</div>
+
+
+
+ <!-- ======================Batteries==================== -->
+  <div class="batteries-section">
+      <div class="container">
+          <div class="row">
+                <div class="hw_tittle">
+                 <p class="h1"><span class="text_color">Batteries </span></p>
+                <div class="title_img"><img src="<?php echo $this->getViewFileUrl('images/line.png'); ?>" alt="section-start"></div>
+                <div class="row">
+                    <div class="col-md-8">
+                     <p class="p-tag">We bring the battery shop near by to your doorstep.</p>
+
+                     <p class="p-tag">Looking to buy a battery online? You have reached the right place - <span class="font-weight-bold">Our team of experts will change the battery at your doorstep</span></p>
+
+                     <div class="battery-cards">
+                         <div class="items">
+                             <p class="p-tag"><strong>Experience</strong> India's most convenient battery home delivery and fitment service - We deliver batteries at the convenience at your doorstep.</p>
+                         </div>
+                         <div class="items">
+                         <p class="p-tag">Our crew is <strong>equipped</strong> for delivering and installing batteries for all cars, scooters and bikes at your home.</p>
+                        </div>
+                        <div class="items">
+                         <p class="p-tag">Get a <strong>Great Deal</strong> on the exchange price for your old battery.</p>
+                         </div>
+                    </div>
+
+                     <p class="p-tag">So if you are looking for :  Battery Price, Exide battery, Amaron battery, Car battery, Bike battery, Scooter battery, Which battery is best, Battery warranty information</p>
+
+                     <p class="font-weight-bold h4">You can call our expert on <a href="tel:9212751275"><span class="text_color">92.1275.1275<span></a> | To arrange a call back -Fill in your details</p>
+
+                     <!--<img src="/media/wysiwyg/post-118.gif" class="img-responsive" width="200">-->
+                    </div>
+                    <div class="col-md-4">
+                        <form action="<?php echo $this->getUrl('form/post/form');?>" method="post" class="battery-form">
+
+
+
+                            <div class="find_tyre_sec2">
+                          <div class="tyre_title" style="padding-top: 5px; background: #f2f2f2; text-align: center; ">
+                            <p class="font-weight-bold">Please fill in the details below and our expert will call you back </p>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="select_brand_sec">
+                                  <label data-label="Name">Name </label>
+                                  <input type="text" name="name" class="form-control" required/>
+                                </div>
+                             </div>
+
+                             <div class="col-md-12 col-xs-12">
+                                <div class="select_brand_sec">
+                                  <label data-label="Phone Number">Phone Number </label>
+                                  <input type="tel" name="number" class="form-control" required/>
+                                </div>
+                             </div>
+
+                            <div class="col-md-12 col-xs-12">
+                              <div class="brd_vichle_1 choose-vehi tt1 row">
+                                <div class="col-xs-4">
+                                    <input type="radio" name="vehicles" value="car" id="Car" class="input-radio form-control" required/>
+                                    <label data-label="Car" for="Car" class="radio-label">Car<br> Battery</label>
+                                </div>
+                                <div class="col-xs-4">
+                                  <input type="radio" name="vehicles"  value="Scooter" id="Scooter" class="input-radio form-control" required/>
+                                    <label data-label="Scooter" for="Scooter" class="radio-label">Scooter<br> Battery</label>
+                                </div>
+                                <div class="col-xs-4">
+                                  <input type="radio" name="vehicles" value="Motorcycle" id="Motorcycle" class="input-radio form-control" required/>
+                                    <label data-label="Motorcycle" for="Motorcycle" class="radio-label">Motorcycle <br>Battery</label>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-12 col-xs-12">
+                                <div class="select_brand_sec">
+                                  <label data-label="Please Select City">Please Input City </label>
+                                  <select name="city" class="form-control" required>
+                                      <option>-- Select City -- </option>
+                                        <option value="delhi">Delhi</option>
+                                        <option value="banglore">Banglore</option>
+                                        <option value="hyderabad">Hyderabad</option>
+                                        <option value="pune">Pune</option>
+                                        <option value="Other">Other</option>
+                                  </select>
+                                </div>
+                             </div>
+
+                             <div class="col-md-12 col-xs-12">
+                                <div class="select_brand_sec">
+                                  <label data-label="Please Input Brand">Please Input Brand </label>
+                                  <input type="text" name="brand" class="form-control" required/>
+                                </div>
+                             </div>
+
+                            <!--<div class="col-md-12 col-xs-12">-->
+                            <!--    <div class="select_brand_sec">-->
+                            <!--      <label data-label="Year Of Registration">Year Of Registration </label>-->
+                                  <!--<input type="text" name="year" id="yearPicker" class="form-control" required/>-->
+                            <!--      <select name="year" data-selector="brand width" class="form-control">-->
+                            <!--          <option>-- Select Year -- </option>-->
+                            <!--          <?php  for($i=1928;$i<=date('Y');$i++){  ?>-->
+                            <!--            <option value="<?= $i ?>"><?= $i ?></option>-->
+                            <!--        <?php }  ?>-->
+
+                            <!--      </select>-->
+                            <!--    </div>-->
+                            <!-- </div>-->
+
+                             <div class="col-md-12 col-xs-12">
+                              <div class="row brd_vichle_1">
+                                <p>FUEL TYPE</p>
+                                <div class="col-xs-6">
+                                    <input type="radio" name="fuel" value="diesel" id="diesel" class="input-radio form-control" required/>
+                                    <label data-label="Diesel" for="diesel" class="radio-label">Diesel </label>
+                                </div>
+                                <div class="col-xs-6">
+                                  <input type="radio" name="fuel" value="petrol" id="petrol" class="input-radio form-control" required/>
+                                    <label data-label="Petrol" for="petrol" class="radio-label">Petrol </label>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-md-12 col-xs-12">
+
+                               <!--<div class="find_tyre_btn" data-search-init="" style="margin: 30px 0 15px;">-->
+                               <button type="submit" class="submit-btn">
+                               <!--<a data-search-init="" href="#">-->
+                                 Submit
+                                 </button>
+                                 <!--</a>-->
+                               <!--</div>-->
+                          </div>
+                          </div>
+
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                </div>
+                </div>
+      </div>
+  </div>
+
+
+
+
+  <!-- ======================Try Our Tyer Decision Guide start==================== -->
+ <!--  <div class="decision_guid_sec">
+      <div class="container-fluid">
+          <?php /*echo $this->getLayout()
+                                ->createBlock('Magento\Cms\Block\Block')
+                                ->setBlockId('services_features')
+                                ->toHtml();*/
+                                ?>
+          <div class="row">
+                <div class="hw_tittle">
+                <p class="h1"><span class="text_color">TNM Tyre Care </span>Package</p>
+                <div class="title_img"><img src="<?php echo $this->getViewFileUrl('images/line.png'); ?>" alt="section-start"></div>
+                <div class="row">
+                <div class="srvice_feature_sec">
+                <div class="col-md-4 pdd_left">
+                <div class="TY_image"><img  src="<?php echo $this->getViewFileUrl('images/Tyres.jpg'); ?>">
+                </div>
+                </div>
+                <div class="col-md-8">
+                <div class="TY_care_package">
+                <div class="tnm_tittle">
+                <ul>
+                <li>The TNM tyre care package saves you money. Get the maximum life from your car tyres.</li>
+                </ul>
+                </div>
+                <div class="silver_section">
+                <div class="silver_wrrap">
+                <div class="silver_tittle">
+                <p class="pricing-heading h5">Silver</p>
+                <p class="pricing h3">₹699/-</p>
+                </div>
+                <div class="silver_text">
+                <div class="stext_1">Doorstep Service</div>
+                <div class="stext_2">1</div>
+                </div>
+                <div class="silver_text">
+                <div class="stext_1">Transferable</div>
+                <div class="stext_2">No.</div>
+                </div>
+                <div class="silver_text">
+                <div class="stext_1">Duration</div>
+                <div class="stext_2">6 Months</div>
+                </div>
+                <div class="silver_text">
+                <div class="stext_1">Wheel Balancing</div>
+                <div class="stext_2">Yes</div>
+                </div>
+                <div class="silver_text">
+                <div class="stext_1">Tyre Rotation</div>
+                <div class="stext_2">Yes</div>
+                </div>
+                <div class="silver_text">
+                <div class="stext_1">Air Pressure Check</div>
+                <div class="stext_2">Yes</div>
+               </div>
+               --> <?php
+                  $id=2795;
+                  $objectManager1 = \Magento\Framework\App\ObjectManager::getInstance();
+
+                  $productHelper1 = $objectManager1->get('\Magento\Catalog\Model\Product');
+                  // get product object if you are not having
+                  $product1 = $productHelper1->load($id);
+                  $listBlock1 = $objectManager1->get('\Magento\Catalog\Block\Product\ListProduct');
+                 ?>
+                <!-- <div class="silver_button1"><a class="silver_btn1" href="<?php  //echo $listBlock1->getAddToCartUrl($product1); ?>">Buy Silver Pack</a></div> -->
+                <?php //echo $this->getUrl('guest/cart/add', ['product_id' => $id]);?>
+                <!-- echo $listBlock1->getAddToCartUrl($product1); -->
+              <!--   <form data-role="tocart-form" action="<?php  echo $this->getUrl('guest/cart/add', ['product_id' => $id]) ?>" method="post"> 
+                  <?php echo $block->getBlockHtml('formkey')?>
+                      <button type="submit" title="Buy Gold Pack" class="action tocart silver_btn12 silver_button12">
+                          <span>Buy Silver Pack</span>
+                      </button> 
+               </form>
+                </div>
+                </div>
+                <div class="silver_wrrap1">
+                <div class="silver_tittle1 silver_tittle">
+                <p class="pricing-heading h5">Gold</p>
+                <p class="pricing h3">₹1,399/-</p>
+                </div>
+                <div class="silver_text1">
+                <div class="stext_11">Doorstep Service</div>
+                <div class="stext_22">3</div>
+                </div>
+                <div class="silver_text">
+                <div class="stext_11">Transferable</div>
+                <div class="stext_22">Yes</div>
+                </div>
+                <div class="silver_text">
+                <div class="stext_11">Duration</div>
+                <div class="stext_22">1 Year</div>
+                </div>
+                <div class="silver_text">
+                <div class="stext_11">Wheel Balancing</div>
+                <div class="stext_22">Yes</div>
+                </div>
+                <div class="silver_text">
+                <div class="stext_11">Tyre Rotation</div>
+                <div class="stext_22">Yes</div>
+                </div>
+                <div class="silver_text">
+                <div class="stext_11">Air Pressure Check</div>
+                <div class="stext_22">Yes</div>
+                </div>
+               --> <?php
+                  $id1=2796;
+                  $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+                  $productHelper = $objectManager->get('\Magento\Catalog\Model\Product');
+                  // get product object if you are not having
+                  $product = $productHelper->load($id1);
+                  $listBlock = $objectManager->get('\Magento\Catalog\Block\Product\ListProduct');
+               ?>
+               <!-- <a class="silver_btn12" href="<?php  //echo $listBlock->getAddToCartUrl($product); ?>">Buy Gold Pack</a> -->
+                 <!-- <form data-role="tocart-form" action="<?php  echo $this->getUrl('guest/cart/add', ['product_id' => $id1]) ?>" method="post"> 
+                  <?php echo $block->getBlockHtml('formkey')?>
+                      <button type="submit" title="Buy Gold Pack" class="action tocart silver_btn12 silver_button12">
+                          <span>Buy Gold Pack</span>
+                      </button> 
+               </form>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+      </div>
+  </div>
+  
+  -->
+  <!-- ===================Try Our Tyer Decision Guide end====================== -->
+  <!-- ===========================what our custmer speek====================== -->
+  <div class="container-fluid">
+    <div class="sustom_spk_sec">
+    <div class="container">
+      <div class="cust_speak">
+        <div class="cust_spek_title">
+          <p class="h1"><span>Customers</span> Speak</p>
+        </div>
+        <div class="image_title_botom">
+          <img src="<?php echo $this->getViewFileUrl('images/line.png'); ?>" alt="section-start">
+        </div>
+      <!-- <?php //echo $this->getLayout()->createBlock("Clarksfield\Customersspeak\Block\CustomersspeakListData")->setTemplate("Magento_Theme::html/video/list.phtml")->toHtml();?> -->
+      </div>
+      <div class="cust_speak_bottom">
+        <?php echo $this->getLayout()->createBlock("Tyresclarksfield\Testimonials\Block\TestimonialsListData")->setTemplate("Magento_Theme::html/testimonials/list.phtml")->toHtml();?>
+        
+      </div>
+  
+    </div>
+  </div>
+  </div>
+
+
+
+<!-- ===========================zero contact====================== -->
+
+ <!--<div class="hw_section">
+      <?php// echo $this->getLayout()
+             //                   ->createBlock('Magento\Cms\Block\Block')
+               //                 ->setBlockId('Zero-Contact')
+                 //               ->toHtml();
+                                ?>
+
+
+  </div>-->
+  <!-- ======================page bottom======================= -->
+  <div class="container">
+     <div class="page-bottom">
+        <div class="container">
+           <div class="row">
+              <div class="col-md-6">
+                 <p class="page-bottom_title ff_text_new main-heading h4">Faq</p>
+                 <div class="accordion">
+                    
+                      <?php
+                       echo $this->getLayout()->createBlock("Tyres\Faq\Block\FaqListData")->setTemplate("Magento_Theme::html/Faq/list.phtml")->toHtml();
+                       ?>
+                       
+                    </div>
+                 </div>
+            <!--  <div class="col-md-6">
+                 <p class="page-bottom_title main-heading h4">Our Blog</p>
+                 <div class="blog-section">
+                     <?php //echo $this->getLayout()->createBlock("Mageplaza\Blog\Block\Post\Listpost")->setTemplate("Magento_Theme::html/post/list.phtml")->toHtml();?>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>  -->
+
+
+             <div class="col-md-6">
+                 <p class="page-bottom_title main-heading h4">Zero-Contact Tyre Fitment Service</p>
+                 <div class="">
+ <?php echo $this->getLayout()
+                                ->createBlock('Magento\Cms\Block\Block')
+                                ->setBlockId('Zero-Contact')
+                                ->toHtml();
+                                ?>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>  
+
+
+  <!-- mobile design brand -->
+<div style="background-color:unset;" class="brand_section_last">
+    <div class="container">
+      <div class="row">
+       <div class="col-md-12">
+<div class="brand_last_inner mob_text_3">
+  <div class="accordion-item">
+  <div class="accordion-item-header">
+<p class="footer-seo-title h3">You can buy tyres online for the following  brand </p>
+</div>
+<div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+<ul>
+ <?php  $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$catId = 376; //Parent Category ID
+$subCategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subCats = $subCategory->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php
+foreach ($subCats as $subcat) {
+  ?><?php
+$_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+$subcaturl = $subcat->getUrl();
+?>
+<li><a href="<?php echo $subcaturl ;?>" title="<?php echo $subcat->getName(); ?>"><?php echo $subcat->getName(); ?></a></li>
+
+<?php }?>
+</ul>
+</div>
+</div>
+</div>
+<div class="brand_last_inner mob_text_3">
+<div class="accordion-item">
+<div class="accordion-item-header">
+<p class="footer-seo-title h3">Check tyre prices and tyre size for your car from the list below </p>
+</div>
+<div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+<ul>
+ <?php  $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$catId = 46; //Parent Category ID
+$subCategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subCats = $subCategory->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php
+foreach ($subCats as $subcat) {
+  ?><?php
+$_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+$subcaturl = $subcat->getUrl();
+?>
+<li><a href="<?php echo $subcaturl ;?>" title="<?php echo $subcat->getName(); ?>"><?php echo $subcat->getName(); ?></a></li>
+
+<?php }?>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="brand_last_inner mob_text_3">
+  <div class="accordion-item">
+                     <div class="accordion-item-header">
+<p class="footer-seo-title h3">Check tyre prices and tyre size for your bike from the list below </p>
+</div>
+ <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+<ul>
+ <?php  $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$catId = 42; //Parent Category ID
+$subCategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subCats = $subCategory->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php
+foreach ($subCats as $subcat) {
+  ?><?php
+$_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+$subcaturl = $subcat->getUrl();
+?>
+<li><a href="<?php echo $subcaturl ;?>" title="<?php echo $subcat->getName(); ?>"><?php echo $subcat->getName(); ?></a></li>
+
+<?php }?>
+</ul>
+</div>
+</div>
+</div>
+</div>
+        
+      </div>
+    </div>  
+  </div>
+</div>
+</div>
+<!-- close desighn -->
+  <?php
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+	$baseurl=$storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_LINK);
+	   ?>
+   <input type="hidden" value="<?php echo $baseurl; ?>" id="baseUrl"/> 
+  <!-- ================== Shop By Brand Section start ============== -->
+  
+  
+  <!-- ================== Shop By Brand Section end ============== -->
+ <script>
+  require(["jquery"],function($){
+  $(document).ready(function(){
+      $(".tabs li a").click(function() {
+  
+          // Active state for tabs
+          $(".tabs li a").removeClass("active");
+          $(this).addClass("active");
+  
+          // Active state for Tabs Content
+          $(".tab_content_container > .tab_content_active").removeClass("tab_content_active").fadeOut(200);
+          $(this.rel).fadeIn(500).addClass("tab_content_active");
+      });
+  });
+  $(document).ready(function() {
+  $("#bike42").click(function () {
+      $("#bike46").removeClass("active");
+      // $(".tab").addClass("active"); // instead of this do the below
+      $("#bike42").addClass("active");
+    });
+  $("#bike46").click(function () {
+      $("#bike42").removeClass("active");
+      // $(".tab").addClass("active"); // instead of this do the below
+      $("#bike46").addClass("active");
+    });
+  
+  });
+  });
+  </script>
+    
+ <?php /* echo $this->getLayout()
+                                ->createBlock('Magento\Cms\Block\Block')
+                                ->setBlockId('select_city')
+                                ->toHtml();
+  */                       ?>

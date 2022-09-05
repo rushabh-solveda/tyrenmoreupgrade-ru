@@ -1,0 +1,10 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Tatvic\ActionableGoogleAnalytics\Block\ActionableGoogleAnalytics" name="head.actionablegoogleanalytics" template="head.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block  class="Tatvic\ActionableGoogleAnalytics\Block\ActionableGoogleAnalytics" name="content.actionablegoogleanalytics" template="body.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

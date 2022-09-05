@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Solveda_CategoryFAQ::main" title="Solveda" translate="title" sortOrder="40">
+                    <resource id="Solveda_CategoryFAQ::grid" title="Category FAQs Manager" translate="title" sortOrder="10" />
+                    <resource id="Solveda_CategoryFAQ::addnew" title="Add New Category FAQs" translate="title" sortOrder="15" />
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Solveda_CategoryFAQ::categoryfaq" title="Category FAQ Configuration" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

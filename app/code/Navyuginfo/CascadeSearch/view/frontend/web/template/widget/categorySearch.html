@@ -1,0 +1,16 @@
+<div class = "row" >
+	<div class = "col-xs-12 col-sm-12 col-md-12 small-bottom-padding select-options">
+		<select class = "styled-select" data-bind="options: manufacturers, optionsCaption: manufacturerLabel, optionsValue: 'id', value: selectedManufacturer, optionsText: 'name', afterRender: selectPreSelectedValue"></select>
+	</div>
+	    <!-- ko if: showLoader() == true -->
+		<div id="checkout-loader" data-role="checkout-loader" class="loading-mask">
+		    <div class="loader"></div>
+		</div>
+    <!-- /ko -->
+	<div class = "col-xs-12 col-sm-12 col-md-12 small-bottom-padding select-options">
+		<select class = "styled-select" data-bind="options: models, optionsCaption: modelLabel, optionsValue: 'id', value: selectedModel, optionsText: 'name', enable: models().length"></select>
+	</div>
+	<div class = "col-xs-12 col-sm-12 col-md-12 center-align search-button-go">
+		<button class = "red-button rounded-corners action categorySearchButton" data-bind="click: showSearchResults, enable:selectedModel">Search</button>
+	</div>
+</div>

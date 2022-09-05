@@ -1,0 +1,17 @@
+{
+    "category_dynamic_faq": {
+        "column": {
+            "entity_id": true,
+            "question": true,
+            "answer": true,
+            "category_attribute": true,
+            "keyword": true,
+            "status": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

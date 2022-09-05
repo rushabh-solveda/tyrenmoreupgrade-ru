@@ -1,0 +1,27 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Catalog\Block\Product\View\Details $block */
+?>
+         <?php $layout = $block->getLayout(); ?>
+            <?php foreach ($detailedInfoGroup as $name) :
+                ?>
+                <?php
+                $html = $layout->renderElement($name);
+                if (!trim($html)) {
+                    continue;
+                }
+                $alias = $layout->getElementAlias($name);
+                $label = $block->getChildData($alias, 'title');
+                ?>
+                <div class="data item content"
+                     aria-labelledby="tab-label-<?= $block->escapeHtmlAttr($alias) ?>-title" id="<?= $block->escapeHtmlAttr($alias) ?>" data-role="content">
+                    <?= /* @noEscape */ $html ?>
+                </div>
+            <?php } ?>
+            <?php endforeach;?>
+    </div>
+

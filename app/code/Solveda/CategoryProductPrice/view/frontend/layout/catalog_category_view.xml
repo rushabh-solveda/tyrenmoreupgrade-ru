@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="category.view.container">
+            <block class="Solveda\CategoryProductPrice\Block\CategoryProductPrice" 
+                name="Solveda_CategoryProductPrice" 
+                template="Solveda_CategoryProductPrice::index.phtml"
+                after="category.description" />
+        </referenceContainer>
+        
+        <referenceContainer name="content">
+            <!-- display category product price  -->
+            <!-- <block class="Solveda\CategoryProductPrice\Block\CategoryProductPrice" 
+                    name="category.product.price" 
+                    template="Solveda_CategoryProductPrice::index.phtml"
+                    before="category.faq.block" /> -->
+
+
+            <block class="Magento\Catalog\Block\Category\View" 
+                    name="Solveda_CategorySeoDescription" 
+                    template="Solveda_CategoryProductPrice::category/about.phtml"
+                    before="category.product.price" >
+                    <arguments>
+                        <argument name="category" xsi:type="object">Solveda\CategoryProductPrice\ViewModel\Category</argument>
+                    </arguments>
+            </block>
+		</referenceContainer>
+        <!--<move element="Solveda_CategoryProductPrice" destination="content" after="category.products"/>-->
+
+    </body>
+</page>

@@ -1,0 +1,15 @@
+<?php
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();        
+$appState = $objectManager->get('\Magento\Framework\App\State');
+$registry = $objectManager->get('\Magento\Framework\Registry');
+$_product= $registry->registry('current_product');
+$price = $_product->getPrice();
+?>
+<div class="addtocart_tittle">
+						<h2>Vehicle Compatibility</h2>
+					 <p><?php echo $_product->getShortDescription(); ?></p> 
+            </div>
+<div class="p_tittle">
+    <p class="P_name P_name-mobile h4"><?php echo $_product->getName(); ?></p>
+    <p class="p_price"><?php echo $_product->getFormattedPrice($price); ?></p>
+</div>

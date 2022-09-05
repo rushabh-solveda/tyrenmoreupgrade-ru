@@ -1,0 +1,196 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Product list toolbar
+ *
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+?>
+<div class="toolbar-sorter sorter sorter0">
+    <label class="sorter-label" for="sorter"><?= $block->escapeHtml(__('Sort By')) ?></label>
+    <select id="sorter" data-role="sorter" class="amfinder-select-wrapper">
+        <?php foreach ($block->getAvailableOrders() as $_key => $_order) :?>
+            <?php if($_key =="low_to_high" || $_key =="high_to_low" || $_key =="name"){ ?>
+            <option value="<?= $block->escapeHtmlAttr($_key) ?>"
+                <?php if ($block->isOrderCurrent($_key)) :?>
+                    selected="selected"
+                <?php endif; ?>
+                >
+                <?= $block->escapeHtml(__($_order)) ?>
+            </option>
+        <?php } ?>
+        <?php endforeach; ?>
+    </select>
+</div>
+<?php 
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$request = $objectManager->get('Magento\Framework\App\Action\Context')->getRequest();
+if ($request->getFullActionName() == 'catalog_category_view') { 
+  
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');//get current category
+        $subcats = $category->getChildrenCategories();
+       $_helper = $this->helper('Magento\Catalog\Helper\Output');
+       
+       if(count($subcats) >0){ ?>
+        
+                <div class="toolbar-sorter sorter  sorter1 sorter-back">
+                    <label class="sorter-label mobile_sorter_label" for="sorter"><?= $block->escapeHtml(__('Step #1')) ?> <div class=" blob red"> </div> </label>
+                    <label class="sorter-label hidden-xs" for="sorter"><?= $block->escapeHtml(__('Select Model')) ?> <div class=" blob red"></div></label>
+                    <select id="selectEl"  class="amfinder-select-wrapper">
+                      
+                <option>Select Model</option>
+                <?php    foreach ($subcats as $subcat) {
+                            $_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+                            $_outputhelper = $this->helper('Magento\Catalog\Helper\Output');
+                            $subcaturl = $subcat->getUrl();   
+                ?>         
+                <option value="<?php echo $subcaturl;  ?>"><?php echo $subcat->getName(); ?></option>
+                    <?php 
+                }
+                         ?>
+                    </select>
+                </div>
+<?php 
+        }
+    } ?>    
+<style type="text/css">
+ .toolbar-sorter.sorter.sorter1 {
+    margin-right: 18px;
+}
+.sorter-back {
+
+    background-color: #fff;
+}
+.sorter-back .sorter-label {
+
+padding-left: 10px;
+
+}
+.sorter-back select {
+background-color: #ffcb2a !important;
+box-shadow: none !important;
+}
+.sorter-inline {
+display: inline-block ;
+
+}
+
+.blob {
+        background: black;
+        border-radius: 50%;
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+        margin-left: 10px;
+        height: 15px;
+        width: 15px;
+        transform: scale(1);
+        animation: pulse-black 2s infinite;
+}
+
+@keyframes pulse-black {
+        0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+        }
+
+        70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+        }
+
+        100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        }
+}
+/*
+.blob.red {
+        background: rgba(255, 82, 82, 1);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+        animation: pulse-red 2s infinite;
+        display:inline-block;
+}
+
+@keyframes pulse-red {
+        0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+        }
+
+        70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+        }
+
+        100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+        }
+}
+*/
+
+
+
+.blob.red {
+        background: rgba(219, 34, 46, 1);
+        box-shadow: 0 0 0 0 rgba(219, 34, 46, 1);
+        animation: pulse-red 2s infinite;
+        display:inline-block;
+}
+
+@keyframes pulse-red {
+        0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(219, 34, 46, 0.7);
+        }
+
+        70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(219, 34, 46, 0);
+        }
+
+        100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(219, 34, 46, 0);
+        }
+}
+
+
+.blob.green {
+        background: rgba(51, 217, 178, 1);
+        box-shadow: 0 0 0 0 rgba(51, 217, 178, 1);
+        animation: pulse-green 2s infinite;
+                display:inline-block;
+}
+@keyframes pulse-green {
+        0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(51, 217, 178, 0.7);
+        }
+
+        70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(51, 217, 178, 0);
+        }
+
+        100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(51, 217, 178, 0);
+        }
+}
+
+</style>
+<script type="text/javascript">
+    require(["jquery"],function($){
+    $('#selectEl').change(function() {
+  // set the window's location property to the value of the option the user has selected
+  window.location = $(this).val();
+});
+});
+</script>
+

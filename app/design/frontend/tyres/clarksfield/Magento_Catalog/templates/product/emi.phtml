@@ -1,0 +1,61 @@
+<div class="emi-block">
+<span>
+<?php 
+echo $this->getLayout()->createBlock("Solveda\Catlog\Block\Emi")->setTemplate("Solveda_Catlog::emiStartingPdp.phtml")->toHtml()
+?>
+</span>
+<a id="pdp-emi" class=" action primary emi-button"><span>LEARN MORE</span></a>
+
+</div>
+<div id="popup-mpdal" style="display:none;">
+
+<?php 
+echo $this->getLayout()->createBlock("Solveda\Catlog\Block\Emi")->setTemplate("Solveda_Catlog::emipopup.phtml")->toHtml()
+?>
+</div>
+
+<script>
+        require(
+            [
+                'jquery',
+                'Magento_Ui/js/modal/modal'
+            ],
+
+            function(
+                $,
+                modal
+            ) {
+                var options = {
+                    type: 'popup',
+                    responsive: true,
+                    innerScroll: true,
+                    // title: 'popup mpdal title',
+                    modalClass: 'emi-details-modal',
+                    buttons: [{
+                        text: $.mage.__('Continue'),
+                        class: 'emi-pop',
+
+                        click: function () {
+                            this.closeModal();
+                        }
+                    }]
+                };
+
+                var popup = modal(options, $('#popup-mpdal'));
+                $("#pdp-emi").on('click',function(){
+                    $("#popup-mpdal").modal("openModal");
+                });
+
+            }
+        );
+</script>
+
+<script type="text/javascript">
+    require(['jquery'], function ($)
+ {
+        $(document).ready(function(){
+                jQuery('#buy-now').after( jQuery('.emi-block') );
+            
+        });
+    });
+</script>

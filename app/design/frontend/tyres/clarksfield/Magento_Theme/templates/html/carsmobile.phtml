@@ -1,0 +1,76 @@
+<?php
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+$blockObj = $objectManager->get('\Ves\Brand\Model\Brand');
+
+$_brandCollection = $blockObj->getCollection()
+->setOrder('position','ASC')           
+->addFieldToFilter('status',1)
+->addFieldToFilter('group_id',1);
+
+//$blockObj= $this->getLayout()->createBlock('\Ves\Brand\Block\Brandlist');
+
+//$_brandCollection = $this->getBrandCollection();
+//$show_brand_name = $this->getConfig('brand_list_page/show_brand_name');
+//echo $_brandCollection->getSelect()->__toString();
+
+
+$mediaUrl =  $this->getUrl('pub/media');
+if(count($_brandCollection) > 0):
+	
+  ?>
+          <?php $c = 0; foreach($_brandCollection as $key => $_brand):  
+           if ($c == 8) { break; }?>
+        <div class="brand-carousel">
+					<div class="br_col4_inner">
+						<a href="<?php echo $_brand->getUrl(); ?>">
+							<img alt="<?php echo  $_brand->getName();?>" class="img-responsive" src="<?php echo $_brand->getThumbnailUrl(); ?>">
+						  </a>
+					</div>
+				</div>
+          <?php $c++; endforeach; ?>
+<?php endif; ?>
+
+<script type="text/javascript">
+
+require(['jquery','owl_carousel',], function () {
+jQuery(document).ready(function (){
+jQuery(".brand-carousel").owlCarousel({
+items: 6,
+responsive:{
+
+0:{
+
+items:2,
+autoWidth:false,
+margin: 10
+},
+480:{
+
+items:3,
+margin: 10
+},
+768:{
+
+items:4
+},
+980:{
+
+items:6
+}
+
+},
+nav:true,
+autoplay:false,
+autoplayTimeout:4000,
+loop:true,
+dots:false,
+navText:[
+"<i class='fa fa-angle-left fa-2x'></i>",
+"<i class='fa fa-angle-right fa-2x'></i>"
+]
+});
+});
+});
+</script>

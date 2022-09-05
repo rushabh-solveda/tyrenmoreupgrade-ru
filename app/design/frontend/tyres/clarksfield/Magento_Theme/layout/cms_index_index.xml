@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <!-- <script src="Custom_Js::js/homepage1.js"/> -->
+        <remove src="Mageplaza_Blog::css/mpBlogIcon.css" />
+        <remove src="ForaStudio_ToastMessage::css/bootoast.css" />
+        <remove src="Mageplaza_BannerSlider::css/animate.min.css" />
+        <remove src="Navyuginfo_CascadeSearch::css/style.css" />
+    </head>
+    <body>
+        <!-- <referenceBlock name="page.main.title" remove="true"/> --> 
+        <referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="tt"/>
+    </body>
+</page>

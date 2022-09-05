@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<page layout="2columns-right" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="columns" htmlClass="columns details_wrraper" />
+        <referenceContainer name="columns">
+            <referenceContainer name="div.sidebar.main"/>
+        </referenceContainer>
+
+        <referenceBlock name="product.info.addtocart">
+            <block class="Magento\Catalog\Block\ShortcutButtons\InCatalog" name="addtocart.shortcut.buttons"/>
+        </referenceBlock>
+        <referenceBlock name="product.info.addtocart.additional">
+            <block class="Magento\Catalog\Block\ShortcutButtons\InCatalog" name="addtocart.shortcut.buttons.additional"/>
+        </referenceBlock>    
+        <!-- <referenceContainer name="product.info.details" remove="true" /> -->
+
+
+         <referenceBlock name="product.info.stock.sku" remove="true" /> 
+        <!-- <block class="Magento\Review\Block\Product\View\ListView" name="product.info.product_additional_data" as="product_review" template="Magento_theme::view/review.phtml/> -->
+
+        <referenceContainer name="sidebar.main">
+            <block class="Magento\Cms\Block\Block" name="sidebar" after="-" >
+                <arguments>
+                    <argument name="block_id" xsi:type="string">sidebar</argument>
+                </arguments>
+            </block>
+        
+        </referenceContainer>
+
+        <referenceContainer name="content.aside">
+            <block class="Magento\Catalog\Block\Product\ProductList\Related" name="catalog.product.related" template="Magento_Catalog::product/list/related.phtml" />
+        </referenceContainer>
+        <referenceBlock name="product.info.description" remove="true" />
+        <move element="product.info" destination="sidebar.main" before="sidebar"/>
+        <referenceBlock name="view.addto.compare" remove="true" />
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceBlock name="product.info.addto" template="Magento_Catalog::product/view/addto.phtml">
+            <arguments>
+                <argument name="product_view_model" xsi:type="object">
+                    Solveda\Brand\ViewModel\Product
+                </argument>
+            </arguments>
+        </referenceBlock>
+        <referenceContainer name="product.info.main" htmlClass="col-md-6 col-sm-12 product-info-main"/>
+        <referenceContainer name="product.info.media" htmlClass="col-md-6 col-sm-12 product media"/>
+        <referenceContainer name="main"  htmlClass="col-md-8 col-sm-12 column main"/>
+		<referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="emi-popup" template="Magento_Catalog::product/emi.phtml"></block>
+        </referenceContainer>
+            <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="enquiry-button" template="Magento_Catalog::product/view/specification.phtml"></block>
+        </referenceContainer>
+        <move element="emi-popup" destination="sidebar.main" after="-"/>
+        
+    </body>
+</page>

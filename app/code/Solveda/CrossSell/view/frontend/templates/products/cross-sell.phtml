@@ -1,0 +1,433 @@
+<?php
+// die("dfvrvdr");
+/** @var \Solveda\CrossSell\Block\CrossSellProducts $block */
+
+//$products = $block->getProducts();
+$productModel = $block->getProductModel();
+
+$products = $productModel->getProducts();
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+$_imagehelper = $this->helper(Magento\Catalog\Helper\Image::class);
+$imageDisplayArea = 'category_page_grid';
+$image_width = 300;
+$image_height = 300;
+$viewMode = 'grid';
+$pos = $block->getPositioned();
+
+$buttonTitle = __('Buy Now');
+?>
+<?php if ($products && $products->count()) { ?>
+
+<div class="cross-sell-products">
+    <h3>You may also like</h3>
+
+    <div id="related-product-slider" class="owl-carousel ">
+            <?php foreach ($products as $_product) { ?>
+                <?php
+                $productImage = $_imagehelper->init($_product, $imageDisplayArea)->resize($image_width, $image_height);
+                $productImageUrl = $productImage->getUrl();
+
+                $p_image = $productImageUrl;
+                $p_url = $_product->getProductUrl();
+                $p_name = $_helper->productAttribute($_product, $_product->getName(), 'name');
+                $p_price = $_product->getPrice();
+
+                // $iterator++ == 1;
+                ?>
+                <div class="">
+                    <div class="list_inner custom-design" data-container="product-<?= /* @noEscape */ $viewMode ?>">
+                        <div class="product-warranty-section">
+                            <?php
+                            if (isset($category) && $current_category_id_path == 3404) {
+                                $warranty_attribute = $_product->getResource()->getAttribute('warranty_pro_rata');
+                                if ($warranty_attribute) {
+                                    // Get Value
+                                    $warranty_value = $warranty_attribute->getFrontend()->getValue($_product);
+                                    if ($warranty_value && $warranty_value !== 'NA') {
+                                        echo "<div class='wranty_sec'>$warranty_value Warranty</div>";
+                                    }
+                                }
+                            } else {
+                                $warranty_attribute = $_product->getResource()->getAttribute('warranty_period');
+
+                                if ($warranty_attribute) {
+                                    // Get Value
+                                    $warranty_value = $warranty_attribute->getFrontend()->getValue($_product);
+                                    if ($warranty_value) {
+                                        echo "<div class='wranty_sec'>$warranty_value Years Warranty</div>";
+                                    }
+                                }
+                            }
+                            ?>
+                        </div>
+                        <?php
+                        $productImage = $block->getImage($_product, $imageDisplayArea);
+                        if ($pos != null) {
+                            $position = ' style="left:' . $productImage->getWidth() . 'px;'
+                                . 'top:' . $productImage->getHeight() . 'px;"';
+                        }
+                        ?>
+                        <div class="product-listing-block col-md-12">
+                            <div class="product-logo">
+                                        <?php
+                                        // var_dump($_product->getProductBrand());die;
+                                        $_product = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());
+                                        $data = explode(',', $_product->getData('product_brand'));
+                                        $brandId = null;
+                                        if ($data && count($data)) {
+                                            $brandId = $data[0];
+                                        }
+                                        if ($brandId) {
+                                            $brand = $objectManager->create('Ves\Brand\Model\Brand')->load($brandId);
+                                            echo '<img height="50px" src="' . $this->getUrl('pub/media/') . $brand->getThumbnail() . '" />';
+                                        }
+                                        ?>
+                            </div>
+                            <div class="tittle_head">
+                                    <a class="product-item-link test" href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
+                                        <h3><?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h3>
+                                    </a>
+                            </div>
+                            <div class="image_sec">
+                                <style>
+                                    .product-image-wrapper {
+                                        padding-bottom: 100% !important;
+                                    }
+                                </style>
+                                <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>" class="product photo product-item-photo" tabindex="-1">
+                                    <?= $productImage->toHtml() ?>
+                                </a>
+                            </div>
+                            <div class="custom-right">
+                                <div class= "sku-section">
+                                    <span>Sku: <?= $_product->getSku(); ?></span>
+                                </div>
+                                <div class="amout_sec">
+                                    <div class="row">
+                                            <?php
+                                    $inputName = '';
+                                    $inputValue = '';
+                                    $productCategoryIds = $_product->getCategoryIds();
+                                    ?>
+                             
+                                  <?php if(in_array(3404, $productCategoryIds)) { ?>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 exchange-price cross-sell-pro p-0">
+                                    <?php
+
+                                        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                                        $customOptions = $objectManager->get('Magento\Catalog\Model\Product\Option')->getProductOptionCollection($_product);
+                                        if (!empty($customOptions->getData())) {
+                                            foreach($customOptions as $option) {
+
+                                            $values = $option->getValues();
+                                            if (empty($values)) {
+                                                continue;
+                                            }
+                                            ?>
+                                            <div class="plp-custom-option cross-sell-pro1">
+                                            <?php foreach($values as $value) {
+                                                $inputName = "options[".$value->getOptionId()."][]";
+                                                $inputValue = $value->getOptionTypeId();
+                                                $finalPrice = (int)$_product->getFinalPrice();
+                                                $price=(int)$value->getPrice() + $finalPrice;
+                                                //$price=number_format((float)$price, 2, '.', '');
+                                                $price= $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($price,true,false);
+                                                $finalPrice= $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($finalPrice,true,false);
+
+                                            ?>
+                                          <!--       <input type="checkbox" name="<?= $inputName; ?>" class="battery-custom-option cross-sell-pro2" value="<?= $inputValue; ?>" data-price="<?= $finalPrice; ?>" data-exchange-price="<?= $price; ?>"/>
+                                                <span class="price"> -->
+                                            <div class="col-md-12 col-sm-12 p-0">
+                                             <div class="without-exchange">
+                                                <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
+                                                <span class="amt_price exch-price"><?php echo $price ?></span></a>
+                                                 <span class="exchange"><?= $value->getTitle() ?></span>
+                                                </div>
+                                            <div class="inclusive-tax wthout">
+                                                <?= __('(Inclusive of all taxes)') ?>
+                                            </div>
+                    
+                                          <span class="withexchange"><?= $finalPrice.' - '.'Without exchange of old battery' ?></span>
+
+                                               <?php $productPrice = $_product->getPrice(); ?>
+                                                <?= $block->getProductDetailsHtml($_product) ?>
+                                        </div>   
+                                                </span>
+                                            <?php } ?>
+                                            </div>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    </div>
+                                    <?php } else if(!in_array(3404, $productCategoryIds)) { ?>
+                                        <div class="col-md-12 col-sm-12 p-0">
+                                            <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
+                                                <?php  /* @noEscape */ /*$block->getProductPrice($_product);*/
+                                                $productPrice = $_product->getPrice();
+                                                $priceFinal= $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($productPrice,true,false);
+                                                ?>
+                                                <span class="amt_price alloy-section"><?= $priceFinal ?></span>
+                                                <?= $block->getProductDetailsHtml($_product) ?>
+                                            </a>
+                                            <div class="inclusive-tax test2">
+                                                <?= __('(Inclusive of all taxes)') ?>
+                                            </div>
+                                        </div>                                  
+                                    <?php
+                                    echo $this->getLayout()->createBlock("Solveda\Catlog\Block\Emi")->setTemplate("Solveda_Catlog::emiStartingYMAL.phtml")->setData('price',$productPrice)->toHtml();
+                                    ?>
+                                <?php } ?>
+                                  
+                                        <div class="col-md-12 col-sm-12 p-0">
+                                            <div class="cart-group">
+                                                <form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form_<?php echo $_product->getId() ?>" <?php if ($_product->getOptions()) : ?> enctype="multipart/form-data" <?php endif; ?>>
+                                                    <?php echo $block->getBlockHtml('formkey') ?>
+                                                   <!--  <input class="cart-count" type="number" name="qty" id="qty" maxlength="12" value="1" min="1" max="10" />
+                                                    <button type="submit"
+                                                            title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                                                            class="action primary tocart">
+                                                        <span><?= $block->escapeHtml($buttonTitle) ?></span>
+                                                    </button> -->
+                                                    <?php /*
+                                                    $buyNowHtml = $this->getLayout()
+                                                        ->createBlock('Prince\Buynow\Block\Product\ListProduct')
+                                                        ->setProduct($_product)
+                                                        ->setTemplate('Prince_Buynow::buynow-list.phtml')
+                                                        ->toHtml();
+                                                    echo $buyNowHtml;*/
+                                                    ?>
+                                                    <a class="viewdetails-cross-sell" href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">View Details</a>  
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="custom-bottom">
+                            <div class="custom-tooltip">
+                                <div class="tooltip-main">
+                                    <span class="tooltip-button">
+                                        Product <br />Specs
+                                    </span>
+                                    <div class="tooltip-box" style="display: none;">
+                                        <ul>
+                                            <?php
+                                            $carId = 46;
+                                            $bikeId = 42;
+                                            $batteryId = 3404;
+                                            if(in_array($carId, $_product->getCategoryIds())) {
+                                                $productAttributes = [
+                                                    'country_of_manufacture',
+                                                    'car_tyre_aspect',
+                                                    'car_tyre_rim',
+                                                    'car_tyre_tube',
+                                                    'car_tyre_tubeless',
+                                                    'car_tyre_warranty',
+                                                    'car_tyre_width',
+                                                ];
+                                            }
+                            
+                                            if(in_array($bikeId, $_product->getCategoryIds())) {
+                                                $productAttributes = [
+                                                    'country_of_manufacture',
+                                                    'bike_tyre_rim',
+                                                    'bike_tyre_tube',
+                                                    'bike_tyre_tubeless',
+                                                    'bike_tyre_warranty',
+                                                    'bike_tyre_width'
+                                                ];
+                                            }
+                            
+                                            if(in_array($batteryId, $_product->getCategoryIds())) {
+                                                $productAttributes = [
+                                                    'ampere',
+                                                    'free_warranty',
+                                                    'terminal',
+                                                    'country_of_manufacture',
+                                                    'warranty_pro_rata',
+                                                ];
+                                            }
+                                            foreach ($productAttributes as $attr) {
+                                                $_getMyAttr = $_product->getResource()->getAttribute($attr);
+
+                                                if ($_getMyAttr) {
+                                                    // Get Value
+                                                    $attrTestValue = $_getMyAttr->getFrontend()->getValue($_product);
+                                                    if ($attrTestValue == '')
+                                                        continue;
+                                                    // Get Label
+                                                    $attrTestLabel = $_getMyAttr->getStoreLabel();
+                                            ?>
+                                                    <li>
+                                                        <strong><?= __($attrTestLabel) ?></strong>
+                                                        <span class="product-attr-value">
+                                                            <?= __($attrTestValue) ?>
+                                                        </span>
+                                                    </li>
+                                            <?php }
+                                            } ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="tooltip-main">
+                                    <span class="tooltip-button">
+                                        Vehicle <br />Compatibility
+                                    </span>
+                                    <div class="tooltip-box" style="display: none;">
+                                        <?= $_product->getShortDescription() ?>
+                                    </div>
+                                </div>
+                                <div class="tooltip-main social-share">
+                                    <span class="tooltip-button">
+                                        <img height="31px" src="<?= $block->getViewFileUrl('images/share.png'); ?>" />
+                                    </span>
+                                    <div class="tooltip-box" style="display: none;">
+                                        <ul class="prosocialshare" style="display: block;">
+                                            <?php
+                                            $productUrl =  $_product->getProductUrl();
+                                            $productName = $_product->getName();
+                                            ?>
+                                            <li class="facebook">
+                                                <a href="https://www.facebook.com/sharer.php?u=<?= $productUrl; ?>&caption=<?= $productName; ?>" onclick="javascript:window.open(this.href,'','width=640,height=480,left=0,top=0,location=no,status=yes,scrollbars=yes,resizable=yes');return false" title="Share on FaceBook">
+                                                    <i class="fa fa-facebook"></i>
+                                                </a>
+                                            </li>
+                                            <li class="twitter">
+                                                <a href="http://twitter.com/share/?text=<?= $productUrl . '(' . $productName . ')'; ?>" onclick="javascript:window.open(this.href,'','width=640,height=480,left=0,top=0,location=no,status=yes,scrollbars=yes,resizable=yes');return false" title="Share on Twitter">
+                                                    <i class="fa fa-twitter"></i>
+                                                </a>
+                                            </li>
+                                            <li class="linkedin">
+                                                <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=<?= $productUrl; ?>&title=<?= $productName; ?>" onclick="javascript:window.open(this.href,'','width=640,height=480,left=0,top=0,location=no,status=yes,scrollbars=yes,resizable=yes');return false"><i class="fa fa-linkedin"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="clsProductFeature">
+                                <?php
+                                $_product = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());
+                                $data = null;
+                                if ($_product->getData('product_features')) {
+                                    $data = explode(',', $_product->getData('product_features'));
+                                }
+                                ?>
+                                <ul>
+                                    <?php
+                                    if ($data) {
+                                        foreach ($data as $value) :
+                                            $attr = $_product->getResource()->getAttribute('product_features');
+                                            if ($attr->usesSource()) :
+                                                $option_value = $attr->getSource()->getOptionText($value); ?>
+                                                <li>
+                                                    <?php $mediaUrl =  $this->getUrl('pub/media'); ?>
+                                                    <span class="cls-img">
+                                                        <?php if ($value == "5796") { ?>
+                                                            <img loading="lazy" height="20px" src="<?php echo $mediaUrl . 'logo/smooth_ride.png'; ?>" />
+                                                        <?php } ?>
+                                                        <?php if ($value == 5797) { ?>
+                                                            <img loading="lazy" height="20px" src="<?php echo $mediaUrl . 'logo/low_noise.png'; ?>" />
+                                                        <?php } ?>
+                                                        <?php if ($value == 5798) { ?>
+                                                            <img loading="lazy" height="20px" src="<?php echo $mediaUrl . 'logo/Dry_and_wet_grip.png'; ?>" />
+                                                        <?php } ?>
+                                                        <?php if ($value == 5799) { ?>
+                                                            <img loading="lazy" height="20px" src="<?php echo $mediaUrl . 'logo/Excellent_braking.png'; ?>" />
+                                                        <?php } ?>
+                                                        <?php if ($value == 5800) { ?>
+                                                            <img loading="lazy" height="20px" src="<?php echo $mediaUrl . 'logo/fuel_efficient.png'; ?>" />
+                                                        <?php } ?>
+                                                        <?php if ($value == 5801) { ?>
+                                                            <img loading="lazy" height="20px" src="<?php echo $mediaUrl . 'logo/long_tyre_life.png'; ?>" />
+                                                        <?php } ?>
+                                                        <?php if ($value == 5802) { ?>
+                                                            <img loading="lazy" height="20px" src="<?php echo $mediaUrl . 'logo/high_stability.png'; ?>" />
+                                                        <?php } ?>
+                                                        <?php if ($value == 5803) { ?>
+                                                            <img loading="lazy" height="20px" src="<?php echo $mediaUrl . 'logo/all_terrain.png'; ?>" />
+                                                        <?php } ?>
+                                                    </span><br />
+                                                    <span class="product-features">
+                                                        <?php echo $option_value; ?>
+                                                    </span>
+                                                </li>
+
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    <?php } ?>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            <?php } ?>
+            
+        </div>
+    </div>
+ <?php } ?>
+
+ <script>
+    require(['jquery'], function($){
+        $(function () {
+            $('#related-product-slider').on('click', '.tooltip-button', function(event){
+                event.stopPropagation();
+                $('.tooltip-box').hide()
+                $(this).parent().find('.tooltip-box').show();
+            });
+
+            $(document).on('click', function (event) {
+                $('.tooltip-box').hide()
+            });
+        });
+    });
+
+
+    requirejs(['jquery', 'owlcarousel'], function($, owl) {
+        jQuery(function($) {
+            var owl = $('#related-product-slider');
+            owl.owlCarousel({
+                margin: 30,
+                lazyLoad: true,
+                loop: true,
+                autoWidth: false,
+                responsiveClass: true,
+                responsive: {
+                    0: {
+                        items: 1,
+                        dots: true,
+                        nav: false
+                    },
+                    767: {
+                        items: 3,
+                        nav: true,
+                        dots: false
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script>
+    
+    require(['jquery'],function($){
+        $('.battery-custom-option').on('click', function(){
+            if($(this).is(':checked')) {
+                $(this).parents('.amout_sec').find('.exchange-battery').prop( "checked", true );
+                var price = $(this).data('exchange-price');
+            } else {
+                $(this).parents('.amout_sec').find('.exchange-battery').prop( "checked", false );
+                var price = $(this).data('price');
+            }
+            $(this).parents('.amout_sec').find('.price-wrapper').find('.price').html(price);
+        });
+    });
+</script>

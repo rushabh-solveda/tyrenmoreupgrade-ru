@@ -1,0 +1,308 @@
+
+<?php //initializing tabs
+
+	$this->getTabDetails();
+?>
+<div style="max-width: 100%;" class="container tnm-search-panel">
+	<div class="container">
+		<div class="row">
+
+			<p style=" font-size: 1.8rem; " class="search-titles">SEARCH BY</p>
+			<ul class="nav nav-tabs custom-nav vehicle-search-option">
+				<li class="banner-search-options category-tab active col-md-6 col-sm-6 col-lg-6 col-xs-6">
+					<a data-toggle="tab" href="#vehicle">Vehicle Brands</a>
+				</li>
+				<li class="banner-search-options attribute-tab col-md-6 col-sm-6 col-lg-6 col-xs-6">
+					<a data-toggle="tab" href="#size">Tyre Size</a>
+				</li>
+			</ul>
+			<p style=" font-size: 1.8rem; " class="search-titles">LOOKING TYRES FOR?</p>
+
+		</div>
+	</div>
+
+	<div class="tab-content cascade-search">
+		<div id="vehicle" class="tab-pane fade in active">
+
+
+			<div class="container">
+				<div class = "row">
+					<div class = "col-lg-12 col-md-12 vehice-type">
+						<ul class="nav nav-pills nav-justified search-pins-nav right-border center-align">
+							<?php
+
+								$uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+								$uri_segments = explode('/', $uri_path);
+
+								if ( ($_SERVER['HTTP_HOST'] == 'localhost') || ($_SERVER['HTTP_HOST'] == '127.0.0.1') ) {
+ 								 $store_name = $uri_segments[2];
+								}
+								else
+								{
+   								$store_name = $uri_segments[1];
+								}
+
+								$bike_tab_active = '';
+								$bike_tab_in_active = '';
+								$car_tab_active = '';
+								$car_tab_in_active = '';
+								if ($store_name != 'bike') {
+									$car_tab_active = 'active';
+									$car_tab_in_active = 'in active';
+								}
+								else{
+									$bike_tab_active = 'active';
+									$bike_tab_in_active = 'in active';
+								}
+
+
+							if ($store_name != 'bike') {
+
+
+							 ?>
+							<li class="<?php echo $car_tab_active; ?> cars-pin"><a class = "cars-pin-button tab-pin" data-toggle="tab" href="#cars">CAR</a></li>
+								<?php } ?>
+							<li class="<?php echo $bike_tab_active; ?> bikes-pin"><a class = "bikes-pin-button tab-pin" data-toggle="tab" href="#bikes">BIKE</a>
+
+							</li>
+						</ul>
+					</div>
+
+					<div class = "col-lg-12 col-md-12">
+						<div class="tab-content cascade-dropdowns">
+							<div id="cars" class="tab-pane fade <?php echo $car_tab_in_active; ?>">
+
+								<div id="block-cars-cascade-search" data-bind="scope:'cars-cascade-search'">
+
+
+									<!-- ko template: getTemplate() --><!-- /ko -->
+
+								<script type="text/x-magento-init">
+										{
+											"*": {
+												"Magento_Ui/js/core/app": {
+													"components": {
+														"cars-cascade-search": {
+															"component": "Navyuginfo_CascadeSearch/js/view/category",
+															"template" : "Navyuginfo_CascadeSearch/widget/categorySearch",
+															"storeUrl": "<?php echo $block->_store->getBaseUrl();?>" ,
+															"manufacturers": <?php
+															$catId = (int)(explode("/", $this->getData("category_id_1"))[1]);
+															echo json_encode($block->getChildCategories($catId)); ?>,
+															"manufacturerLabel": "Car Manufacturer",
+															"modelLabel" : "Car Model",
+															"tabIsSelected" : <?php if ($block->getSelectedSearchTab()=="CATEGORY_TAB" && $block->getSelectedSearchPinTab()=="FIRST_PIN")
+																		echo "true";
+																	else
+																		echo "false";	 ?>,
+															"changePinTab" : <?php if ($block->getSelectedSearchPinTab()=="FIRST_PIN")
+																	echo "true";
+																else
+																	echo "false";	 ?>,
+															"pinTab" : "#cars",
+															"liClass":	"cars-pin",
+															"preSelectedManufacturer":	<?php echo $block->getSelectedCategoryId(); ?>,
+															"preSelectedModel":	<?php echo $block->getSelectedChildCategoryId(); ?>
+
+														}
+													}
+												}
+											}
+										}
+								</script>
+
+								</div>
+
+
+
+							</div>
+							<div id="bikes" class="tab-pane fade  <?php echo $bike_tab_in_active; ?>">
+
+								<div id="block-bikes-cascade-search" data-bind="scope:'bikes-cascade-search'">
+
+									<!-- ko template: getTemplate() --><!-- /ko -->
+
+
+
+								<script type="text/x-magento-init">
+										{
+											"*": {
+												"Magento_Ui/js/core/app": {
+													"components": {
+														"bikes-cascade-search": {
+															"component": "Navyuginfo_CascadeSearch/js/view/category",
+															"template" : "Navyuginfo_CascadeSearch/widget/categorySearch",
+															"storeUrl": "<?php echo $block->_store->getBaseUrl();?>" ,
+															"manufacturers": <?php
+
+															$catId = (int)(explode("/", $this->getData("category_id_2"))[1]);
+															echo json_encode($block->getChildCategories($catId)); ?>,
+															"manufacturerLabel": "Bike Manufacturer",
+															"modelLabel" : "Bike Model",
+															"tabIsSelected" : <?php if ($block->getSelectedSearchTab()=="CATEGORY_TAB")
+																		echo "true";
+																	else
+																		echo "false";	 ?>,
+															"changePinTab" : <?php if ($block->getSelectedSearchPinTab()=="SECOND_PIN" && $block->getSelectedSearchTab()=="CATEGORY_TAB")
+																	echo "true";
+																else
+																	echo "false";	 ?>,
+
+															"pinTab" : "#bikes"	,
+															"liClass":	"bikes-pin"	,
+															"preSelectedManufacturer":	<?php echo $block->getSelectedCategoryId(); ?>,
+															"preSelectedModel":	<?php echo $block->getSelectedChildCategoryId(); ?>
+														}
+													}
+												}
+											}
+										}
+								</script>
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="size" class="tab-pane fade">
+
+
+
+			<div class="container">
+				<div class = "row">
+
+					<div class="col-lg-12 size-block">
+						<ul class="nav nav-pills nav-justified search-pins-nav right-border center-align">
+						<?php if ($store_name != 'bike') {
+
+
+							 ?>
+							<li class="<?php echo $car_tab_active; ?> cars-pin-size"><a class = "cars-pin-button tab-pin" data-toggle="tab" href="#size-cars">CAR</a></li>
+						<?php } ?>
+							<li class="<?php echo $bike_tab_active; ?> bikes-pin-size"><a class = "bikes-pin-button tab-pin" data-toggle="tab" href="#size-bikes">BIKE</a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-12">
+						<div class="tab-content cascade-dropdowns">
+							<div id="size-cars" class="tab-pane fade <?php echo $car_tab_in_active; ?>">
+
+								<div id="block-attribute-cascade-car-search" data-bind="scope:'attribute-cascade-car-search'">
+
+
+									<!-- ko template: getTemplate() --><!-- /ko -->
+
+									<script type="text/x-magento-init">
+											{
+												"*": {
+													"Magento_Ui/js/core/app": {
+														"components": {
+															"attribute-cascade-car-search": {
+																"component": "Navyuginfo_CascadeSearch/js/view/attribute",
+																"template" : "Navyuginfo_CascadeSearch/widget/attributeSearch",
+																"storeUrl": "<?php echo $block->_store->getBaseUrl();?>" ,
+																"attributeSet": <?php echo json_encode($block->getCarAttributeSet()); ?>,
+																"attributeCode1": "<?php echo $block->getCarAttribute1(); ?>",
+																"attributeCode2": "<?php echo $block->getCarAttribute2(); ?>",
+																"attributeCode3": "<?php echo $block->getCarAttribute3(); ?>",
+
+
+																"tabIsSelected" : <?php if ($block->getSelectedSearchTab() == "ATTRIBUTE_TAB")
+																		echo "true";
+																	else
+																		echo "false";	 ?>,
+
+																"changePinTab" : <?php if ($block->getSelectedSearchPinTab()=="FIRST_PIN" && $block->getSelectedSearchTab()=="ATTRIBUTE_TAB")
+																	echo "true";
+																else
+																	echo "false";	 ?>,
+
+																"tab" : "#size",
+																"liClass":	"attribute-tab",
+																"pinTab" : "#size-cars",
+																"pinLiClass":	"cars-pin-size",
+
+																"attribute1Label": "Width",
+																"attribute2Label": "Profile",
+																"attribute3Label": "Rim",
+
+																"preSelectedAttribute1": <?php echo $block->getAttribute1(); ?>,
+																"preSelectedAttribute2": <?php echo $block->getAttribute2(); ?>,
+																"preSelectedAttribute3": <?php echo $block->getAttribute3(); ?>
+															}
+														}
+													}
+												}
+											}
+									</script>
+
+								</div>
+
+
+
+							</div>
+							<div id="size-bikes" class="tab-pane fade <?php echo $bike_tab_in_active; ?>">
+
+								<div id="block-attribute-cascade-bike-search" data-bind="scope:'attribute-cascade-bike-search'">
+
+
+										<!-- ko template: getTemplate() --><!-- /ko -->
+
+										<script type="text/x-magento-init">
+												{
+													"*": {
+														"Magento_Ui/js/core/app": {
+															"components": {
+																"attribute-cascade-bike-search": {
+																	"component": "Navyuginfo_CascadeSearch/js/view/attribute",
+																	"template" : "Navyuginfo_CascadeSearch/widget/attributeSearch",
+																	"storeUrl": "<?php echo $block->_store->getBaseUrl();?>" ,
+																	"attributeSet": <?php echo json_encode($block->getBikeAttributeSet()); ?>,
+																	"attributeCode1": "<?php echo $block->getBikeAttribute1(); ?>",
+																	"attributeCode2": "<?php echo $block->getBikeAttribute2(); ?>",
+																	"attributeCode3": "<?php echo $block->getBikeAttribute3(); ?>",
+
+																	"tabIsSelected" : <?php if ($block->getSelectedSearchTab() == "ATTRIBUTE_TAB")
+																			echo "true";
+																		else
+																			echo "false";	 ?>,
+
+																	"changePinTab" : <?php if ($block->getSelectedSearchPinTab()=="SECOND_PIN" && $block->getSelectedSearchTab()=="ATTRIBUTE_TAB")
+																		echo "true";
+																	else
+																		echo "false";	 ?>,
+
+
+																	"tab" : "#size",
+																	"liClass":	"attribute-tab",
+																	"pinTab" : "#size-bikes",
+																	"pinLiClass":	"bikes-pin-size",
+																	"attribute1Label": "Width",
+																	"attribute2Label": "Profile",
+																	"attribute3Label": "Rim",
+
+																	"preSelectedAttribute1": <?php echo $block->getAttribute1(); ?>,
+																	"preSelectedAttribute2": <?php echo $block->getAttribute2(); ?>,
+																	"preSelectedAttribute3": <?php echo $block->getAttribute3(); ?>
+																}
+															}
+														}
+													}
+												}
+										</script>
+
+									</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>

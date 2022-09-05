@@ -1,0 +1,42 @@
+<?php
+
+/** @var \Solveda\CategoryFAQ\Block\CategoryFAQ $block */
+
+$isCarTyreCategory = $block->isCarTyreCategory();
+$collection = $block->getCategoryFAQCollection();
+
+$categoryAttributes = $block->getCategoryAttributes();
+
+$displayHeading = false;
+
+foreach ($categoryAttributes as $key => $val) {
+    if (substr($key, 0, 4) == 'faq_' && $val != '') {
+        $displayHeading = true;
+        break;
+    }
+}
+if ($isCarTyreCategory && $collection->getSize()) { ?>
+
+    <div class="logo-card faq-section col-md-12">
+        <?php if($displayHeading) {?>
+        <h4 class="title_card">FAQ's</h4>
+        <?php } ?>
+        <?php foreach ($collection as $key => $data): ?>
+
+            <?php if (strpos($block->filterAnswer($data->getAnswer()), '{faq_') === false) { ?>
+                <div class="accordion-item">
+                    <div class="accordion-item-header">
+                        <?= ($block->filterQuestion($data->getQuestion()));
+                        ?>
+                    </div>
+
+                    <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                            <?= ($block->filterAnswer($data->getAnswer())); ?>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+        <?php endforeach; ?>
+    </div>
+<?php } ?>

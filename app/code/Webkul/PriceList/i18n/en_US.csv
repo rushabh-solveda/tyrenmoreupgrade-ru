@@ -1,0 +1,80 @@
+Back,Back
+"Create New Price List","Create New Price List"
+Id,Id
+Email,Email
+"Customer Name","Customer Name"
+"Delete Pricelist","Delete Pricelist"
+Title,Title
+"Calculation Type","Calculation Type"
+"Price Type","Price Type"
+Amount,Amount
+Priority,Priority
+Status,Status
+"Create New Rule","Create New Rule"
+"Delete Rule","Delete Rule"
+ID,ID
+Name,Name
+SKU,SKU
+Price,Price
+"Pricelist does not exists","Pricelist does not exists"
+"Pricelist deleted succesfully","Pricelist deleted succesfully"
+"Something went wrong","Something went wrong"
+"Item does not exists.","Item does not exists."
+"Price List","Price List"
+"New Price List","New Price List"
+"View Price List","View Price List"
+"Pricelist(s) activated succesfully","Pricelist(s) activated succesfully"
+"Pricelist(s) deactivated succesfully","Pricelist(s) deactivated succesfully"
+"Pricelist(s) deleted succesfully","Pricelist(s) deleted succesfully"
+"Pricelist saved successfully","Pricelist saved successfully"
+"Rule does not exists","Rule does not exists"
+"Rule deleted succesfully","Rule deleted succesfully"
+Rules,Rules
+"New Rule","New Rule"
+"View Price List Rules","View Price List Rules"
+"Rule(s) activated succesfully","Rule(s) activated succesfully"
+"Rule(s) deactivated succesfully","Rule(s) deactivated succesfully"
+"Rule(s) deleted succesfully","Rule(s) deleted succesfully"
+"Rule saved successfully","Rule saved successfully"
+"Increase Price","Increase Price"
+"Decrease Price","Decrease Price"
+"Fixed Price","Fixed Price"
+"Percent Price","Percent Price"
+Active,Active
+Deactive,Deactive
+Product,Product
+Category,Category
+"Product Quantity","Product Quantity"
+"Total Product Price","Total Product Price"
+Deactivate,Deactivate
+View,View
+Menu,Menu
+"Price List Information","Price List Information"
+"Save Price List","Save Price List"
+"Price List Name","Price List Name"
+"Start Date","Start Date"
+"End Date","End Date"
+Customers,Customers
+"Customer Group","Customer Group"
+"Create Price List","Create Price List"
+Activate,Activate
+Delete,Delete
+"Do you want to delete selected Pricelists?","Do you want to delete selected Pricelists?"
+"Created At","Created At"
+"Create Rule","Create Rule"
+"Do you want to delete selected rules?","Do you want to delete selected rules?"
+"Rule Name","Rule Name"
+"Applicable On","Applicable On"
+"Price Rule Information","Price Rule Information"
+"Save Price Rule","Save Price Rule"
+"Price Rule Name","Price Rule Name"
+"Price Calculation Type","Price Calculation Type"
+Quantity,Quantity
+Total,Total
+Products,Products
+Categories,Categories
+OK,OK
+Cancel,Cancel
+Action,Action
+"You haven't selected any items!","You haven't selected any items!"
+"Attention","Attention"

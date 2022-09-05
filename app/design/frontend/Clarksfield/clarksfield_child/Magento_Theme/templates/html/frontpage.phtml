@@ -1,0 +1,123 @@
+<!-- Mobile Homepage slider section -->
+      <div class="mobile-page-slider hidden-md hidden-lg">
+            <?= $block->getLayout()->createBlock('Mageplaza\BannerSlider\Block\Widget')->setSliderId(5)->toHtml();?>
+     </div>
+
+	 <div class="row bt-tyres">
+         <?php echo $this->getLayout()
+                                ->createBlock('Magento\Cms\Block\Block')
+                                ->setBlockId('battery-tyres')
+                                ->toHtml();
+                                ?>
+	</div>
+
+<!-- Customer Revie Slider  -->
+       <div class="row review-slider">
+	                    <div class="col-md-12 owl-carousel" id="mob-review">
+                                <?php echo $this->getLayout()
+                                ->createBlock('Magento\Cms\Block\Block')
+                                ->setBlockId('mobile_theme_reviews')
+                                ->toHtml();
+                                ?>
+                        </div>
+                    </div>
+    <div class="row door-step">
+        <?php echo $this->getLayout()
+                    ->createBlock('Magento\Cms\Block\Block')
+                    ->setBlockId('mobile-doorstep')
+                    ->toHtml();
+                    ?>
+    </div>
+  <!-- How it work section start -->
+            <div class="row hw-it-work">
+			<div class="col-md-12">
+				<h2 class="mob-title mob-hw-title">How It Works </h2>
+                    <div class="grid-items">
+                            <div class="grid-item">
+                            <div class="grid-sub-text">STEP</div>
+                            <div class="grid-numb">01</div>
+                            <p class="grid-step-text">Select <br>Product</p>
+                            </div>
+                           <div class="grid-item">
+                           <div class="grid-sub-text">STEP</div>
+                           <div class="grid-numb">02</div>
+                            <p class="grid-step-text">Buy Online<br> Here</p>
+                          </div>
+                            <div class="grid-item">
+                            <div class="grid-sub-text">STEP</div>
+                            <div class="grid-numb">03</div>
+                            <p class="grid-step-text">Get it fitted at your doorstep</p>
+							</div>
+
+                     </div>
+                </div>
+            </div> 
+
+     <!-- What u get  -->
+	 <?php echo $this->getLayout()
+	->createBlock('Magento\Cms\Block\Block')
+	->setBlockId('what-you-get-mobile')
+	->toHtml();
+	?>
+		
+      
+<div class="row faq-container">	  
+    <div class="col-md-12">
+	 <h2 class="mob-title">Frequently Asked Questions</h2>
+	 <div class="accordion clearfix">
+		
+		  <?php
+			echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('faq-car-tyres_mobile_theme')->toHtml();
+			?>
+		</div>
+	 </div>
+	 </div>
+
+
+<?php echo $this->getLayout()
+            ->createBlock('Magento\Cms\Block\Block')
+            ->setBlockId('home-wheel-size-modal-desk')
+            ->toHtml();
+            ?>
+     <script>
+     require(['jquery', 'jquery/ui'], function($){
+        $('#mob-review, #yug-slider').owlCarousel({
+            center: true,
+            items:1,
+            loop:true,
+            autoplay: false,
+            nav: true,
+            navText: ["<i class='fa fa-chevron-left'></i>","<i class='fa fa-chevron-right'></i>"],
+            dots: false,
+            responsive:{
+                768:{
+                    items:1,
+                    dots: false,
+                }
+            }
+        });
+    });
+</script>
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function($, modal) {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                modalClass: 'modal-type-default',
+                buttons: []
+            };
+
+            modal(options, $('#wheel-size-modal-content'));
+            $(".wheel-size-modal-btn").on('click',function(){
+                $("#wheel-size-modal-content").modal("openModal");
+            });
+        }
+    );
+</script>

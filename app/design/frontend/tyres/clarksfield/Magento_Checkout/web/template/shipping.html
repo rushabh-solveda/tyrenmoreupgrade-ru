@@ -1,0 +1,109 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="shipping-step " data-bind="css: {'_active': visible()}">
+    <div class="title" data-role="title">
+        <strong role="heading" aria-level="1">
+            <span data-bind="i18n: '1. Review Shipping Details'"></span>
+        </strong>
+        <div class="view-section" data-bind="css: {'disable': visible()}">
+            <a class="steps-switcher" id="shipping-view" data-bind="attr: {href: getShippingUrl()}"  >
+                <span data-bind="i18n: 'View'"></span>                   
+            </a>
+        </div>
+    </div>
+    <div class="header">
+        <a data-bind="attr: {href: getHomeUrl()}">
+            <i class="fa fa-home" />
+        </a>
+        <span translate="'CHECKOUT\: SHIPPING'"></span>
+        <a class="telephone_anchor" href="tel:+91-9212751275">
+            <i class="fa fa-phone"></i>
+        </a>
+    </div>
+    <li id="shipping" class="checkout-shipping-address123" data-bind="fadeVisible: visible()">
+        <!-- <div class="step-title" translate="'Shipping Address'" data-role="title" /> -->
+        <div id="checkout-step-shipping"
+            class="step-content"
+            data-role="content">
+
+            <each if="!quoteIsVirtual" args="getRegion('customer-email')" render="" />
+            <each args="getRegion('address-list')" render="" />
+            <each args="getRegion('address-list-additional-addresses')" render="" />
+
+            <!-- Address form pop up -->
+            <if args="!isFormInline">
+                <div class="new-address-popup">
+                    <button type="button"
+                            class="action action-show-popup"
+                            click="showFormPopUp"
+                            visible="!isNewAddressAdded()">
+                        <span translate="'New Address'" />
+                    </button>
+                </div>
+                <div id="opc-new-shipping-address"
+                    visible="isFormPopUpVisible()"
+                    render="shippingFormTemplate" />
+            </if>
+
+            <each args="getRegion('before-form')" render="" />
+
+            <!-- Inline address form -->
+            <render if="isFormInline" args="shippingFormTemplate" />
+        </div>
+    </li>
+
+    <!--Shipping method template-->
+    <li id="opc-shipping_method"
+        class="checkout-shipping-method"
+        data-bind="fadeVisible: visible(), blockLoader: isLoading"
+        role="presentation">
+        <div class="checkout-shipping-method">
+            <div class="step-title"
+                translate="'Doorstep Fitment Fees'"
+                data-role="title" />
+                <!-- <div class="step-title"
+                    text="shippingMethodTitle()"
+                    data-role="title" /> -->
+
+            <each args="getRegion('before-shipping-method-form')" render="" />
+
+            <div id="checkout-step-shipping_method"
+                class="step-content"
+                data-role="content"
+                role="tabpanel"
+                aria-hidden="false">
+                <form id="co-shipping-method-form"
+                    class="form methods-shipping"
+                    if="rates().length"
+                    submit="setShippingInformation"
+                    novalidate="novalidate">
+
+                    <render args="shippingMethodListTemplate"/>
+
+                    <div id="onepage-checkout-shipping-method-additional-load">
+                        <each args="getRegion('shippingAdditional')" render="" />
+                    </div>
+                    <div role="alert"
+                        if="errorValidationMessage().length"
+                        class="message notice">
+                        <span text="errorValidationMessage()" />
+                    </div>
+                    <div class="actions-toolbar" id="shipping-method-buttons-container">
+                        <div class="primary">
+                            <button data-role="opc-continue" type="submit" class="opc-continue-click button action continue primary ">
+                                <span translate="'Proceed'" />
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div class="no-quotes-block"
+                    ifnot="rates().length > 0"
+                    translate="'Sorry, no quotes are available for this order at this time'" />
+            </div>
+        </div>
+    </li>
+</div>

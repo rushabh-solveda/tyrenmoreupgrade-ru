@@ -1,0 +1,61 @@
+<?php
+
+
+$cityModel = $block->getCities();
+$doorstepFitment = $cityModel->getCities();
+$doorstepDelivery = $cityModel->getCities(false, 1);
+
+$selectedCity = $cityModel->getSelectedCity();
+?>
+
+<div class="city_dropdown">
+    <select name="cities" class="product_cities_select" required>
+        <option selected value=""><?= __('Select city') ?></option>
+        <optgroup label="<?= __("Doostep fitment cities") ?>">
+            <?php foreach ($doorstepFitment as $city) { ?>
+                <option value="<?= $city['value'] ?>" data-fittment="<?= $city['display_input_for_city'] ?>">
+                    <?= $city['label'] ?>
+                </option>
+            <?php } ?>
+        </optgroup>
+        <?php if(count($doorstepDelivery)){ ?>
+        <optgroup label="<?= __("Doorstep delivery cities") ?>">
+
+            <?php foreach ($doorstepDelivery as $city) { ?>
+                <option value="<?= $city['value'] ?>" data-fittment="<?= $city['display_input_for_city'] ?>">
+                    <?= $city['label'] ?>
+                </option>
+            <?php } ?>
+        </optgroup>
+        <?php } ?>
+    </select>
+</div>
+<script>
+    require([
+        'jquery',
+        'Magento_Customer/js/customer-data',
+        'mage/url',
+        'uiRegistry',
+        'jquery/jquery.cookie'
+    ], function($, customerData, url, registry) {
+        $(function(){
+            var city = $.cookie('selected_city');
+
+            if(city) {
+                $('.product_cities_select').val(city);
+            }
+        });
+        $('.product_cities_select').on('change', function() {
+            var city = $(this).val();
+            var custom_city = registry.get('checkout.steps.shipping-step.shippingAddress.shipping-address-fieldset.custom_city')
+            if(custom_city) {
+                custom_city.value(city);
+            }
+            var cityExists = $('#product_cities option[value="'+city+'"]').length;
+            if(cityExists) {
+                $('#product_cities').val(city);
+            }
+            $.cookie('selected_city', city, { expires: 30, path: '/', domain:'.tyresnmore.com'});
+        });
+    });
+</script>

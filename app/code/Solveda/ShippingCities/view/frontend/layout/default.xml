@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="theme_header">
+            <block name="product.city.select.dropdown" 
+                template="Solveda_ShippingCities::product/city_dropdown_header.phtml" 
+                before="-"
+                >
+                <arguments>
+                    <argument name="cities" xsi:type="object">
+                        Solveda\ShippingCities\ViewModel\Cities
+                    </argument>    
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

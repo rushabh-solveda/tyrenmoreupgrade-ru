@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- /**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CategoryMassUpload
+ * @author    Webkul Software Private Limited
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Webkul_CategoryMassUpload::categorymassupload" title="Category Manager" module="Webkul_CategoryMassUpload" sortOrder="10" resource="Webkul_CategoryMassUpload::categorymassupload"/>
+        <add id="Webkul_CategoryMassUpload::menu" title="Menu" module="Webkul_CategoryMassUpload" sortOrder="10" parent="Webkul_CategoryMassUpload::categorymassupload" dependsOnModule="Webkul_CategoryMassUpload" resource="Webkul_CategoryMassUpload::categorymassupload"/>
+        <add id="Webkul_CategoryMassUpload::import" title="Manage Category Mass Import" module="Webkul_CategoryMassUpload" sortOrder="1" parent="Webkul_CategoryMassUpload::menu" action="categorymassupload/import" resource="Webkul_CategoryMassUpload::import"/>
+        <add id="Webkul_CategoryMassUpload::export" title="Manage Category Mass Export" module="Webkul_CategoryMassUpload" sortOrder="1" parent="Webkul_CategoryMassUpload::menu" action="categorymassupload/export" resource="Webkul_CategoryMassUpload::export"/>
+
+    </menu>
+</config>

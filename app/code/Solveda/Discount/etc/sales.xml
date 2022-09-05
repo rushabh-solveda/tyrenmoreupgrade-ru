@@ -1,0 +1,7 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Sales:etc/sales.xsd">
+    <section name="quote">
+        <group name="totals">
+            <item name="custom_price_discount" instance="Solveda\Discount\Model\Total\Quote\CustomDiscount" sort_order="500"/>
+        </group>
+    </section>
+</config>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- for simple product(tyre) -->
+        <!-- <referenceBlock name="product.info.addtocart">
+            <block name="product.city.select" 
+                class="Magento\Catalog\Block\Product\View"
+                template="Solveda_ShippingCities::product/city_dropdown.phtml" >
+                <arguments>
+                    <argument name="cities" xsi:type="object">
+                        Solveda\ShippingCities\ViewModel\Cities
+                    </argument>    
+                </arguments>
+            </block>    
+        </referenceBlock> 
+        <move element="product.city.select" destination="product.info.addtocart" before="-"/> -->
+        <!-- for configulable product (battery) -->
+        <!-- <referenceBlock name="product.info.addtocart.additional">
+            <block name="product.city.select.additional" 
+                class="Magento\Catalog\Block\Product\View"
+                template="Solveda_ShippingCities::product/city_dropdown.phtml" >
+                <arguments>
+                    <argument name="cities" xsi:type="object">
+                        Solveda\ShippingCities\ViewModel\Cities
+                    </argument>    
+                </arguments>
+            </block>    
+        </referenceBlock>
+        <move element="product.city.select.additional" destination="product.info.addtocart.additional" before="-"/> -->
+    </body>
+</page>

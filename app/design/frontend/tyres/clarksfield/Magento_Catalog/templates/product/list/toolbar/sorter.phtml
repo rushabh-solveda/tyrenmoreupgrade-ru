@@ -1,0 +1,309 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php 
+         
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+        if($category)
+        {
+        $categoryId= $category->getId();
+        $catId = [3407,3404, 3408, 3409, 3411, 3412, 3413, 3414, 3416, 3439, 3445, 3446, 3447, 3449, 3450, 3452, 3578, 3614, 3856, 4027, 4153, 4154, 4155, 4156, 4157, 4158, 4159, 4160, 4161, 4162, 4163];
+        
+        if($category->getParentId() == 3161){
+                $category_label = 'TYRES';          
+        }
+   
+
+
+          if($category->getLevel() == 3 ){
+                if($category->getParentId() == 4766){
+                        $category_label = 'ALLOYS';          
+                } 
+        }
+
+        if($category->getLevel() == 4 ){
+                if($category->getParentId() == 3405 || $category->getParentId() == 4152){
+                        $category_label = 'BATTERIES';          
+                } else {
+                        $category_label = 'TYRES';
+                }
+        } else if($category->getLevel() == 5 ){
+                if($categoryId == in_array($category->getParentId(), $catId)){
+                        $category_label = 'BATTERIES';          
+                } else {
+                        $category_label = 'TYRES';
+                }
+        }
+        else if($category->getLevel() == 3 ){
+                   if($category->getParentId() == 4766){
+                        $category_label = 'ALLOYS WHEELS';          
+                } else {
+                        $category_label = 'TYRES';
+                }
+
+        }
+        
+        }
+                
+?>
+
+
+
+<?php 
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$request = $objectManager->get('Magento\Framework\App\Action\Context')->getRequest();
+if ($request->getFullActionName() == 'catalog_category_view') {
+  
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');//get current category
+        
+        $subcats = $category->getChildrenCategories();
+       $_helper = $this->helper('Magento\Catalog\Helper\Output');
+       
+       if(count($subcats) >0){ ?>
+        <?php 
+        if($category->getLevel() == 4){
+           $dropdown_label = 'Choose Car';
+           if($category->getParentId() == 42){
+               $dropdown_label = 'Choose Bike';
+                $dropdown_first_option = 'Select Your Bike';           
+           } else {
+                $dropdown_first_option = 'Select Your Car';
+           }
+           
+        } else if($category->getLevel() == 5){
+                $dropdown_label = 'Choose Model';
+                $dropdown_first_option = 'Select Model';
+        } else {
+                $dropdown_label = 'Select Model';
+                $dropdown_first_option = 'Select Model';
+        }
+
+        ?>
+        
+  <?php
+                    $objectManager = \Magento\Framework\App\ObjectManager::getInstance ();
+                    $categorys = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+                    $categoryFactory = $objectManager->get('\Magento\Catalog\Model\CategoryFactory');
+                    $category = $categoryFactory->create()->load($categorys->getId());
+                    $parentCategories = $category->getParentCategories();
+                    $alloychildcatId = array(); 
+                    foreach ($parentCategories as $cat){
+                    $CatgoryId[] = $cat->getId();
+                }
+               ?>
+               <!-- Staging ID - 4524 -->
+               <!-- Prod ID - 4766 -->
+                  <?php 
+		/*
+		if(in_array(4766, $CatgoryId)) { ?>
+	                <div class="steps-to-follow col-md-12">
+	                        <p class="steps-heading">DOORSTEP FITMENT OF <?php echo $category_label?> for your <?php echo $category->getName() ?> in 3 easy steps</p>
+                                <span>1. Choose from our large range of alloy wheels below</span><br/>
+                                <span>2. Place your order</span><br/>
+                                <span>3.Our team will contact you for fixing an appointment for FITMENT</span><br></br>
+	                        <p class="steps-footer">TyresNmore PROMISE -  Convenience of Tyres, Batteries & Alloy Wheels FITTED AT YOUR DOORSTEP</p>
+	                </div> 
+                <?php } else { ?>
+                        <div class="steps-to-follow col-md-12">
+                        <p class="steps-heading">DOORSTEP FITMENT OF <?php echo $category_label?> for your <?php echo $category->getName() ?> in 3 easy steps</p>
+                        <span>1. Choose from our large range of tyres and batteries below</span><br/>
+                        <span>2. Place your order</span><br/>
+                        <span>3.Our team will contact you for fixing an appointment for FITMENT</span><br></br>
+                        <p class="steps-footer">TyresNmore PROMISE -  Convenience of Tyres, Batteries & Alloy Wheels FITTED AT YOUR DOORSTEP</p>
+                        </div> 
+                <?php } 
+		*/		
+		?>
+
+<div class="toolbar-sorter sorter sorter0 cat-model">
+    <label class="sorter-label" for="sorter"><?= $block->escapeHtml(__('Sort By')) ?></label>
+    <select id="sorter" data-role="sorter" class="amfinder-select-wrapper">
+        <?php foreach ($block->getAvailableOrders() as $_key => $_order) :?>
+            <?php if($_key =="low_to_high" || $_key =="high_to_low" || $_key =="name"){ ?>
+            <option value="<?= $block->escapeHtmlAttr($_key) ?>"
+                <?php if ($block->isOrderCurrent($_key)) :?>
+                    selected="selected"
+                <?php endif; ?>
+                >
+                <?= $block->escapeHtml(__($_order)) ?>
+            </option>
+        <?php } ?>
+        <?php endforeach; ?>
+    </select>
+</div>
+
+                <div class="toolbar-sorter sorter col-md-4 col-sm-12 cat-model-car">
+                    
+                    <label class="sorter-label mobile_sorter_label" for="sorter"><?= $block->escapeHtml(__('Step #1')) ?> </label>
+                    <!-- Shifted doorstep content -->
+                    
+                <!-- End -->
+                    <label class="sorter-label sorter-inline hidden-xs" for="selectEl"><?= $block->escapeHtml(__($dropdown_label)) ?> </label>
+                                                   <select id="selectEl"  class="amfinder-select-wrapper">
+                      
+                <option><?=$dropdown_first_option?></option>
+                <?php    foreach ($subcats as $subcat) {
+                            $_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+                            $_outputhelper = $this->helper('Magento\Catalog\Helper\Output');
+                            $subcaturl = $subcat->getUrl();   
+                ?>         
+                <option value="<?php echo $subcaturl;  ?>"><?php echo $subcat->getName(); ?></option>
+                    <?php 
+                }
+                         ?>
+                    </select>
+                </div>
+
+
+                  <!-- shifted from below  -->
+<?php 
+        }
+    } ?>    
+
+
+<style type="text/css">
+ .toolbar-sorter.sorter.sorter1 {
+    margin-right: 18px;
+}
+
+.sorter-back {
+
+    background-color: #fff;
+}
+.sorter-back .sorter-label {
+
+padding-left: 10px;
+
+}
+.sorter-back select {
+background-color: #ffcb2a !important;
+box-shadow: none !important;
+}
+.sorter-inline {
+display: inline-block ;
+
+}
+
+.blob {
+        background: black;
+        border-radius: 50%;
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+        margin-left: 10px;
+        height: 15px;
+        width: 15px;
+        transform: scale(1);
+        animation: pulse-black 2s infinite;
+}
+
+@keyframes pulse-black {
+        0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+        }
+
+        70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+        }
+
+        100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        }
+}
+/*
+.blob.red {
+        background: rgba(255, 82, 82, 1);
+        box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+        animation: pulse-red 2s infinite;
+        display:inline-block;
+}
+@keyframes pulse-red {
+        0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+        }
+        70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+        }
+        100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+        }
+}
+*/
+
+
+
+.blob.red {
+        background: rgba(219, 34, 46, 1);
+        box-shadow: 0 0 0 0 rgba(219, 34, 46, 1);
+        animation: pulse-red 2s infinite;
+        display:inline-block;
+}
+
+@keyframes pulse-red {
+        0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(219, 34, 46, 0.7);
+        }
+
+        70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(219, 34, 46, 0);
+        }
+
+        100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(219, 34, 46, 0);
+        }
+}
+
+
+.blob.green {
+        background: rgba(51, 217, 178, 1);
+        box-shadow: 0 0 0 0 rgba(51, 217, 178, 1);
+        animation: pulse-green 2s infinite;
+                display:inline-block;
+}
+
+@keyframes pulse-green {
+        0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(51, 217, 178, 0.7);
+        }
+
+        70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(51, 217, 178, 0);
+        }
+
+        100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(51, 217, 178, 0);
+        }
+}
+/*    .hello5 {
+    display: none;
+}
+    .hello6 {
+    display: none;
+}*/
+
+
+
+</style>
+<script type="text/javascript">
+    require(["jquery"],function($){
+    $('#selectEl').change(function() {
+  // set the window's location property to the value of the option the user has selected
+  window.location = $(this).val();
+});
+});
+</script>

@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<node>
+	<category>
+		<categories>Men</categories>
+		<store_id>0</store_id>
+		<image>images1.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Men/Clothes</categories>
+		<store_id>0</store_id>
+		<image>images2.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Men/Clothes/T-shirt</categories>
+		<store_id>0</store_id>
+		<image>images3.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Men/Clothes/Pants</categories>
+		<store_id>0</store_id>
+		<image>images4.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Men/Clothes/Pants/Jeans</categories>
+		<store_id>0</store_id>
+		<image>images5.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Men/Clothes/Pants/Trouser</categories>
+		<store_id>0</store_id>
+		<image>images6.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Men/Clothes/Pants/Formal</categories>
+		<store_id>0</store_id>
+		<image>images7.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Women</categories>
+		<store_id>0</store_id>
+		<image>images8.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Women/Clothes</categories>
+		<store_id>0</store_id>
+		<image>images9.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Women/Clothes/T-shirt</categories>
+		<store_id>0</store_id>
+		<image>images10.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Women/Clothes/Pants</categories>
+		<store_id>0</store_id>
+		<image>images11.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Women/Clothes/Pants/Jeans</categories>
+		<store_id>0</store_id>
+		<image>images12.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+	<category>
+		<categories>Women/Clothes/Pants/Trouser</categories>
+		<store_id>0</store_id>
+		<image>images13.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+
+	<category>
+		<categories>Women/Clothes/Pants/Formal</categories>
+		<store_id>0</store_id>
+		<image>images14.png</image>
+		<is_active>1</is_active>
+		<include_in_menu>1</include_in_menu>
+		<is_anchor>1</is_anchor>
+		<meta_title>meta title</meta_title>
+        <meta_keywords>meta keyword</meta_keywords>
+        <meta_description>meta description</meta_description>
+		<products>1,2</products>
+	</category>
+</node>

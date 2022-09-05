@@ -1,0 +1,13 @@
+var config = {
+    map: {
+        '*': {
+            customjs: 'Custom_Js/js/customjs'
+            jquerybootstrap:'Custom_Js/jsjquery.bootstrap'      
+        }
+    },
+    shim: {
+        customjs: {
+            deps: ['jquery']
+        }
+    }
+};

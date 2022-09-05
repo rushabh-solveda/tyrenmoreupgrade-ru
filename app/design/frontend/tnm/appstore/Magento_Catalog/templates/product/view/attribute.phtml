@@ -1,0 +1,34 @@
+
+
+
+
+
+
+<?php
+    
+    
+$blockObj= $block->getLayout()->createBlock('Magento\Catalog\Block\Product\View\Attributes');
+$blockObj->getAdditionalData();
+//print_r($block->getAdditionalData());
+    $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+    $_product = $block->getProduct();
+    $_additional = $blockObj->getAdditionalData();
+   ?>
+    <?php if ( $_additional = $blockObj->getAdditionalData()) :?>
+         <?php foreach ($_additional as $_data) :
+ 
+
+                  if($_data['label'] !== "warranty_period" && $_data['label'] !== "Description" && $_data['label'] !== "specifications" &&  $_data['label'] !== "faq" ){ ?>
+                    <strong class="text_left11"><?= $block->escapeHtml($_data['label']) ?></strong>
+                    <span class="value_right1"><?= /* @noEscape */ $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></span>
+             <?php } ?>
+                    
+            <?php endforeach; ?>
+        <?php endif ?>
+<?php
+echo $this->getLayout()
+->createBlock('Magento\Cms\Block\Block')
+->setBlockId('genuine_and_verified')
+->toHtml();
+?>
+      

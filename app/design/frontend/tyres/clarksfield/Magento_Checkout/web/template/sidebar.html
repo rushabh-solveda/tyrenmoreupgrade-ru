@@ -1,0 +1,52 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<div id="opc-sidebar"
+     data-bind="afterRender:setModalElement, mageInit: {
+    'Magento_Ui/js/modal/modal':{
+        'type': 'custom',
+        'modalClass': 'opc-sidebar opc-summary-wrapper',
+        'wrapperClass': 'checkout-container',
+        'parentModalClass': '_has-modal-custom',
+        'responsive': false,
+        'responsiveClass': 'custom-slide',
+        'overlayClass': 'modal-custom-overlay',
+        'buttons': []
+    }}">
+    
+
+    <!-- ko foreach: getRegion('summary') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+    <!-- <div class="checkout_proceed_button" data-bind="click: submitShipping" data-role="opc-continue" > -->
+        <!-- <span data-bind="text: getProceedText()"></span> -->
+    <!-- </div> -->
+	
+
+
+    <div class="opc-block-shipping-information">
+        <!-- ko foreach: getRegion('shipping-information') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+       
+     <div class="sidebar-shipping-information">
+             <img data-bind="attr: { src: require.toUrl('images/Shipment-Fees.png') }" />
+              <!-- <div class="sidebar-shipping-information heading">Shipment fees -  WHAT YOU GET</div>
+            <div class="sidebar-shipping-information sub-heading">FITMENT OF TYRES AND BATTERIES AT YOUR DOORSTEP</div>
+            <div class="sidebar-shipping-information content"><span class="free-section">+FREE</span> : Wheel balancing for each CAR tyre purchased</div>
+            <div class="sidebar-shipping-information content"><span class="free-section">+FREE</span> : Weights for balancing each CAR tyre purchased</div>
+            <div class="sidebar-shipping-information content"><span class="free-section">+FREE</span> : Wheel alignment (Toe match) on purchase of 3 or more CAR tyres</div>
+            <div class="sidebar-shipping-information content"><span class="free-section">+FREE</span> : Battery health check and Tyre health check for all customers</div>
+            <div class="sidebar-shipping-information content"><span class="free-section">+FREE</span> : Battery terminal clean up on every battery purchase</div>
+            <div class="sidebar-shipping-information footer"><span class="save-section">YOU SAVE</span> at least <span class="save-section">Rs.600</span> on these free services every time YOU buy from us.</div>-->
+
+        </div>
+
+    </div>
+    
+</div>
+

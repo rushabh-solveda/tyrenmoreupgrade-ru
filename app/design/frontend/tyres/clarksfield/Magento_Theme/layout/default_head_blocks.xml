@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <!-- style CSS
+        ============================================ --> 
+	<!-- <link rel="stylesheet" type="text/css" src="https://fonts.googleapis.com/css?family=Overpass:200,300,400,600,700,800,900,display=swap" src_type="url" />    --> 
+        <css  src="css/bootstrap.min.css"/>
+        <css  src="css/style.css"/>
+		<css  src="css/font-awesome.min.css" defer="defer"/>
+		<css  src="css/select2.min.css" defer="defer"/>
+        
+        <remove src="fonts/opensans/light/opensans-300.woff2"/>
+        <remove src="fonts/opensans/regular/opensans-400.woff2"/>
+        <remove src="fonts/opensans/semibold/opensans-600.woff2"/>
+        <remove src="fonts/opensans/bold/opensans-700.woff2"/>
+        <remove src="fonts/Luma-Icons.woff2"/>
+	    <!-- <link rel="stylesheet" type="text/css" src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" src_type="url" /> -->
+	<!--     <font src="fonts/fontawesome-webfont.woff2?v=4.7.0"/> -->
+		<!--  <link rel="preload" as="style" src="fonts/fontawesome-webfont.woff2"/> -->
+    </head>
+</page>

@@ -1,0 +1,68 @@
+<?php
+/**
+ * @category    FishPig
+ * @package     FishPig_WordPress
+ * @author      Ben Tideswell <help@fishpig.co.uk>
+ */
+?>
+<?php
+
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $posts = $objectManager->create('\FishPig\WordPress\Model\ResourceModel\Post\Collection')
+        ->addPostTypeFilter('post')
+        ->addTermFilter('news-trending', 'category')
+        ->setOrderByPostDate()
+        ->addIsViewableFilter()
+        ->setPageSize(5)
+        ->load();
+    ?>
+    <?php if (count($posts) > 0): ?>
+      <div class="block block-blog block-news-trending"><div class="block-title">News and Trending</div>
+        <div class="block-content">
+            <?php foreach($posts as $post): ?>
+              <ul id="news-trending">
+                <li class="item">
+                  <div class="post-img">
+                    <?php if ($image = $post->getFeaturedImage()): ?>
+                        <a href="<?php echo $post->getUrl() ?>">
+                            <img src="<?php echo $image->getAvailableImage() ?>" alt="<?php echo $this->escapeHtml($post->getPostTitle()) ?>" />
+                        </a>
+                    <?php endif; ?>
+                  </div>
+                  <div class="post-title">
+                    <a href="<?php echo $post->getUrl() ?>"><?php echo $this->escapeHtml($post->getPostTitle()) ?></a>
+                  </div>
+                </li>
+              </ul>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endif; ?>
+<?php $posts = $block->getPosts() ?>
+<?php if (count($posts) > 0): ?>
+    <div class="block block-blog block-recent-posts">
+        <?php if ($title = $block->getTitle()): ?>
+            <div class="block-title">
+                <strong><?= $block->escapeHtml(__($title)) ?></strong>
+            </div>
+        <?php endif; ?>
+        <div class="block-content">
+            <ul id="<?= $block->getListId() ?>">
+            <?php foreach ($posts as $post): ?>
+                <li class="item">
+                    <div class="post-img">
+                    <?php if ($image = $post->getFeaturedImage()): ?>
+                        <a href="<?php echo $post->getUrl() ?>">
+                            <img src="<?php echo $image->getAvailableImage() ?>" alt="<?php echo $this->escapeHtml($post->getPostTitle()) ?>" />
+                        </a>
+                    <?php endif; ?>
+                    </div>
+                    <div class="post-title">
+                        <a href="<?= $block->escapeUrl($post->getUrl()) ?>" title="<?= $block->escapeHtml($post->getPostTitle()) ?>"><?= $block->escapeHtml($post->getPostTitle()) ?></a>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+<?php endif; ?>

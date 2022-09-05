@@ -1,0 +1,197 @@
+
+<?php
+
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Catalog\Block\Product\View $block */
+/** @var \Solveda\Brand\ViewModel\Product $productHelper */
+
+//echo "sku :- 99999";
+$productHelper = $block->getProductViewModel();
+$product = $productHelper->getProduct();
+$customAttributes = $productHelper->getCustomAttributes();
+$customOptions = $productHelper->getCustomOptions();
+
+$customprice = 0;
+$currencywithprice = 0;
+$exchangetext = 0;
+foreach ($customOptions as $option) {
+  $values = $option->getValues();
+  if (empty($values)) {
+    continue;
+  }
+  $count = 1;
+
+?>
+  <?php if ($option->getType() == 'checkbox') { ?>
+    <div class="custom-option">
+      <div class="custom-option-wrapper">
+        <!-- <label class="label">
+          <span>
+            <?php //echo $option->getTitle() ?>
+          </span>
+        </label> -->
+        <?php 
+
+        foreach ($values as $value) :  ?>
+          <?php
+          $count++;
+         $customprice = (int)$value->getPrice() + (int)$product->getFinalPrice();
+          $currencywithprice = $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($customprice, true, false); 
+          ?>
+
+          <label class="custom-checkmark" for="option_<?= $value->getOptionId() . '_' . $count ?>">
+            <!-- Second checkbox -->
+            <input type="checkbox" name="second" data-exchange-price="<?php echo $customprice;?>" data-final-price="<?php echo $product->getFinalPrice();?>" data-custom-id="options_<?= $value->getOptionId() . '_' . $count ?>" class="custom-option" id="option_<?= $value->getOptionId() . '_' . $count ?>" value="' . $value->getOptionTypeId() . '">
+            <span class="checkmark"></span>
+
+            <input type="checkbox" name="first" style="display: none;" data-exchange-price="<?php echo $customprice;?>" data-final-price="<?php echo $product->getFinalPrice();?>" data-custom-id="options_<?= $value->getOptionId() . '_' . $count ?>" class="custom-option" id="option_<?= $value->getOptionId() . '_' . $count ?>_noexchange" value="' . $value->getOptionTypeId() . '">
+              <?php $exchangetext = $value->getTitle(); ?></span>
+               <span>Without exchange of old battery</span>
+              <span class="price-2">
+                <?php $price = (int)$product->getFinalPrice(); ?>
+                <?= $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($price, true, false); ?>
+              </span>
+            </label>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  
+
+
+  <?php } ?>
+<?php } ?>
+
+<style>
+  #product-options-wrapper {
+    display: none;
+  }
+
+  .custom-option-wrapper {
+    background: #ffe3e3;
+    position: relative;
+    display: block;
+    color: #333;
+    margin: 18px 0;
+    padding: 15px 15px;
+  }
+
+  .custom-option-wrapper label span {
+    color: #000;
+    font-weight: 700;
+    font-size: 14px;
+  }
+.product-info-main .product-info-price .price-box {
+   width: 100%;
+  } 
+  @media (max-width: 767px) {
+    .box-tocart {
+      margin: 0px !important;
+    }
+  }
+</style>
+
+<?php if($customprice!=0){?>
+  <style>
+  .product-info-price {
+    visibility: hidden;
+  }
+
+</style>
+<script>
+  var timer ='';
+  require(['jquery'], function($) {
+   $(document).ready(function() {
+
+  var $input = $("input[name='first']");
+  function runtests () {
+      console.log("clicked the input");
+      $('.product-info-price').addClass("custominfo");
+  };
+
+  $("input[name='first']").prop( 'checked', true );  
+  $input.bind('change', runtests);
+
+  //$input.change();
+  var i = 0;
+   timer = setInterval(function() {
+ 
+  if ($(".product-info-price").hasClass('custominfo') ){ 
+    i++;
+    if(i>=50)
+    {
+      $('.product-info-price').css("visibility", "visible");
+    }
+    if(i>=75)
+    {
+      //$('.product-info-price').css("visibility", "visible");
+      clearInterval(timer);
+      $input.change();
+    }
+  }
+
+   if (!$("input[name='second']").is(':checked') ){ 
+      $('.product-info-price .price').text("<?=$currencywithprice?>");
+    }
+      $('.product-info-price').addClass("custominfo");
+    }, 1);
+
+    });
+
+$( "<div id='plux-text-battery'></div>" ).insertAfter( ".amount_qty" );
+$("#plux-text-battery").html("<div class='exchange-text'><?=$exchangetext?></div>");
+ 
+      $(window).load(function () {
+      $.each($("input[name='second']:checked"), function(){
+             $('.exchange-text').hide();
+            });
+   });
+     $("input[name='second']").change(function(){
+      clearInterval(timer);
+            $(".exchange-text").hide();
+        if ($(this).is(':checked')) {
+           $("input[name='first']").prop( 'checked', false );
+           $("input[name='first']").change();
+        } else {
+            $(".exchange-text").hide();
+           $("input[name='first']").prop( 'checked', true );
+           $("input[name='first']").change();
+        }
+     });
+
+    $("input[name='first']").on('change', function() {
+      clearInterval(timer);
+    var id = $(this).data('custom-id');
+    var attributeId = '#' + id;
+    if ($(this).is(':checked')) {
+    $("#plux-text-battery").html("<div class='exchange-text'><?=$exchangetext?></div>");
+ 
+      $(attributeId).prop('checked', true);
+      var price = $(this).data('exchange-price');
+    } else {
+      $(attributeId).prop('checked', false);
+      var price = $(this).data('final-price');;
+    }
+
+    $(attributeId).trigger('change');
+    $.ajax({
+      type: "POST",
+      url: "catlog/index/index",
+      data:{'totalprice': price},
+      showLoader: true,
+      success: function(response){
+        $('.emi-block .starting-emitext .text').html(response.pdp);
+        $('#popup-mpdal').html(response.html);
+      }
+    })
+    })
+  })
+</script>
+<?php } ?>
+
+
+
+

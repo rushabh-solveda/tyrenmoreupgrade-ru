@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Solveda_CategoryFAQ::main" title="Category Dynamic FAQs"
+            module="Solveda_CategoryFAQ" sortOrder="10"
+            resource="Solveda_CategoryFAQ::main"/>
+
+        <add id="Solveda_CategoryFAQ::grid" title="FAQs Listing" module="Solveda_CategoryFAQ" sortOrder="10" action="category_faq/index" resource="Solveda_CategoryFAQ::grid" parent="Solveda_CategoryFAQ::main"/>
+
+         <add id="Solveda_CategoryFAQ::addnew" title="Add FAQ" module="Solveda_CategoryFAQ" sortOrder="15" action="category_faq/index/addnew" resource="Solveda_CategoryFAQ::addnew" parent="Solveda_CategoryFAQ::main"/>
+    </menu>
+</config>

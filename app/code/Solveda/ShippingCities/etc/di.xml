@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Plugin for city dropdown options -->
+    <type name="Magento\Checkout\Block\Checkout\LayoutProcessor">
+        <plugin name="cities.select.options" 
+            type="Solveda\ShippingCities\Plugin\Checkout\LayoutProcessor\Cities" 
+            sortOrder="100" />
+    </type>
+
+    <!-- Plugin for display payment method on frontend -->
+    <type name="Magento\Payment\Model\MethodList">
+        <plugin name="disableCashondelivery" 
+            type="Solveda\ShippingCities\Plugin\Model\Method\PaymentMethodAvailable" 
+            sortOrder="5" disabled="false" />
+    </type>
+
+    <!-- Plugin to hide/show shipping carrier title -->
+    <type name="Magento\Quote\Api\ShipmentEstimationInterface">
+        <plugin name="hide_show_shipping_methods" 
+            type="Solveda\ShippingCities\Plugin\Model\Carrier\ShippingEstimation"
+            sortOrder="5" disabled="false" />
+    </type>
+
+    <virtualType name="Solveda\ShippingCities\Model\ResourceModel\City\Grid\Collection" 
+        type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">shipping_cities</argument>
+            <argument name="resourceModel" xsi:type="string">
+                Solveda\ShippingCities\Model\ResourceModel\City
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="city_grid_list_data_source" xsi:type="string">
+                    Solveda\ShippingCities\Model\ResourceModel\City\Grid\Collection
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- save custom city extension attribute value -->
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="insertcustomcityinquote" 
+            type="Solveda\ShippingCities\Plugin\Checkout\Model\ShippingInformationManagement" 
+            sortOrder="11"
+            disabled="false"
+            />
+    </type>
+    <!-- save sales_order table value in sales_order_grid table -->
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="custom_city_id" xsi:type="string">sales_order.custom_city_id</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- change shipping label in order email -->
+    <preference for="Magento\Sales\Block\Order\Totals" type="Solveda\ShippingCities\Block\Order\Totals"/>
+</config>

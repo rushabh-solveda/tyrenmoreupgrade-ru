@@ -1,0 +1,24 @@
+<div class="right_sidebar_wraper">
+					<div class="rsidebar_tittle_1">
+
+						<?php
+
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');//get current category
+   // echo $category->getId();
+   // echo $category->getName();
+?> 
+						
+						<h3>You can check Tyre size of <?php echo $category->getName();
+?> </h3>
+						<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('check_Tyre_size_of_Linea_Tjet_plus')->toHtml();?>
+					</div>
+					<div class="rsidebar_tittle_1 important_sec">
+						<h3>Important</h3>
+						<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('Important')->toHtml();?>
+					</div>
+					<!-- <div class="bestbike_tyr_sec">
+						<h3>Best Bike Tyre Brands</h3>
+						<?php //echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('Best_Bike_Tyre')->toHtml();?>
+					</div> -->
+				</div>

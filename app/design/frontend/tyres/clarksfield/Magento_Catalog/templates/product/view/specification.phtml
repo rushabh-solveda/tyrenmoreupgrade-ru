@@ -1,0 +1,63 @@
+<?php
+$blockObj= $block->getLayout()->createBlock('Magento\Catalog\Block\Product\View\Attributes');
+$blockObj->getAdditionalData();
+    $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+    $_product = $block->getProduct();
+    $_additional = $blockObj->getAdditionalData();
+   ?>
+    <?php if ( $_additional = $blockObj->getAdditionalData()) :?>
+         <?php foreach ($_additional as $_data) :
+                  if($_data['label'] == "specifications"){ ?>
+                  <div class="attr-section">
+                    <span class="speci_val"><?= /* @noEscape */ $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></span>
+                  </div>
+             <?php } ?>
+                    
+            <?php endforeach; ?>
+        <?php endif ?>
+
+<div id="popup-modal" style="display:none;">
+    <?php echo $this->getLayout()->createBlock("FME\Quickrfq\Block\Postform")->setTemplate("FME_Quickrfq::postform.phtml")->toHtml();?>
+</div>
+
+
+<!-- call enquiry form  -->
+
+<script type="text/javascript">
+require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function(
+            $,
+            modal
+        ) {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: 'Enquire Now',
+                buttons: [{
+                    text: $.mage.__('Continue'),
+                    class: '',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }],
+                opened: function($Event) {
+                    $(".modal-footer").hide();
+                }
+            };
+            if($('#popup-modal').length) {
+                var popup = modal(options, $('#popup-modal'));
+            }
+            if($("#click-me").length) {
+                $("#click-me").on('click',function(){
+                    $("#popup-modal").modal("openModal");
+                });
+            }
+
+        }
+    );
+</script>

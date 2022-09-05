@@ -1,0 +1,418 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+                                                        <!-- increeemenr dexreement page  -->
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('Buy Now'); ?>
+<input type="hidden" id="pnames" value="<?php echo $_product->getName(); ?>">
+<?php $enquire=$_product->getAttributeText('enquire_now');
+$getQty=$_product->getExtensionAttributes()->getStockItem()->getQty();
+if($enquire=='Yes' || $getQty==0)
+{
+?>
+<div class="box-tocart">
+<div>
+  <a class="enquire_nowbutton" id="click-me">Enquire Now</a>
+</div>
+
+
+
+<div style="
+    background-color: #eaecf1;
+    padding: 20px 15px 35px 15px !important;
+">
+
+<div style="
+    width: 100%;
+    margin-left: 0px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+"><div><span style="font-size: large;">Price includes&nbsp; GST</span></div>
+<div style="
+    padding-top: 15px;
+">Customers in Bangalore, Pune, Delhi NCR , Hyderabad will also get :<br><br></div>
+<div style="
+    padding-bottom: 15px;
+    text-transform: capitalize;
+"><strong style=""><span style="color: #d61d28;/* color: #fcc624; */">FREE </span>Wheel balancing<sup>*</sup>  <br>You save <span style="/* color: #d61d28; *//* color: #fcc624; */">Rs.150 </span> per tyre !</strong></div>
+<div style="
+    padding-bottom: 15px;
+    text-transform: capitalize;
+"><strong>Tyre installation at your doorstep.&nbsp;</strong></div>
+<div style="
+    /* padding-bottom: 15px; */
+"><span style=" font-weight:900; color: #d61d28;/* color: #fcc624; */">FREE </span> 4 point Tyre check up for :<br><br></div>
+<div>
+<ul style="
+    list-style: disc;
+    font-size: 15px;
+    padding-left: 20px;
+">
+<li style="
+    list-style: disc;
+">Air pressure</li>
+<li style="
+    list-style: disc;
+">Uneven wear and tear</li>
+<li style="
+    list-style: disc;
+">Tyre Side Wall check</li>
+<li style="
+    list-style: disc;
+">Tyre Tread Depth test</li>
+</ul>
+
+</div>
+<p style="
+    margin-top: 33px;
+    font-size: 10px;
+">* For Car Customers only</p>
+<!--</div>
+</div>-->
+
+
+<div class="visible-xs">
+<div class="seq_img"><img src="/media/wysiwyg/seq.jpg" alt=""></div>
+<div class="secure_text">Warranty : Our team will help you to register the product warranty as per T&C of the tyre manufacturer.</div>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+<?php
+}
+else
+{
+?>
+<?php if ($_product->isSaleable()) :?>
+<div class="box-tocart">
+<?php
+$prodCatIds = $_product->getCategoryIds();
+$tyreCatId=46;
+
+if(in_array($tyreCatId,$prodCatIds)): ?>
+<div class="fieldset" style=" background-color: grey width: 100%; margin: 10px 0px; font-size: 12px; font-weight: 600; text-align: center;">
+	<h4><b><marquee>BUY MORE GET MORE!</marquee></b></h4>
+	<p>Discount available on buying 4 car tyres<br></p>
+	<font color="red">- Rs 400 off on 4 tyres of 12 to 15 inch wheel size<br>
+	- Rs 600 off on 4 tyres of 16 to 20 inch wheel size<br>
+	</font>
+</div>
+<?php endif; ?>
+
+<div class="fieldset">
+        <?php if ($block->shouldRenderQuantity()) :?>
+        <div class="field qty">
+
+  <div class="quntity_sect">
+            <form class="fqty">
+              <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value">-</div>
+
+                 <input type="number"
+                       name="qty"
+                       id="number"
+                       min="0"
+                       value="1"
+
+                       class="input-text qty"
+                       data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                       />
+              <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value">+</div>
+            </form>
+          </div>
+
+
+        </div>
+        <?php endif; ?>
+        <div class="actions">
+            <button type="submit"
+                    title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                    class="action primary tocart"
+                    id="product-addtocart-button" disabled>
+                <span><?= $block->escapeHtml($buttonTitle) ?></span>
+            </button>
+            <?= $block->getChildHtml('', true) ?>
+        </div>
+        <?php if($_product->getOfferDescription()){ ?>
+        <div class="pdp-offer-description">
+            <?= $_product->getOfferDescription(); ?>
+        </div>
+        <?php } ?>
+    </div>
+
+
+
+
+<div style="
+    background-color: #eaecf1;
+    padding: 20px 15px 35px 15px !important;
+">
+
+<div style="
+    width: 100%;
+    margin-left: 0px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+">
+<!-- <div><span style="font-size: large;">Price includes&nbsp; GST</span></div>
+<div style="
+    padding-top: 15px;
+">Customers in Bangalore, Pune Delhi NCR , Hyderabad will also get :<br><br></div>
+<div style="
+    padding-bottom: 15px;
+    text-transform: capitalize;
+"><strong style=""><span style="color: #d61d28;/* color: #fcc624; */">FREE </span>Wheel balancing<sup>*</sup>  <br>You save <span style="/* color: #d61d28; *//* color: #fcc624; */">Rs.150 </span> per tyre !</strong></div>
+<div style="
+    padding-bottom: 15px;
+    text-transform: capitalize;
+"><strong>Tyre installation at your doorstep.&nbsp;</strong></div>
+<div style="
+    /* padding-bottom: 15px; */
+"><span style=" font-weight:900; color: #d61d28;/* color: #fcc624; */">FREE </span> 4 point Tyre check up for :<br><br></div>
+<div>
+<ul style="
+    list-style: disc;
+    font-size: 15px;
+    padding-left: 20px;
+">
+<li style="
+    list-style: disc;
+">Air pressure</li>
+<li style="
+    list-style: disc;
+">Uneven wear and tear</li>
+<li style="
+    list-style: disc;
+">Tyre Side Wall check</li>
+<li style="
+    list-style: disc;
+">Tyre Tread Depth test</li>
+</ul>
+
+</div>
+<p style="
+    margin-top: 33px;
+    font-size: 10px;
+">* For Car Customers only</p>
+-->
+<!--</div>
+</div>-->
+
+
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');
+$attributeSet = $objectManager->create('Magento\Eav\Api\AttributeSetRepositoryInterface');
+$attributeSetRepository = $attributeSet->get($product->getAttributeSetId());
+$attribute_set_name = $attributeSetRepository->getAttributeSetName();
+// if ($ids[2]==3386){
+    if (0 == strcmp($attribute_set_name, 'Battery')) {
+        echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('below-add-to-cart-battery')->toHtml();
+    } elseif (0 == strcmp($attribute_set_name, 'Alloy')) {
+        echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('below-add-to-cart-alloy')->toHtml();
+    } else {
+        echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('below-add-to-cart')->toHtml();
+    }
+?>
+
+</div>
+</div>
+</div>
+<?php endif; }?>
+<script>
+function increaseValue() {
+  var value = parseInt(document.getElementById('number').value, 10);
+  value = isNaN(value) ? 0 : value;
+  value++;
+  document.getElementById('number').value = value;
+}
+
+function decreaseValue() {
+  var value = parseInt(document.getElementById('number').value, 10);
+  value = isNaN(value) ? 0 : value;
+  value < 1 ? value = 1 : '';
+  value--;
+  document.getElementById('number').value = value;
+}
+
+</script>
+ <script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    require(['jquery', 'jquery/ui'], function($){
+        $("input:radio.admin__control-radio:first").attr('checked', true);
+        $(document).ready(function() {
+            var pname=$("#pnames").val();
+            $("#project_title").val(pname);
+            $('#buy-now').insertBefore('#product-addtocart-button');
+        });
+        // $('.product-add-form').prependTo('.sidebar');
+
+        /*moblie js*/
+        // $(document).ready(function(){
+        //     if ($(window).width() <= 767) {
+        //         $('.P_name').after($('div.custom-option'))
+        //         $( ".p_price" ).append( $( ".product-add-form" ) );
+        //         $( ".product-info-price" ).prepend( $( ".p_tittle" ) );
+        //         $( ".sidebar.sidebar-main" ).append( $( ".secure_payment_sec" ) );
+        //         $( ".P_name" ).append( $( ".product-reviews-summary" ) );
+        //     }
+        // });
+    /*close mobile js*/
+    });
+</script>
+
+<script>
+//define('jquery', function($) {
+    require([
+        'jquery'
+    ], function ($) {
+        $(document).ready(function(){
+    var priceDomain = "";
+            let removeSpaceFromMainPrice = function (price) {
+            priceDomain = ""+price.charAt(0);
+            return price.substr(1);
+    }
+    let removeSpaceFromCustomPrice = function (price) {
+        return price.substr(3);
+    }
+    let generateText = function (price) {
+            return priceDomain+" "+parseFloat(price).toFixed(2);
+    }
+        $.fn.changePrice = function(){
+            try{
+                const theElements = document.getElementsByClassName("price-notice");
+                const productPricewithcomma = removeSpaceFromMainPrice(document.getElementsByClassName("price")[0].innerText);
+                const productPricee = productPricewithcomma.replace(/,/g, '');
+                const productPrice = parseFloat(productPricee);
+                for(let i=0;i<theElements.length;i++){
+                    theElements[i].innerText = generateText((parseFloat(removeSpaceFromCustomPrice(theElements[i].innerText)) + productPrice));
+                }
+                      elementing = $('.options-list').find('span:first');
+        elementing.append('<span class="price-notice">₹'+productPricee+' </span>');
+    a = $('.options-list').find('input:first');
+        a.prop("checked", true);
+
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+                   });
+//    let removeSpaceFromMainPrice = function (price) {
+//            priceDomain = ""+price.charAt(0);
+//            return price.substr(1);
+//    }
+//    let removeSpaceFromCustomPrice = function (price) {
+//        return price.substr(3);
+//    }
+//    let generateText = function (price) {
+//            return priceDomain+" "+parseFloat(price).toFixed(2);
+//    }
+    }
+    //(jQuery)
+);
+
+    require([
+        'jquery'
+    ], function ($) {
+	    $(document).ready(function(){
+        // $('.product-info-main').changePrice();
+    });
+    }); 
+require([ "jquery" ], function($){
+    if (window.matchMedia('(max-width: 767px)').matches) {
+       $(".product-social-links").prepend($(".product-add-form"));
+    }
+ });
+</script>
+<?php
+//    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+//    $category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+//    $path = $category->getPath();
+//    $ids = explode('/', $path);
+//    $attributeSetModel = Mage::getModel("eav/entity_attribute_set");
+//$attributeSetModel->load($product->getAttributeSetId());
+//$attributeSetName  = $attributeSetModel->getAttributeSetName();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');
+$attributeSet = $objectManager->create('Magento\Eav\Api\AttributeSetRepositoryInterface');
+$attributeSetRepository = $attributeSet->get($product->getAttributeSetId());
+$attribute_set_name = $attributeSetRepository->getAttributeSetName();
+?>
+<?php if (0 == strcmp($attribute_set_name, 'Alloy')) { ?>
+<style>
+ .secure_payment_sec{
+    display: none;
+ }
+</style>
+<?php } ?>
+<div class="secure_payment_sec hidden-xs">
+<?php     
+ if (0 == strcmp($attribute_set_name, 'Battery')) {
+    echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('secure_payments-battery')->toHtml();
+?>
+<style>
+#test
+{
+display:none;
+}
+#tab-label-test{
+display:none;
+}
+</style>
+<?php
+} else {
+    echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('secure_payments')->toHtml();
+}
+?>
+
+</div>
+
+<?php
+
+ if(0 == strcmp($attribute_set_name, 'Battery')) {
+echo $this->getLayout()
+->createBlock('Magento\Cms\Block\Block')
+->setBlockId('battery-page-css')
+->toHtml();
+
+        }
+
+
+?>
+<!-- <script type="text/javascript">
+    require(['jquery'],function($){
+        $(document).ready(function(){
+            // window.onload = function () { alert("It's loaded!") }
+              $("#product-addtocart-button").on('click', function(){
+            // alert("vfdvfdv");
+           //   $('#buy-now').addClass("button--loading");
+           //   });
+           $('#product-addtocart-button').trigger('processStart');
+
+            setTimeout(function(){
+            $('.loading-mask').remove(); 
+         }, 3000);
+            // window.onload = function () { alert("It's loaded!") }
+          
+           });
+                 
+          });});
+       </script> -->

@@ -1,0 +1,216 @@
+ <?php echo $this->getLayout()
+                                ->createBlock('Magento\Cms\Block\Block')
+                                ->setBlockId('select_city')
+                                ->toHtml();
+                                ?>
+
+<div class="container-fluid">
+  <div class="brand_section_last">
+    <div class="container">
+      <div class="row">
+       <div class="col-md-12">
+<div class="brand_last_inner">
+<h3>You can buy tyres online for the following  brand </h3>
+<ul>
+ <?php  $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$catId = 376; //Parent Category ID
+$subCategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subCats = $subCategory->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php
+foreach ($subCats as $subcat) {
+  ?><?php
+$_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+$subcaturl = $subcat->getUrl();
+?>
+<li><a href="<?php echo $subcaturl ;?>" title="<?php echo $subcat->getName(); ?>"><?php echo $subcat->getName(); ?></a></li>
+
+<?php }?>
+</ul>
+</div>
+<div class="brand_last_inner">
+<h3>Check tyre prices and tyre size for your car from the list below </h3>
+<ul>
+ <?php  $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$catId = 46; //Parent Category ID
+$subCategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subCats = $subCategory->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php
+foreach ($subCats as $subcat) {
+  ?><?php
+$_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+$subcaturl = $subcat->getUrl();
+?>
+<li><a href="<?php echo $subcaturl ;?>" title="<?php echo $subcat->getName(); ?>"><?php echo $subcat->getName(); ?></a></li>
+
+<?php }?>
+</ul>
+</div>
+<div class="brand_last_inner">
+<h3>Check tyre prices and tyre size for your bike from the list below </h3>
+<ul>
+ <?php  $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$catId = 42; //Parent Category ID
+$subCategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subCats = $subCategory->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php
+foreach ($subCats as $subcat) {
+  ?><?php
+$_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+$subcaturl = $subcat->getUrl();
+?>
+<li><a href="<?php echo $subcaturl ;?>" title="<?php echo $subcat->getName(); ?>"><?php echo $subcat->getName(); ?></a></li>
+
+<?php }?>
+</ul>
+</div>
+        
+      </div>
+    </div>  
+  </div>
+</div>
+<!-- ==============================footer===================== -->
+<div class="container-fluid">
+  <footer class="page-footer">
+   <div class="footer">
+      <div class="footer-middle">
+         <div class="container">
+            <div class="row">
+               
+               <?php echo $this->getLayout()
+                              ->createBlock('Magento\Cms\Block\Block')
+                              ->setBlockId('footer_top_1')
+                              ->toHtml();
+                              ?>
+               
+               <?php echo $this->getLayout()
+                              ->createBlock('Magento\Cms\Block\Block')
+                              ->setBlockId('footer_top_2')
+                              ->toHtml();
+                              ?>
+                              <div class="col-sm-4">
+<div class="block about-us-footer foot_left_3">
+<div class="block-title"><strong>   </strong></div>
+<div class="block-content">
+<ul class="links">
+  <li><a href ="https://tyres.clarksfield.com/about">About us</a></li>
+  <li><a href ="https://https://tyres.clarksfield.com/board-of-directors-and-advisorstyres.clarksfield.com/our-team">Board of Directors</a></li>
+  <li><a href ="https://tyres.clarksfield.com/our-team">Our Team</a></li>
+  <li><a href ="https://tyres.clarksfield.com/order">Orders And Refunds</a></li>
+  <li><a href ="https://tyres.clarksfield.com/terms">Terms And Conditions</a></li>
+   <li><a href ="https://tyres.clarksfield.com/terms">Privacy And Policy</a></li>
+
+ <?php
+ /*
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$catId = 53; //Parent Category ID
+$subCategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subCats = $subCategory->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php
+foreach ($subCats as $subcat) {
+$_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+$subcaturl = $subcat->getUrl();
+?>
+<li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="<?php echo $subcaturl ;?>" title="<?php echo $subcat->getName(); ?>"><?php echo $subcat->getName(); ?></a></li>
+<?php }*/ ?>
+</ul>
+<p>Tyresnmore Online pvt. Ltd. reserves the right to ask for partial or full advance payment for the orders being placed.</p>
+</div>
+</div>
+</div>
+</div>      
+      <b>
+         <b>
+            <div class="footer-bottom">
+              <?php echo $this->getLayout()
+                              ->createBlock('Magento\Cms\Block\Block')
+                              ->setBlockId('Copyright ')
+                              ->toHtml();
+                              ?>
+              </div>
+            </b>
+          </b>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+</div>
+<script>
+	const accordionItems = document.querySelectorAll(".accordion-item-header");
+
+accordionItems.forEach(accordionItem => {
+  accordionItem.addEventListener("click", event => {
+
+    accordionItem.classList.toggle("active");
+    const accordionItemBody = accordionItem.nextElementSibling;
+    if(accordionItem.classList.contains("active")) {
+      accordionItemBody.style.maxHeight = accordionItemBody.scrollHeight + "px";
+    }
+    else {
+      accordionItemBody.style.maxHeight = 0;
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+require(['jquery'], function($) {
+	// Polyfill for older browsers (just in case)
+    if (typeof sessionStorage !== "object" ||
+        typeof sessionStorage.setItem !== "function" ||
+        typeof sessionStorage.getItem !== "function" ||
+        typeof sessionStorage.removeItem !== "function") {
+		window.sessionStorage = function() {
+            return {
+                setItem: function(key, value) {
+                    document.cookie = key + "=" + value;
+                },
+                getItem: function(key) {
+                    var m = document.cookie.split(";");
+                    for (var i = 0; i < m.length; m++) {
+                        var g = m[i].split("=");
+                        if (g[0] === key) {
+                            return g[1];
+                        }
+                    }
+                    return undefined;
+                },
+                removeItem: function(key) {
+                    document.cookie = key + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                }
+            };
+        };
+    }
+
+	// Check if we need to show the modal (popup)
+	var store = sessionStorage.getItem("storefront");
+
+	if (store === null || store === undefined) {
+		// We're ready to show modal here
+		var modal = $('[data-modal="city"]');
+        modal.css("display", "block");
+        modal.addClass("in");
+	}
+
+    // Define data-store-uri attribute on your link to activate
+    $("[data-store-uri]").on("click", function(e) {
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch {}
+
+        // Define data-href attribute on your link
+        var uri = $(this).data("href");
+        sessionStorage.setItem("storefront", uri);
+		window.location.href = uri;
+        return false;
+    });});
+</script>

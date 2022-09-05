@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="category_dynamic_faq" resource="default" engine="innodb" comment="Category Dynamic FAQ">
+        <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment=""/>
+        <column xsi:type="text" name="question" nullable="false" comment="Question"/>
+        <column xsi:type="text" name="answer" nullable="false" comment="Answer"/>
+        <!-- <column xsi:type="varchar" length="255" name="category_attribute" comment="Category Attribute"/> -->
+        <column xsi:type="varchar" length="255" name="keyword" comment="Keyword"/>
+        <column xsi:type="boolean" name="status" default="0" comment="Status"/>
+        <column xsi:type="timestamp" name="created_at" comment="" default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="timestamp" name="updated_at" comment="" default="CURRENT_TIMESTAMP"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>

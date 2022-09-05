@@ -1,0 +1,304 @@
+/**
+ *
+ **/
+img.alignright { float: right; margin: 0 0 1em 1em; }
+img.alignleft { float: left; margin: 0 1em 1em 0; }
+img.aligncenter { display: block; margin-left: auto; margin-right: auto; }
+.alignright { float: right; }
+.alignleft { float: left; }
+.aligncenter { display: block; margin-left: auto; margin-right: auto; }
+
+ol.post-list, 
+ol.comment-list  { list-style: none; padding: 0; margin: 0; }
+
+/* General Post Styles */
+.post-list li:after { content: ' '; clear: both; display: block; }
+.post-list li { /*display: inline-block; width: 48%; vertical-align: top;*/ }
+.post-entry { margin: 0 0 20px; }
+.post-image { margin: 0 0 10px; overflow: hidden; }
+.post-image a { display: inline-block; }
+.post-list .post-image { max-height: 300px; }
+.post-meta { clear: both; margin: 0 0 20px; text-align: left; }
+.post-meta .post-meta-item { display: inline-block; margin-right: 10px; }
+.post-readmore { margin-top: 10px; }
+.post-entry iframe { max-width: 100%; }
+
+/* Comments */
+.comment-list-item { margin: 0 0 20px; }
+.comment-list.children { margin-top: 20px; padding-left: 30px; }
+.comment-image { float: left; margin: 0 10px 10px 0; }
+.comment-author { font-weight: bold; display: block; }
+.comment-entry { clear: both; margin: 0 0 20px; }
+
+/* Widgets */
+.wp-sidebar { position: relative; } /* Fixes Porto issue where sidebar links aren't clickable */
+.block-blog .block-title { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #c6c6c6; }
+.block-blog .block-title > strong { font-size: 18px; font-weight: 300; }
+.block-blog ul, .block-blog ol { list-style: none; margin: 0; padding: 0; }
+.block-blog-cloud li { display: inline; margin: 0; }
+.block-blog-categories ul.level1 { margin-top: 1rem; }
+
+.shortcode-product {}
+.shortcode-product .products { text-align: left; list-style: none; }
+.shortcode-product .products > li { display: inline-block; width: 24%; text-align: center; }
+
+/* Post List Grid */
+.post-list.grid {}
+.post-list.grid li { display: inline-block; width: 48%; vertical-align: top; margin-right: 1%; }
+
+/*<!-- ---------------------- CSS Changes by Vaibhav ---------------------------------- -->*/
+
+
+.page-layout-2columns-left .column.main {
+    float: left !important;
+    width: 70.166667% !important;
+}
+.page-layout-2columns-left .sidebar-main {
+    float: right !important;
+    width: 25.833333% !important;
+}
+.sidebar-main .block-content .blog-search button.button {
+    margin-left: 5px;
+    padding: 4px 14px;
+    border: 1px solid #337ab7;
+    background-color: #337ab7;
+    color: #fff;
+    box-shadow: none;
+}
+.sidebar-main .block-content .blog-search {
+    display: flex;
+}
+.is-blog .mp-banner-slider {
+    min-height: 0px;
+}
+.blog-heading ul {
+    padding-left: 0px;
+}
+.wp-sidebar .block-content ul li:before {
+    content: ''
+}
+.wp-sidebar .block-content .post-img {
+    float: left;
+    width: 30%;
+}
+.wp-sidebar .block-content .post-title {
+    float: right;
+    width: 68%;
+    padding-left: 10px;
+}
+.wp-sidebar .block-content .item {
+    line-height: 23px;
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+.blog-heading .owl-dots .owl-dot {
+    display: inline-block;
+    zoom: 1;
+}
+.blog-heading .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+    background: #869791;
+}
+.blog-heading .owl-dots .owl-dot span {
+    width: 10px;
+    height: 10px;
+    margin: 5px 7px;
+    display: block;
+    -webkit-backface-visibility: visible;
+    transition: opacity 200ms ease;
+    border-radius: 30px;
+    background: #d6d6d6;
+}
+.blog-heading .owl-dots {
+    text-align: center;
+}
+.blog-heading .owl-nav [class*='owl-'] {
+    top: 50%;
+    margin: 5px;
+    box-shadow: none;
+}
+.blog-heading .owl-nav {
+    position: absolute;
+    top: -50px;
+    right: 0px;
+}
+.post-view .comments-wrapper {
+    display: none;
+}
+.wp-sidebar .block-content .post-title a {
+    font-weight: 700;
+    color: #1abc9c !important;
+}
+.blog-heading ul li a {
+  color: #1abc9c !important;
+  font-weight: 700;
+}
+#blog-slider .owl-dots .owl-dot {
+    display: inline-block;
+    zoom: 1;
+}
+#blog-slider .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+    background: #000;
+}
+#blog-slider .owl-dots .owl-dot span {
+    width: 10px;
+    height: 10px;
+    margin: 5px 7px;
+    display: block;
+    -webkit-backface-visibility: visible;
+    transition: opacity 200ms ease;
+    border-radius: 30px;
+    background: #fff;
+}
+#blog-slider .owl-dots {
+    position: absolute;
+    bottom: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#blog-slider .post-title {
+    position: absolute;
+    bottom: 10%;
+}
+#blog-slider .post-date {
+    position: absolute;
+    top: 75%;
+    color: #fff;
+    margin-left: 40px;
+    background: #0404046b;
+    padding: 5px;
+}
+#blog-slider .owl-nav {
+	position: absolute;
+	bottom: 70%;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+#blog-slider .post-title a {
+    color: #fff;
+    font-size: 19px;
+    font-weight: 700;
+    background: #0404046b;
+    padding: 7px;
+}
+#blog-slider .owl-nav [class*='owl-'] {
+    background-color: #fff;
+}
+.blog-heading .post-list li .post-img {
+    margin-bottom: 10px;
+}
+.blog-heading .owl-nav .owl-prev::before {
+    font-size: 25px;
+}
+.blog-heading .owl-nav .owl-next::before {
+    font-size: 25px;
+}
+.wordpress-frontpage .amount_tittle h1.pdp-title span.base {
+    display: none;    
+}
+.block-blog.block-recent-posts .block-title > strong {
+    font-size: 22px;
+    font-weight: 600;
+}
+.block-blog.block-news-trending .block-title {
+    font-size: 22px; 
+    font-weight: 600;
+}
+.sidebar-main .wp-sidebar .block-blog.block-blog-search {
+    margin-bottom: 30px;
+}
+.wordpress-user-view .post-list-wrapper .post-list .item:nth-child(1) {
+    display: none;
+}
+.wordpress-user-view .post-list-wrapper .post-list .item .col-md-7 .post-list-item h2 {
+    margin-top: 0px;
+}
+.is-blog .page-title-wrapper .amount_tittle {
+    padding: 1px 0px 5px 0px;
+}
+.wordpress-post-view .breadcrumbs .items .item.post{
+    display: none;
+}
+.wordpress-post-view .breadcrumbs .items .item.blog:after {
+    display: none;
+}
+.sidebar-main .wp-sidebar .block-blog.block-blog-search .block-title {
+    display: none;
+}
+div#blog-slider .blog-page-slider .post-img {
+    max-height: 434px;
+}
+
+@media (max-width:767px) {
+    .page-layout-2columns-left .column.main {
+       width: 100% !important;
+    }
+    .page-layout-2columns-left .sidebar-main {
+       width: 100% !important;
+    }
+    .blog-heading .owl-nav [class*='owl-'] {
+        height: 20px;
+        width: 20px;
+        margin: 10px;
+    }
+    .blog-heading .owl-nav {
+        display: flex;
+    }
+    .blog-heading .owl-nav .owl-prev::before {
+        content: "\003C";
+        font-size: 25px;
+        padding: 7px;
+        line-height: 40px;
+    }
+    .blog-heading .owl-nav .owl-next::before {
+        content: "\003E";
+        font-size: 25px;
+        padding: 7px;
+        line-height: 40px;
+    }
+    #blog-slider .owl-nav .owl-prev::before {
+        content: "\003C";
+        font-size: 25px;
+        padding: 7px;
+        line-height: 40px;
+    }
+    #blog-slider .owl-nav .owl-next::before {
+        content: "\003E";
+        font-size: 25px;
+        padding: 7px;
+        line-height: 40px;
+    }
+    #blog-slider .owl-nav { 
+        bottom: 40%;
+    }
+    #blog-slider .post-title {
+        top: 70%;
+        margin: 0px;
+    }
+    #blog-slider .post-date {
+        top: 60%;
+    }
+    .is-blog .page-title-wrapper {
+        display: block;
+    }
+    .is-blog .amount_tittle {
+        padding: 0px 0px 5px 0px;
+    }
+    div#blog-slider .blog-page-slider .post-img {
+        max-height: 234px;
+    }
+    #blog-slider .post-title a {
+        font-size: 14px;
+    }
+    
+}
+
+@media (min-width:767px) {
+    .blog-heading .owl-nav .owl-prev {
+       margin-left: -100px;
+    }
+    .blog-heading ul#customer-speak li {
+       padding-bottom: 20px;
+    }
+}

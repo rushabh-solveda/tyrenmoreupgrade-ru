@@ -1,0 +1,1981 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+use Magento\Framework\App\Action\Action;
+
+?>
+<?php
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
+/**
+ * Product list template
+ *
+ * @var $block \Magento\Catalog\Block\Product\ListProduct
+ */
+?>
+
+
+
+<?php
+$obj = \Magento\Framework\App\ObjectManager::getInstance();
+$_productCollection = $block->getLoadedProductCollection();
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+$_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+$current_category_id_path=0;
+
+$_productCollectionSerach=$_productCollection;
+
+$buttonTitle = __('View details');
+// $buttonTitle = __('Buy Now');
+
+//$collectionsUrl = ltrim($_SERVER['REQUEST_URI'],"/");
+
+//$collectionsUrl1 = ltrim($collectionsUrl,"/");
+//$url=explode("/",$collectionsUrl1);
+
+// $_category_config = $this->helper('Smartwave\Porto\Helper\Data')->getConfig('porto_settings/category');
+
+// $cateinstance = $obj->create('Magento\Catalog\Model\CategoryFactory');
+// $cateid = '379';
+// $_productCollection_category = $cateinstance->create()->load($cateid)->getProductCollection()->addAttributeToSelect('*');
+
+
+$page_number=0;
+if(isset($_GET['p'])){
+$page_number =  $_GET['p']-1;
+}
+$productData=array();
+$product_count=0;
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+$product_1=array();
+$category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+
+
+
+$current_category_id='';
+$carTyreCatIds = [];
+$carTyreCategoryId = 46;
+if(isset($category))
+
+{
+	    $path = $category->getPath();
+        $carTyreCatIds = explode('/', $path);
+        array_pop($carTyreCatIds);
+	    $ids = explode('/', $path);
+		$current_category_id_path= $ids[2];
+	    $ids_size= count($ids);
+	    if($ids_size > 3 ) {
+	                $vehicle_type = $ids[3];
+}
+     $current_category_id=$category->getId();
+    // print_r($category->getName());
+
+ //print_r($current_category_id);
+  //die();
+
+$categoryId= $category->getId();
+/*
+$categoryFactory = $objectManager->get('\Magento\Catalog\Model\CategoryFactory');
+$category = $categoryFactory->create()->load($categoryId);
+$_productCollection = $category->getProductCollection()->addAttributeToSelect('*');
+*/
+
+//  foreach ($_productCollection as $_product) {
+
+//                  $array=array();
+//                 foreach($_product->getCategoryIds() as $c_ids){
+//                 array_push($array,$c_ids);
+//                 }
+//                 if(in_array("379",$array,TRUE)){
+//                  array_push($product_1,$_product);
+
+//                 }
+// }
+
+
+//  foreach ($_productCollection as $_product) {
+//                  $array=array();
+//                 foreach($_product->getCategoryIds() as $c_ids){
+//                 array_push($array,$c_ids);
+//                 }
+//                 if(!in_array("379",$array,TRUE)){
+//                  array_push($product_1,$_product);
+
+//                 }
+// }
+// echo '<pre>';
+/*
+foreach ($_productCollection as $_product) {
+    $array = [];
+    foreach($_product->getCategoryIds() as $c_ids){
+        array_push($array,$c_ids);
+    }
+    // print_r($array);
+    if(isset($_GET['category_id']) && !empty($_GET['category_id'])) {
+        if(in_array($_GET['category_id'], $array)){
+            array_push($product_1,$_product);
+        }
+    } else {
+        array_push($product_1,$_product);
+    }
+}
+$pagedArray = array_chunk($product_1, 9, true);
+
+*/
+
+
+}
+
+
+    /*
+    try {
+        $_productCollection_new = null;
+        if(isset($category)){
+            if($pagedArray && count($pagedArray)) {
+                $_productCollection_new = $pagedArray[$page_number];            
+            }
+        }elseif(!isset($category)){
+             $_productCollection_new = $_productCollectionSerach;
+
+        }else{
+             $_productCollection_new=$_productCollection;
+        }
+
+    } catch (Exception $e) {
+        $_productCollection_new=$_productCollection;
+        
+    }*/
+    
+    $_productCollection_new=$_productCollection;
+
+    $brands_category_id=42;
+
+  /*  if($current_category_id== 46){
+    $brands_category_id=46;
+    }
+    elseif($current_category_id== 42){
+
+    $brands_category_id=42;
+
+    }else{
+            if(isset($vehicle_type)){
+                    if($vehicle_type=376){
+    $brands_category_id=46;
+
+                    }else{
+         $brands_category_id=$vehicle_type;
+            }
+            } else{
+              $brands_category_id=0;
+              }
+    }
+*/
+
+    if(isset($vehicle_type)){
+        if($vehicle_type== 46){
+            $brands_category_id=46;
+        } elseif($vehicle_type== 42){
+            $brands_category_id=42;
+        } elseif($vehicle_type==376){
+            $brands_category_id=46;
+        } elseif($vehicle_type==4035){
+            $brands_category_id=3405;
+        } elseif($current_category_id_path==3404){
+            $brands_category_id=3404;
+        }  else{
+            $brands_category_id=$vehicle_type;
+        }
+    }
+
+?>
+<style>
+@media (max-width: 767px) {
+    .catalog-category-view .list_inner .amout_sec button.view_detail {
+        bottom: 0.1rem !important;
+    }
+}
+</style>
+<?php if (!$_productCollection->count()) :?>
+    <div class="message info empty">
+        <div>
+            <?= $block->escapeHtml(__('We can\'t find products matching the selection.')) ?>
+            <a href="<?= $block->getUrl('/') ?>">Click here to search from all tyre brands </a>
+        </div>
+    </div>
+<?php else :?>
+
+
+     <?php  if($current_category_id== 46 || $current_category_id == 42 ){ ?>
+
+     <!--......................................new design...........................................................................................................-->
+
+   <style type="text/css">
+       .sorter0{
+           display: none !important;
+
+       }
+       .toolbar-sorter.sorter.col-md-4.col-sm-12{
+           display: none !important;
+
+       }
+   </style>
+ <?php
+
+
+
+ $group_id=0;
+
+$title_brand="Car Brands";
+
+ if($current_category_id==42){
+
+  $group_id=3;
+  $title_brand="Bikes Brands";
+ }elseif($current_category_id_path==3404){
+    $group_id=4;
+    $title_brand="Battery";
+ }
+ else{
+   $group_id=1;
+   $title_brand="Car Brands";
+ }
+
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$blockObj = $objectManager->get('\Ves\Brand\Model\Brand');
+$_brandCollection = $blockObj->getCollection()
+->setOrder('position','ASC')
+->addFieldToFilter('status',1)
+->addFieldToFilter('group_id',$group_id);
+
+
+$_tyresBrandCollection = $blockObj->getCollection()
+->setOrder('position','ASC')
+->addFieldToFilter('status',1)
+->addFieldToFilter('group_id',2);
+
+
+
+ $pagedArray = array_chunk($product_1, 3, true);
+
+
+
+
+
+
+    try {
+
+     $_productCollection_new = $pagedArray[$page_number];
+
+    } catch (Exception $e) {
+        $_productCollection_new=$_productCollection;
+
+    }
+
+
+
+
+
+
+    if ($block->getMode() == 'grid') {
+        $viewMode = 'grid';
+        $imageDisplayArea = 'category_page_grid';
+        $showDescription = false;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    } else {
+        $viewMode = 'list';
+        $imageDisplayArea = 'category_page_list';
+        $showDescription = true;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+    }
+
+    $image_width = 300;
+    $image_height = 300;
+    $iterator = 1;
+    /**
+     * Position for actions regarding image size changing in vde if needed
+     */
+    $pos = $block->getPositioned();
+
+
+
+    ?>
+    <div class="row">
+
+    <div class="col-md-12">
+    <!--category content-->
+    <div class="">
+    <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('category-top-content-'.$current_category_id)->toHtml();?>
+    </div>
+    <!--category content end-->
+
+     <?= $block->getToolbarHtml() ?>
+    <?= $block->getAdditionalHtml() ?>
+    
+    <div class="">
+    <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('category-how-it-works')->toHtml();?>
+    </div>
+        
+     <!--product-->
+    
+            <!--.................................end.......................................................-->
+
+
+            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+            <?php
+
+
+
+            foreach ($_productCollection_new as $_product) {
+
+			
+
+			} ?>
+             <!--...............list end..............................................................-->
+
+             <?php
+            $product_Data=json_encode($productData);
+            $product_count= count($_productCollection);
+
+            if(isset($_SERVER['HTTPS']) &&  $_SERVER['HTTPS'] === 'on'){
+                $link = "https";
+            }else{
+                $link = "http";
+            }
+            $link .= "://";
+            $link .= $_SERVER['HTTP_HOST'];
+            $link .= $_SERVER['REQUEST_URI'];
+            $url=$link;
+
+
+            ?>
+
+            
+    <!--product end-->
+    
+    
+
+    <!--car tyre brand logo-->
+    <div class="">
+        <div class="logo-card">
+    <p class="title_card"><?=$title_brand;?></p>
+                     <ul>
+                         <?php $mediaUrl =  $this->getUrl('pub/media');
+
+                        foreach($_brandCollection as $key => $_brand){
+
+                         $img_url=$_brand->getThumbnailUrl();
+                        ?>
+
+                         <li>
+                            <a href="<?php echo $_brand->getUrl(); ?>">
+                                 <img loading="lazy" src="<?=$img_url; ?>" alt="<?=$_brand->getName();?>" />
+                             </a>
+                         </li>
+
+                        <?php  } ?>
+
+
+
+                        </ul>
+<div class="view-more-link">
+
+</div>
+</div>
+    <!--<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('car_tyres_brands')->toHtml();?>-->
+    </div>
+    <!--car tyre brand logo end-->
+
+    <!--car brand logo-->
+    <div class="">
+
+        <div class="logo-card">
+    <p class="title_card">Tyres Brands</p>
+                     <ul class="all-tyre">
+                        <?php
+                        // 46 => Bridgestone, 86 => Yokohama, 87 => Goodyear, 48 => Continental
+                        //$skipBikeTyreBrand = [46, 86, 87, 48];
+                        $showBikeTyreBrand = [45, 47, 79, 83, 85, 112, 114, 115];
+                        foreach($_tyresBrandCollection as $key => $_brand){
+                            if($categoryId == 42 && !in_array($_brand->getId(), $showBikeTyreBrand)) {
+                                continue;
+                            }
+                         $img_url=$_brand->getThumbnailUrl();
+                        ?>
+
+                         <li>
+                            <a href="<?php echo $_brand->getUrl(); ?>">
+                                 <img loading="lazy" src="<?=$img_url; ?>" alt="<?=$_brand->getName();?>" />
+                             </a>
+                         </li>
+
+                        <?php  } ?>
+
+
+
+                        </ul>
+<div class="view-more-link">
+
+</div>
+</div>
+
+
+
+    <!--<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('car_brands')->toHtml();?>-->
+    </div>
+    <!--car brand logo end-->
+
+    <!--how it works-->
+    <!--how it works end-->
+
+    <!--google review end-->
+
+    <!--google review end-->
+
+    <!--pricing table-->
+    <div class="">
+    <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('pricing-table-category-id-'.$current_category_id)->toHtml();?>
+    </div>
+    <!--pricing table end-->
+
+    <!-- testimonial -->
+    <div class="">
+    <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('category-testimonial')->toHtml();?>
+    </div>
+    <!--testimonial end-->
+
+    <!--faq-->
+     <div class="faq-section">
+        <p class="faq-title">FAQ's</p>
+
+	<?php
+	if ($current_category_id_path == 3404)
+	{
+		echo $this->getLayout()->createBlock("Tyres\Faq\Block\FaqListData")->setTemplate("Magento_Theme::html/Faq/battery-list.phtml")->toHtml();
+	}else{
+		echo $this->getLayout()->createBlock("Tyres\Faq\Block\FaqListData")->setTemplate("Magento_Theme::html/Faq/list.phtml")->toHtml();	}
+?>
+     </div
+     <!--faq end-->
+
+</div>
+
+        <?php
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $category      = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+            if($category){
+          ?>
+<!--
+    <div class="col-md-12">
+        <div class="right_sidebar_wraper2">
+            <div class="rsidebar_tittle_1 important_sec">
+                <h3>Car Tyres News</h3>
+                <div class="blog-section">
+                      <?php /* echo $this->getLayout()->createBlock("Mageplaza\Blog\Block\Post\Listpost")->setTemplate("Magento_Theme::html/post/list.phtml")->toHtml(); */
+                      ?>
+                </div>
+            </div>
+        </div>
+     </div>
+-->
+<?php }else if($_productCollection->getdata()[0]['manufacturer_value']){ ?>
+
+    <div class="col-md-4">
+     <div class="right_sidebar_wraper">
+          <div class="rsidebar_tittle_1">
+                <!-- <h3>You can check Tyre size of <?php // echo $_productCollection->getdata()[0]['manufacturer_value']; ?> </h3> -->
+                   <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')
+                                                ->setBlockId('check_Tyre_size_of_Linea_Tjet_plus')->toHtml();?>
+            </div>
+            <div class="rsidebar_tittle_1 important_sec">
+                <h3>Important</h3>
+                <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('Important')->toHtml();?>
+            </div>
+        </div>
+     </div>
+
+    <?php } ?>
+           <div id="popup-mpdal" style="display:none;" >
+                <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('pay-on-delivery')->toHtml();?>
+          </div>
+</div>
+    <?php if (!$block->isRedirectToCartEnabled()) :?>
+        <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form], .form.map.checkout": {
+                "catalogAddToCart": {
+                    "product_sku": "<?= $block->escapeJs($_product->getSku()) ?>"
+                }
+            }
+        }
+        </script>
+    <?php endif; ?>
+     <!--.......................................end new design..........................................................................................-->
+
+   <?php   }else{ ?>
+
+
+    <!--..............................................old design.......................................................................................................................-->
+
+
+    <?php
+      if(isset($category)){
+    if($category->getLevel() ==3){
+   ?>
+      <style type="text/css">
+     .toolbar.toolbar-products .row.new-search-design {
+            display: none;
+        }
+      </style>
+
+  <?php }} ?>
+
+   <?php
+	  if(isset($category)){
+    if($category->getLevel()>=4){
+   ?>
+      <style type="text/css">
+        .sorter0{
+           display: none !important;
+
+       }
+     .toolbar.toolbar-products .row.new-search-design {
+            display: none;
+        }
+
+       #selector_text{
+           display: none !important;
+
+       }
+      </style>
+
+  <?php }}else{ ?>
+
+    <style type="text/css">
+        .sorter0{
+           display: none !important;
+
+       }
+       .new-search-design{
+           display: none !important;
+
+       }
+       #selector_text{
+           display: none !important;
+
+       }
+       .toolbar.toolbar-products .row.new-search-design {
+            display: none !important;
+        }
+      </style>
+
+  <?php }
+
+
+
+  ?>
+
+
+    <!--<?= $block->getAdditionalHtml() ?>-->
+     <?= $block->getToolbarHtml() ?>
+    <?= $block->getAdditionalHtml() ?>
+    <?php
+    if ($block->getMode() == 'grid') {
+        $viewMode = 'grid';
+        $imageDisplayArea = 'category_page_grid';
+        $showDescription = false;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    } else {
+        $viewMode = 'list';
+        $imageDisplayArea = 'category_page_list';
+        $showDescription = true;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+    }
+
+    $image_width = 300;
+    $image_height = 300;
+    $iterator = 1;
+    /**
+     * Position for actions regarding image size changing in vde if needed
+     */
+    $pos = $block->getPositioned();
+    ?>
+    <div class="row">
+    <div class="col-md-12">
+    <!--category content-->
+    <div class="">
+
+      <?php
+               // if($current_category_id_path==3404){
+                //echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('category-top-content-3383')->toHtml();
+		//	echo 'none'; //$this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('mumbai-popup')->toHtml();
+               // }
+               // else{
+                echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('category-top-content')->toHtml();
+//    }
+?>
+    </div>
+    <!--category content end-->
+    <div class="products wrapper <?php echo $current_category_id ?>  <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>">
+        <div class="list_img_wrap">
+
+
+            <!--.................................end.......................................................-->
+
+
+            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+            <?php
+
+
+                if($_productCollection_new) {
+            foreach ($_productCollection_new as $_product) {
+
+
+
+                ?>
+
+                <?php
+                // if($_category_config['aspect_ratio'])
+                //     $productImage = $_imagehelper->init($_product, $image)->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize($image_width);
+                // else
+                $productImage = $_imagehelper->init($_product, $imageDisplayArea)->resize($image_width, $image_height);
+                $productImageUrl = $productImage->getUrl();
+
+               $p_image=$productImageUrl;
+               $p_url=$_product->getProductUrl();
+               $p_name=$_helper->productAttribute($_product, $_product->getName(), 'name');
+               $p_price=$_product->getPrice();
+            //   $product =["@type" => "ListItem","position"=>$iterator,"item"=>["@type" => "Product","image"=>$p_image,"url"=>$p_url,"name"=>$p_name,"offers"=>["@type"=>"Offer","price"=>$p_price,"priceCurrency"=>"INR"]]];
+
+               $product =["@type" => "ListItem","position"=>$iterator,"image"=>$p_image,"url"=>$p_url,"name"=>$p_name];
+
+               array_push($productData,$product);
+
+               $iterator++ == 1;
+            ?>
+            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                <div class="list_inner custom-design" data-container="product-<?= /* @noEscape */ $viewMode ?>">
+                    <div class="product-warranty-section">
+                        <?php
+                        if(isset($category) && $current_category_id_path == 3404 ){ 
+                            $warranty_attribute = $_product->getResource()->getAttribute('warranty_pro_rata');
+                            if ($warranty_attribute){
+                                // Get Value
+                                $warranty_value = $warranty_attribute->getFrontend()->getValue($_product);
+                                if($warranty_value && $warranty_value !== 'NA' ) {
+                                        echo "<div class='wranty_sec'>$warranty_value Warranty</div>";
+                                } else {
+                                    // echo "No info available";
+                                }
+                            }
+                        } else {
+                            $warranty_attribute = $_product->getResource()->getAttribute('warranty_period');
+
+                            if ($warranty_attribute) {
+                                // Get Value
+                                $warranty_value = $warranty_attribute->getFrontend()->getValue($_product);
+                                if($warranty_value) {
+                                        echo "<div class='wranty_sec'>$warranty_value Years Warranty</div>";
+                                } else {
+                                    // echo "No info available";
+                                }
+                            }
+                        }
+                        ?>
+                    </div>
+                    <?php
+                        // SPECIAL PRICE OFFER
+                        if($_product->getPrice() > $_product->getFinalPrice()):
+                            echo '<div class="product-offer-section">Offer</div>';
+                        endif;
+                    ?>
+                    <?php
+                    $productImage = $block->getImage($_product, $imageDisplayArea);
+                    if ($pos != null) {
+                        $position = ' style="left:' . $productImage->getWidth() . 'px;'
+                            . 'top:' . $productImage->getHeight() . 'px;"';
+                    }
+                    ?>
+                    <?php // Product Image ?>
+
+                    <div class="product-listing-block col-md-12">
+                    <div class="product-logo <?= ($_product->getPrice() > $_product->getFinalPrice()) ? "offer-image" :"" ?>">
+                            <?php
+                            $_product = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());
+                            $data = explode(',',$_product->getData('product_brand'));
+                            $brandId = null;
+                            if($data && count($data)) {
+                                $brandId = $data[0];
+                            }
+                            if($brandId) {
+                                $brand = $objectManager->create('Ves\Brand\Model\Brand')->load($brandId);
+                                echo '<img height="50px" width="auto" src="'.$this->getUrl('pub/media/').$brand->getThumbnail().'" />';
+                            }
+                            ?>
+                        </div>
+                        <div class="tittle_head">
+                            <a class="product-item-link"
+                        href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
+                            <span class="product-list-name"><?= /* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name') ?></span>
+                            </a>
+                        </div>
+                        <div class="image_sec">
+                            <style>
+                                .product-image-wrapper{
+                                    padding-bottom: 100%!important;
+                                }
+                            </style>
+                            <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>"
+                            class="product photo product-item-photo"
+                            tabindex="-1">
+                                <?= $productImage->toHtml() ?>
+                            </a>
+                            <?php if($_product->getOfferDescription()){ ?>
+                            <div class="offer-description">
+                                <?= $_product->getOfferDescription(); ?>
+                            </div>
+                            <?php } ?>
+                        </div>
+                    <div class="custom-right">
+
+
+                        <div class="rating_sec">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                    <?php
+                                        $productRepository = $obj->get('\Magento\Catalog\Model\ProductRepository');
+                                        $product = $productRepository->get($_product->GetSku());
+                                        $brand_type = $product->getProductBrand();
+                                        $attr = $_product->getResource()->getAttribute('product_brand');
+
+                                        if ($attr->getSource()->getOptionText($brand_type) !== '-- Please Select --') {
+                                            $brandTypeData = $attr->getSource()->getOptionText($brand_type);
+                                            if($brandTypeData && isset($brandTypeData['label'])) {
+                                                echo $brandTypeData['label'];
+                                            }
+                                        }
+                                        ?>
+                                    </a>
+                                </li>
+                                <li>
+                                    <?php //if ($_product->getRatingSummary()): ?>
+                                    <?php //echo $block->getReviewsSummaryHtml($_product, $templateType, true); ?>
+                                    <?php //else: ?>
+                                    <!-- <div class="product-reviews-summary short">
+                                    <div class="rating-summary">
+                                    <span class="label"><span>Rating:</span></span>
+                                    <div class="rating-result" title="0%">
+                                    <span style="width:0%"><span>0%</span></span>
+                                    </div>
+                                    </div>
+                                    <div class="reviews-actions">
+                                    (0)
+                                    </div>
+                                    </div> -->
+                                    <?php //endif; ?>
+                                </li>
+                            </ul>
+                        </div>
+                     <?php
+                            $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                        ?>
+                             <div class= "sku-section">
+                                <span>Sku: <?= $_product->getSku(); ?></span>
+                            </div>
+                            <!--Starting -->
+                            <div class="amout_sec">
+
+                                <div class="row">
+                                     <?php
+                                    $inputName = '';
+                                    $inputValue = '';
+                                    $productCategoryIds = $_product->getCategoryIds();
+                                    ?>
+                                <?php if(in_array(3404, $productCategoryIds)) { ?>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-12 exchange-price p-0">
+                                    <?php
+                                        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                                        $customOptions = $objectManager->get('Magento\Catalog\Model\Product\Option')->getProductOptionCollection($_product);
+                                        if (!empty($customOptions->getData())) {
+                                            foreach($customOptions as $option) {
+
+                                            $values = $option->getValues();
+                                            if (empty($values)) {
+                                                continue;
+                                            }
+                                            ?>
+                                            <div class="plp-custom-option">
+                                            <?php foreach($values as $value) {
+                                                $inputName = "options[".$value->getOptionId()."][]";
+                                                $inputValue = $value->getOptionTypeId();
+                                                $finalPrice = (int)$_product->getFinalPrice();
+                                                $price=(int)$value->getPrice() + $finalPrice;
+                                                //$price=number_format((float)$price, 2, '.', '');
+                                                $price= $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($price,true,false);
+                                                $finalPrice= $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($finalPrice,true,false); ?>
+
+                                               <!--  <input type="checkbox" name="<?= $inputName; ?>" class="battery-custom-option" value="<?= $inputValue; ?>" data-price="<?= $finalPrice; ?>" data-exchange-price="<?= $price; ?>"/>
+                                                <span class="price"> -->
+                                            <div class="col-md-12 col-sm-12 p-0">
+                                                <div class="without-exchange">
+                                                <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
+                                                <span class="amt_price exch-price"><?php echo $price ?></span></a>
+                                                <span class="exchange"><?= $value->getTitle()?></span>
+                                                </div>
+                                              <div class="inclusive-tax">
+                                                            <?= __('(Inclusive of all taxes)') ?>
+                                                        </div>
+                                           <span class="withexchange"><?= $finalPrice.' - '.'Without exchange of old battery' ?></span>
+                                         </div>
+
+                                            <?php } ?>
+                                            </div>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    </div>
+                                      <?php } else if(!in_array(3404, $productCategoryIds)) { ?>
+
+                                        <div class="col-md-12 col-sm-12 p-0">
+                                        <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
+                                            <?= /* @noEscape */ $block->getProductPrice($_product) ?>
+                                        <?= $block->getProductDetailsHtml($_product) ?>
+                                        </a>
+                                        <div class="inclusive-tax">
+                                            <?= __('(Inclusive of all taxes)') ?>
+                                        </div>
+                                        <?php 
+                                            echo $this->getLayout()
+                                            ->createBlock("Solveda\Catlog\Block\Emi")
+                                            ->setTemplate("Solveda_Catlog::emistartingfrom.phtml")
+                                            ->setProduct($_product)
+                                            ->toHtml()
+                                        ?>
+                                    </div>
+                                <?php } ?>
+                                    <div class="col-md-12 col-sm-12 p-0">
+                                        <div class="cart-group">
+                                            <!-- <form action="<?php echo $this->getAddToCartUrl($_product) ?>" method="post" id="product_addtocart_form_<?php echo $_product->getId()?>"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+                                                <?php echo $block->getBlockHtml('formkey')?>
+                                                <input class="cart-count" type="number" name="qty" id="qty" maxlength="12" value="1" min="1" max="10"/>
+                                                <input type="checkbox" class="exchange-battery hide" value="<?= $inputValue; ?>" name="<?= $inputName; ?>">
+                                                <button type="submit"
+                                                        title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                                                        class="action primary tocart">
+                                                    <span><?= $block->escapeHtml($buttonTitle) ?></span>
+                                                </button>  
+                                                <button type="submit"
+                                                        title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                                                        class="action primary tocart">
+                                                    <span><?= $block->escapeHtml($buttonTitle) ?></span>
+                                                </button> -->
+                                                 <a class="viewdetails"
+                                                   href="<?= $block->escapeUrl($_product->getProductUrl()) ?>">
+                                                   <button class="btn">View Details</button></a>
+                                
+                                 
+                                                <?php /*
+                                                $buyNowHtml = $this->getLayout()
+                                                ->createBlock('Prince\Buynow\Block\Product\ListProduct')
+                                                ->setProduct($_product)
+                                                ->setTemplate('Prince_Buynow::buynow-list.phtml')
+                                                ->toHtml();
+                                                echo $buyNowHtml;
+                                                */
+                                                ?>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                            
+                       </div>
+                       </div>
+                       <?php 
+                    $productCategoryId = $_product->getCategoryIds(); ?>
+                    <?php if(!in_array(4766, $productCategoryId)) { ?>
+                       <div class="custom-bottom">
+                            <div class="custom-tooltip">
+                                <div class="tooltip-main">
+                                    <span class="tooltip-button">
+                                        Product <br />Specs
+                                    </span>
+                                    <div class="tooltip-box"style="display: none;">
+                                        <ul>
+                                            <?php
+                                            $carId = 46;
+                                            $bikeId = 42;
+                                            $batteryId = 3404;
+                                            $productAttributes = [
+                                                'country_of_manufacture',
+                                                'car_tyre_aspect',
+                                                'car_tyre_rim',
+                                                'car_tyre_tube',
+                                                'car_tyre_tubeless',
+                                                'car_tyre_warranty',
+                                                'car_tyre_width',
+                                            ];
+                                            // if(in_array($carId, $_product->getCategoryIds())) {
+                                            //     $productAttributes = [
+                                            //         'country_of_manufacture',
+                                            //         'car_tyre_aspect',
+                                            //         'car_tyre_rim',
+                                            //         'car_tyre_tube',
+                                            //         'car_tyre_tubeless',
+                                            //         'car_tyre_warranty',
+                                            //         'car_tyre_width',
+                                            //     ];
+                                            // }
+
+                                            if(in_array($bikeId, $_product->getCategoryIds())) {
+                                                $productAttributes = [
+                                                    'country_of_manufacture',
+                                                    'bike_tyre_rim',
+                                                    'bike_tyre_tube',
+                                                    'bike_tyre_tubeless',
+                                                    'bike_tyre_warranty',
+                                                    'bike_tyre_width'
+                                                ];
+                                            }
+
+                                            if(in_array($batteryId, $_product->getCategoryIds())) {
+                                                $productAttributes = [
+                                                    'ampere',
+                                                    'free_warranty',
+                                                    'terminal',
+                                                    'country_of_manufacture',
+                                                    'warranty_pro_rata',
+                                                ];
+                                            }
+
+
+                                            foreach($productAttributes AS $attr) {
+                                                $_getMyAttr = $_product->getResource()->getAttribute($attr);
+
+                                                if ($_getMyAttr){
+                                                    // Get Value
+                                                    $attrTestValue = $_getMyAttr->getFrontend()->getValue($_product);
+                                                    if($attrTestValue == '')
+                                                    continue;
+                                                    // Get Label
+                                                    $attrTestLabel = $_getMyAttr->getStoreLabel();
+                                                
+                                            ?>
+                                            
+                                            <li>
+                                                <strong><?= __($attrTestLabel) ?></strong>
+                                                <span class="product-attr-value">
+                                                    <?= __($attrTestValue) ?>
+                                                </span>
+                                            </li>
+                                            <?php }
+                                        } ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="tooltip-main">
+                                    <span class="tooltip-button">
+                                        Vehicle  <br />Compatibility
+                                    </span>
+                                    <div class="tooltip-box vehicle-compatibility" style="display: none;">
+                                    <?= ($_product->getShortDescription()) =='' ?'N/A': $_product->getShortDescription(); ?>
+                                    </div>
+                                </div>
+                                <div class="tooltip-main social-share">
+                                    <span class="tooltip-button">
+                                        <img height="31px" src="<?= $block->getViewFileUrl('images/share.png'); ?>" />
+                                    </span>
+                                    <div class="tooltip-box"style="display: none;">
+                                    <ul class="prosocialshare" style="display: block;">
+                                        <?php 
+                                        $productUrl =  $_product->getProductUrl();
+                                        $productName = $_product->getName();
+                                        ?>
+                                        <li class="facebook">
+                                            <a href="https://www.facebook.com/sharer.php?u=<?= $productUrl; ?>&caption=<?= $productName; ?>" onclick="javascript:window.open(this.href,'','width=640,height=480,left=0,top=0,location=no,status=yes,scrollbars=yes,resizable=yes');return false" title="Share on FaceBook">
+                                                <i class="fa fa-facebook"></i>
+                                            </a>
+                                        </li>
+                                        <li class="twitter">
+                                            <a href="http://twitter.com/share/?text=<?= $productUrl.'('.$productName.')'; ?>" onclick="javascript:window.open(this.href,'','width=640,height=480,left=0,top=0,location=no,status=yes,scrollbars=yes,resizable=yes');return false" title="Share on Twitter">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                        </li>
+                                        <li class="linkedin"> 
+                                            <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=<?= $productUrl; ?>&title=<?= $productName; ?>" onclick="javascript:window.open(this.href,'','width=640,height=480,left=0,top=0,location=no,status=yes,scrollbars=yes,resizable=yes');return false"><i class="fa fa-linkedin"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    <?php } ?>
+                       <div class="col-md-12">
+                            <div class="clsProductFeature">
+                            <?php //5794 [1] => 5795 [2] => 5796 
+                                //$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                                $_product = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());
+                                $data = null;
+                                if($_product->getData('product_features')) {
+                                    $data = explode(',',$_product->getData('product_features'));
+
+                                }
+                            /* Alloys Attribute Call*/
+                            $rimlabel = $_product->getResource()->getAttribute('car_alloys_rim');
+                            $holelabel = $_product->getResource()->getAttribute('car_alloys_holes');
+                            $colorlabel = $_product->getResource()->getAttribute('car_alloys_color');
+                            $rim = $_product->getResource()->getAttribute('car_alloys_rim')->getFrontend()->getValue($_product);
+                            $holes = $_product->getResource()->getAttribute('car_alloys_holes')->getFrontend()->getValue($_product);
+                            $color = $_product->getResource()->getAttribute('car_alloys_color')->getFrontend()->getValue($_product);
+                            ?>
+                            <ul>
+                                <?php if($rim):?><li><strong><?=$rimlabel->getFrontend()->getLabel($_product);?></strong><span><?= $rim ?></span></li><?php endif;?>
+                                <?php if($holes):?><li><strong><?=$holelabel->getFrontend()->getLabel($_product);?></strong><span><?= $holes ?></span></li><?php endif;?>
+                                <?php if($color):?><li><strong><?=$colorlabel->getFrontend()->getLabel($_product);?></strong><span><?= $color ?></span></li><?php endif;?>
+                                <!-- Shear Button alloy -->
+                                <?php if($current_category_id_path == 4766){?>
+                                      <div class="tooltip-main social-share">
+                                    <span class="tooltip-button">
+                                        <img height="31px" src="<?= $block->getViewFileUrl('images/share.png'); ?>" />
+                                    </span>
+                                    <div class="tooltip-box"style="display: none;">
+                                    <ul class="prosocialshare" style="display: block;">
+                                        <?php 
+                                        $productUrl =  $_product->getProductUrl();
+                                        $productName = $_product->getName();
+                                        ?>
+                                        <li class="facebook">
+                                            <a href="https://www.facebook.com/sharer.php?u=<?= $productUrl; ?>&caption=<?= $productName; ?>" onclick="javascript:window.open(this.href,'','width=640,height=480,left=0,top=0,location=no,status=yes,scrollbars=yes,resizable=yes');return false" title="Share on FaceBook">
+                                                <i class="fa fa-facebook"></i>
+                                            </a>
+                                        </li>
+                                        <li class="twitter">
+                                            <a href="http://twitter.com/share/?text=<?= $productUrl.'('.$productName.')'; ?>" onclick="javascript:window.open(this.href,'','width=640,height=480,left=0,top=0,location=no,status=yes,scrollbars=yes,resizable=yes');return false" title="Share on Twitter">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                        </li>
+                                        <li class="linkedin"> 
+                                            <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=<?= $productUrl; ?>&title=<?= $productName; ?>" onclick="javascript:window.open(this.href,'','width=640,height=480,left=0,top=0,location=no,status=yes,scrollbars=yes,resizable=yes');return false"><i class="fa fa-linkedin"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                                <!-- End shear -->
+                            </ul>
+
+                                <ul>
+                                    <?php
+                                        if($data) {
+                                        foreach($data as $value):
+                                            $attr = $_product->getResource()->getAttribute('product_features');
+                                            if ($attr->usesSource()): 
+                                                $option_value = $attr->getSource()->getOptionText($value); ?>
+                                            <li>
+                                                <?php $mediaUrl =  $this->getUrl('pub/media'); ?>
+                                                <span class="cls-img">
+                                                    <?php /* if($value == 5794){ ?>
+                                                        <img height="30px" src="<?php echo $mediaUrl.'logo/images.png'; ?>" />
+                                                    <?php } */ ?>
+                                                    <?php if($value == "5796"){ ?>
+                                                        <img loading="lazy" height="20px" width="20px" src="<?php echo $mediaUrl.'logo/smooth_ride.png'; ?>" />
+                                                    <?php } ?>
+                                                    <?php if($value == 5797){ ?>
+                                                        <img loading="lazy" height="20px" width="20px" src="<?php echo $mediaUrl.'logo/low_noise.png'; ?>" />
+                                                    <?php } ?>
+                                                    <?php if($value == 5798){ ?>
+                                                        <img loading="lazy" height="20px" width="20px" src="<?php echo $mediaUrl.'logo/Dry_and_wet_grip.png'; ?>" />
+                                                    <?php } ?>
+                                                    <?php if($value == 5799){ ?>
+                                                        <img loading="lazy" height="20px" width="20px" src="<?php echo $mediaUrl.'logo/Excellent_braking.png'; ?>" />
+                                                    <?php } ?>
+                                                    <?php if($value == 5800){ ?>
+                                                        <img loading="lazy" height="20px" width="20px" src="<?php echo $mediaUrl.'logo/fuel_efficient.png'; ?>" />
+                                                    <?php } ?>
+                                                    <?php if($value == 5801){ ?>
+                                                        <img loading="lazy" height="20px" width="20px" src="<?php echo $mediaUrl.'logo/long_tyre_life.png'; ?>" />
+                                                    <?php } ?>
+                                                    <?php if($value == 5802){ ?>
+                                                        <img loading="lazy" height="20px" width="20px" src="<?php echo $mediaUrl.'logo/high_stability.png'; ?>" />
+                                                    <?php } ?>
+                                                    <?php
+                                                    
+                                                    /* if($value == 5802){ ?>
+                                                        <img height="20px" src="<?php echo $mediaUrl.'logo/high_speed.png'; ?>" />
+                                                    <?php } ?>
+                                                    <?php if($value == 5803){ ?>
+                                                        <img height="20px" src="<?php echo $mediaUrl.'logo/all_weather.png'; ?>" />
+                                                    <?php }
+                                                    */
+                                                    ?>
+                                                    <?php if($value == 5803){ ?>
+                                                        <img loading="lazy" height="20px" width="20px" src="<?php echo $mediaUrl.'logo/all_terrain.png'; ?>" />
+                                                    <?php } ?>
+                                                </span><br/>
+                                                <span class="product-features">
+                                                    <?php echo $option_value; ?>
+                                                </span>
+                                            </li>
+
+                                        <?php endif;?>
+                                    <?php endforeach;?>
+                                    <?php } ?>
+                                </ul>
+                            </div>
+                       </div>   
+                </div>
+            </div>
+            <?php } ?>
+            <?php } else { ?>
+                <div>No Products Available</div>
+            <?php } ?>
+             <!--...............list end..............................................................-->
+
+             <?php
+            $product_Data=json_encode($productData);
+            $product_count= count($_productCollection);
+
+            if(isset($_SERVER['HTTPS']) &&  $_SERVER['HTTPS'] === 'on'){
+                $link = "https";
+            }else{
+                $link = "http";
+            }
+            $link .= "://";
+            $link .= $_SERVER['HTTP_HOST'];
+            $link .= $_SERVER['REQUEST_URI'];
+            $url=$link;
+
+
+            ?>
+
+            <script type="application/ld+json">
+
+               {"@context": "http://schema.org",
+               "@type": "ItemList",
+               "name":"<?php echo $this->getLayer()->getCurrentCategory()->getName().' Tyre Price';?>",
+               "url": "<?php echo $url; ?>",
+               "numberOfItems":"<?php echo $product_count; ?>",
+               "itemListElement": <?php echo $product_Data; ?>}
+           </script>
+        </div>
+    </div>
+
+            <?= $block->getToolbarHtml() ?>
+
+</div>
+
+        <?php
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $category      = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+            if($category){
+          ?>
+<?php }else if($_productCollection->getdata()[0]['manufacturer_value']){ ?>
+
+    <div class="col-md-4">
+     <div class="right_sidebar_wraper">
+          <div class="rsidebar_tittle_1">
+                <!-- <h3>You can check Tyre size of <?php // echo $_productCollection->getdata()[0]['manufacturer_value']; ?> </h3> -->
+                   <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')
+                                                ->setBlockId('check_Tyre_size_of_Linea_Tjet_plus')->toHtml();?>
+            </div>
+            <div class="rsidebar_tittle_1 important_sec">
+                <h3>Important</h3>
+                <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('Important')->toHtml();?>
+            </div>
+        </div>
+     </div>
+
+    <?php } ?>
+           <div id="popup-mpdal" style="display:none" >
+                <?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('pay-on-delivery')->toHtml();?>
+          </div>
+</div>
+    <?php if (!$block->isRedirectToCartEnabled()) :?>
+        <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form], .form.map.checkout": {
+                "catalogAddToCart": {
+                    "product_sku": "<?= $block->escapeJs($_product->getSku()) ?>"
+                }
+            }
+        }
+        </script>
+        <?php 
+        $isDealerAuthorized = $this->getLayer()->getCurrentCategory()->getAuthorizedDealer();
+        if($isDealerAuthorized) {
+            $helper = $this->helper(Solveda\Brand\ViewModel\ResizeImage::class);
+            echo $this->getLayout()
+                ->createBlock("Magento\Catalog\Block\Category\View")
+                ->setResizeImage($helper)
+                ->setTemplate("Solveda_Brand::category/authorized-brand.phtml")
+                ->toHtml();
+        }
+        ?>
+         <!--faq-->
+           <!-- Staging ID - 4524 -->
+          <!-- Prod ID - 4766 -->
+
+
+<?php
+if(isset($category)){
+    $parent_category = $category->getParentCategory();
+    $carbrand = $parent_category->getName();
+    $carmodel = $category->getName();
+
+?>
+<?php if(in_array(4766,$carTyreCatIds)){?>
+<div class="brand-price">
+<span>Transform your <?=$carbrand?> <?=$carmodel?> with new alloy wheels</span>
+<h2><?=$carbrand?> <?=$carmodel?> Alloy wheels price and size</h2>
+<table class="table table-responsive table-striped table-border">
+<tbody>
+<tr>
+<td>Wheel size</td>
+<td>Price Rupees</td>
+<td>
+RecommendedPassenger Load
+</td>
+</tr>
+<tr>
+<td>14 inch</td>
+<td>Rs.26,200</td>
+<td>280 kgs</td>
+</tr>
+<tr>
+<td>15 inch</td>
+<td>Rs.27,540</td>
+<td>340 kgs</td>
+</tr>
+<tr>
+<td>16 inch</td>
+<td>Rs.31,680</td>
+<td>400 kgs</td>
+</tr>
+<tr>
+<td>17 inch</td>
+<td>Rs.38,160</td>
+<td>480 kgs</td>
+</tr>
+</tbody>
+</table>
+<p>Colours: Available in black, gun metal and silver colour.</p>
+<p>Material: Composite alloys</p>
+<p>&nbsp;</p>
+</div>
+<?php }
+}
+?>
+
+         <?php if(!in_array($carTyreCategoryId, $carTyreCatIds) && !in_array(42, $carTyreCatIds) && !in_array(3404, $carTyreCatIds) && !in_array(4766,$carTyreCatIds)) { ?>
+    <div class="faq-section">
+        <p class="faq-title">FAQ's</p>
+        <?php
+        if ($current_category_id_path == 3404)
+        {
+                echo $this->getLayout()->createBlock("Tyres\Faq\Block\FaqListData")->setTemplate("Magento_Theme::html/Faq/battery-list.phtml")->toHtml();
+        }else{
+                echo $this->getLayout()->createBlock("Tyres\Faq\Block\FaqListData")->setTemplate("Magento_Theme::html/Faq/list.phtml")->toHtml();
+        }
+?>
+     </div>
+        <?php } ?>
+     <!--faq end-->
+
+    <?php endif; ?>
+   <!--...............................................end old design ..................................................................................................................-->
+   <!--if($collectionsUrl == 'our-collections.html'){-->
+
+
+
+    <?php } ?>
+<?php endif; ?>
+
+
+
+<?php
+
+$baseUrl = $this->getBaseUrl();
+
+?>
+
+<script>
+    
+    require(['jquery'],function($){
+        $('.battery-custom-option').on('click', function(){
+            if($(this).is(':checked')) {
+                $(this).parents('.amout_sec').find('.exchange-battery').prop( "checked", true );
+                var price = $(this).data('exchange-price');
+            } else {
+                $(this).parents('.amout_sec').find('.exchange-battery').prop( "checked", false );
+                var price = $(this).data('price');
+            }
+            $(this).parents('.amout_sec').find('.price-wrapper').find('.price').html(price);
+        });
+    });
+</script>
+
+
+<script type="text/javascript">
+
+function getBaseUrl() { return '<?php echo $baseUrl; ?>'; }
+function getBrandCategoryID() { return '<?php echo $brands_category_id; ?>'; }
+
+
+</script>
+
+
+<script>
+try{
+
+    require(['jquery','bootstrapcustom'],function(Jquery,bootstrapcustom){Jquery('[data-toggle="popover"]').popover();});
+
+}catch(error){
+
+}
+
+
+
+</script>
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function(
+            $,
+            modal
+        ) {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                buttons: [{
+                    text: $.mage.__('Close'),
+                    class: '',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }]
+            };
+
+            var popup = modal(options, $('#popup-mpdal'));
+            $("#click-me").on('click',function(){
+                $("#popup-mpdal").modal("openModal");
+            });
+
+        }
+    );
+</script>
+        
+<script>
+require(["jquery", "js/select2",], function($) {
+    // function for support ie and safari
+    if (!Array.prototype.find) {
+        Object.defineProperty(Array.prototype, 'find', {
+            value: function (predicate) {
+            // 1. Let O be ? ToObject(this value).
+            if (this == null) {
+                throw new TypeError('"this" is null or not defined');
+            }
+        
+            var o = Object(this);
+        
+            // 2. Let len be ? ToLength(? Get(O, "length")).
+            var len = o.length >>> 0;
+        
+            // 3. If IsCallable(predicate) is false, throw a TypeError exception.
+            if (typeof predicate !== 'function') {
+                throw new TypeError('predicate must be a function');
+            }
+        
+            // 4. If thisArg was supplied, let T be thisArg; else let T be undefined.
+            var thisArg = arguments[1];
+        
+            // 5. Let k be 0.
+            var k = 0;
+        
+            // 6. Repeat, while k < len
+            while (k < len) {
+                // a. Let Pk be ! ToString(k).
+                // b. Let kValue be ? Get(O, Pk).
+                // c. Let testResult be ToBoolean(? Call(predicate, T, « kValue, k, O »)).
+                // d. If testResult is true, return kValue.
+                var kValue = o[k];
+                if (predicate.call(thisArg, kValue, k, o)) {
+                return kValue;
+                }
+                // e. Increase k by 1.
+                k++;
+            }
+        
+            // 7. Return undefined.
+            return undefined;
+            }
+        });
+    }
+    
+    var local = false;
+    var availableModes = {
+        brand: "brand",
+        size: "size"
+    };
+    var searchMode;
+    var brandOrWidthSelector, modelOrProfileSelector, variantOrRimSelector;
+    var currentToggleState, _selected, _id, _level, _globalResponse;
+    var getData = function() {};
+    var CACHE = {};
+
+    function __ddmap(o) {
+        var obj = {
+            id: o.entity_id,
+            text: o.name
+        };
+        return obj;
+    }
+
+    function __find(id) {
+        return function(o) {
+            return o.entity_id == id;
+        };
+    }
+
+    function __formatForSize(level, path, entities) {
+        return function(obj) {
+            var id = obj[entities[level]];
+            var nextPath = path + "/" + id;
+            // Get non numerical keys
+            var children = Object.keys(obj)
+                .filter(function(k) {
+                    return !isNaN(parseInt(k));
+                })
+                .map(function(k) {
+                    return obj[k];
+                });
+            return {
+                entity_id: id,
+                name: obj.label,
+                path: nextPath,
+                is_active: "1",
+                is_anchor: obj.url ? "1" : "0",
+                request_path: obj.url || null,
+                childes: children.map(__formatForSize(level + 1, nextPath, entities))
+            };
+        };
+    }
+
+    function formatData(data) {
+        if (searchMode === availableModes.brand) {
+            return data;
+        } else if (searchMode === availableModes.size) {
+            var path = "1/375/3161/" + currentToggleState.toString();
+            var ientity = currentToggleState == 42 ? "bikeid" : "carid";
+            var name = currentToggleState == 42 ? "Bike Search" : "Car Search";
+            var wrapper = [{
+                entity_id: currentToggleState.toString(),
+                name: name,
+                path: path,
+                is_active: "1",
+                is_anchor: "1",
+                request_path: "",
+                childes: data.map(
+                    __formatForSize(0, path, [ientity, "profileid", "rimid"])
+                )
+            }];
+            return wrapper;
+        }
+    }
+
+    function _init(response) {
+        if (typeof response === "string") {
+            response = formatData(JSON.parse(response));
+            /* console.log(response); */
+        }
+        _globalResponse = response;
+        _level = 0;
+        refresh();
+    }
+
+    function fromSelected(level) {
+        if(_selected) {
+        var ps = _selected.path.split("/");
+            ps.shift();
+            ps.shift();
+            ps.shift();
+            ps.shift();
+            var e = _globalResponse.find(__find(currentToggleState));
+            for (var i = 0; i < level; i++) {
+                e = e.childes.find(__find(ps[i]));
+            }
+            return e;
+        }
+    }
+
+    function switchMode(el) {
+        var placeholder = "";
+        var mode = el.data("selector");
+        switch (mode) {
+            case "brand width":
+                if (searchMode === availableModes.brand) {
+                    placeholder = "Select Brand";
+                } else if (searchMode === availableModes.size) {
+                    placeholder = "Select Width";
+                }
+                break;
+            case "model profile":
+                if (searchMode === availableModes.brand) {
+                    placeholder = "Select Model";
+                } else if (searchMode === availableModes.size) {
+                    placeholder = "Select Profile";
+                }
+                break;
+            case "variant rim":
+                if (searchMode === availableModes.brand) {
+                    placeholder = "Select Variant";
+                } else if (searchMode === availableModes.size) {
+                    placeholder = "Select Rim";
+                }
+                break;
+        }
+        $('[data-label="' + mode + '"]').html(placeholder);
+        el.html("").select2({
+            placeholder: placeholder,
+            //sortResults: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+            sortResults: function(data) { 
+                data.sort(function(a, b) { return a.text.localeCompare(b.text)})
+            },
+            minimumResultsForSearch: -1
+        });
+        return placeholder;
+    }
+
+    function initSelect(el) {
+        var placeholder = switchMode(el);
+        return function(_e) {
+            var entry = _e.childes.map(__ddmap);
+            entry.unshift({
+                id: "",
+                text: ""
+            });
+            el.html("").select2({
+                //data: entry.sort((a, b) => a.text.localeCompare(b.text)),
+                data: entry.sort(function(a, b) { return a.text.localeCompare(b.text)}),
+                placeholder: placeholder,
+                minimumResultsForSearch: -1
+            });
+            // Trigger Change Event
+            el.trigger("change");
+        };
+    }
+
+    function refresh() {
+        _selected = _globalResponse.find(__find(currentToggleState));
+        if (_selected !== undefined) {
+            initSelect(brandOrWidthSelector)(_selected);
+            initSelect(modelOrProfileSelector);
+            initSelect(variantOrRimSelector);
+            _level = 0;
+        }
+    }
+
+    function submitSearch(e) {
+        console.log("submitSearch", e);
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch (err) {
+            console.error(err);
+        }
+        var next = undefined;
+
+
+
+        if (_id !== null) {
+            next = _selected.childes.find(__find(_id));
+        } else {
+            next = _selected;
+        }
+        if (next) {
+
+
+            var path = next.request_path;
+            path += '?category_id=<?= $current_category_id ?>';
+            //  window.location.href = getBaseUrl()+next.request_path;
+            // window.location.replace(getBaseUrl()+next.request_path);
+            window.location.replace(getBaseUrl()+path);
+        }
+    }
+
+    function toggleState(e) {
+        console.log("toggleState", e);
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch (err) {
+            console.error(err);
+        }
+        currentToggleState = $(this).data("state");
+        $("[data-state-toggle]").removeClass("active");
+        $(this).addClass("active");
+        if (searchMode === availableModes.brand) {
+            refresh();
+        } else {
+            getData().then(_init);
+        }
+    }
+
+    function updateSelector(level, nselector) {
+        return function(e) {
+            try {
+                e.preventDefault();
+                e.stopPropagation();
+            } catch(error) {}
+            console.log(_selected);
+            var current = $(this).val();
+            if (current === "") {
+                if (nselector !== null && nselector !== undefined) {
+                    switchMode(nselector);
+                }
+                return;
+            }
+            var next;
+            if (level == _level) {
+                next = _selected;
+            } else {
+                next = fromSelected(level);
+            }
+            next = next.childes.find(__find(current));
+            if (next !== undefined) {
+                _id = next.childes.length > 0 ? current : null;
+                _selected = next;
+                _level++;
+                if (nselector !== null) {
+                    initSelect(nselector)(next);
+                    console.log(next);
+                }
+            } else {
+                console.log("Something's amiss");
+            }
+        };
+    }
+
+    function toggleSearchMode(e) {
+        console.log("toggleSearchMode", e);
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch (err) {
+            console.error(err);
+        }
+        searchMode = $(this).data("mode");
+        $("[data-mode-toggle]").removeClass("active");
+        $(this).addClass("active");
+        getData().then(_init);
+    }
+
+    function getPath() {
+        console.log(currentToggleState);
+        if (currentToggleState === 46) {
+            return "Carsearch";
+        } else {
+            return "Bikesearch";
+        }
+    }
+
+    function _cachedGetData() {
+        // Setup Initial Cache
+        CACHE = {};
+        return function() {
+            $("#overlay").fadeOut();
+            //return new Promise(function(resolve, reject) {
+                var promise = $.Deferred();
+                var url;
+                var urlPrefix = window.location.origin;
+                if (local) {
+                    urlPrefix = "https://tyres.clarksfield.com";
+                }
+                if (searchMode === availableModes.brand) {
+                   // url = urlPrefix + "/tyreadvanceserch/index/parentcetegory";
+                    var siteBaseUrl = window.location.href;
+                    if(siteBaseUrl.indexOf('battery-brand') !== -1) {
+                        url = urlPrefix + "/api/battery.json";
+                    } else {
+                        url = urlPrefix + "/api/all-data.json";    
+                    }
+		            
+                } else if (searchMode === availableModes.size) {
+                    url = urlPrefix + "/tyreadvanceserch/index/" + getPath();
+                } else {
+                    promise.reject(new Error("No Mode Available for " + searchMode));
+                }
+                // Check if CACHED data exists
+                if (CACHE[url] !== undefined) {
+                    promise.resolve(CACHE[url]);
+                } else {
+                    // $("#overlay").fadeIn();
+                 //   console.log('SENDING: ', url);
+                    $.get(url)
+                        .then(function(response) {
+		                    // Store in Cache
+			               // console.log('RESPONSE:', response);
+                            CACHE[url] = response;
+                            // $("#overlay").fadeOut();
+                            promise.resolve(response);
+                        }, function(err) {
+                            // $("#overlay").fadeOut();
+                            console.error(err);
+                            promise.reject(err);
+                        });
+                }
+                return promise;
+            //});
+        };
+    }
+
+    getData = _cachedGetData();
+
+    // Script Entry Point
+    // Dropdowns with Select2
+
+
+    $("[data-selector]").select2();
+    brandOrWidthSelector = $('[data-selector="brand width"]').first();
+    modelOrProfileSelector = $('[data-selector="model profile"]').first();
+    variantOrRimSelector = $('[data-selector="variant rim"]').first();
+    // Add Event Listener on Dropdowns
+    brandOrWidthSelector.on("change", updateSelector(0, modelOrProfileSelector));
+    modelOrProfileSelector.on("change", updateSelector(1, variantOrRimSelector));
+    variantOrRimSelector.on("change", updateSelector(2, null));
+    // Toggle Event Listeners
+    $("[data-mode-toggle]").on("click", toggleSearchMode);
+    $("[data-search-toggle]").on("click", toggleState);
+    // Configure Search Button
+    $("[data-search-init]").on("click", submitSearch);
+    // Set search Mode
+    // searchMode = $("[data-mode-toggle].active")
+    //     .first()
+    //     .data("mode");
+
+    //      console.log("nitesh");
+    // console.log(searchMode);
+    //  console.log("nitesh");
+    searchMode='brand';
+    // Set current State
+
+
+    // currentToggleState = $("[data-search-toggle].active")
+    //     .first()
+    //     .data("state");
+    currentToggleState= getBrandCategoryID();
+    //  console.log("nitesh");
+    // console.log(currentToggleState);
+    //  console.log("nitesh");
+    getData().then(_init);
+});
+</script>
+
+
+<!-- <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script> -->
+<script>
+    require(['jquery'], function($){
+        $(function () {
+            $('.tooltip-button').on('click', function(event){
+                event.stopPropagation();
+                $('.tooltip-box').hide()
+                $(this).parent().find('.tooltip-box').show();
+            });
+
+            $(document).on('click', function (event) {
+                $('.tooltip-box').hide()
+            });
+        })
+    })
+</script>
+
+<script>
+ require(['jquery', 'underscore', 'owl_carousel', 'owl_config' ],
+            function ($,jQuery, _) {
+
+jQuery('ul.term-list').each(function(){
+  var LiN = jQuery(this).find('li').length;
+  if( LiN > 5){
+    jQuery('li', this).eq(5).nextAll().hide().addClass('toggleable');
+    jQuery(this).append('<span class="footer-link more">View Brands <i class="fa fa-angle-down"></i></span>');
+  }
+});
+jQuery('ul.term-list').on('click','.more', function(){
+  if( jQuery(this).hasClass('less') ){
+    jQuery(this).html('View Brands <i class="fa fa-angle-down"></i>').removeClass('less');
+  }else{
+    jQuery(this).html('Hide Brands <i class="fa fa-angle-up"></i>').addClass('less');
+  }
+  jQuery(this).siblings('li.toggleable').slideToggle();
+});
+
+
+jQuery('ul.all-tyre').each(function(){
+  var LiN = jQuery(this).find('li').length;
+  if( LiN > 5){
+    jQuery('li', this).eq(5).nextAll().hide().addClass('toggleable');
+    jQuery(this).append('<span class="footer-link more">View All Tyre Brands <i class="fa fa-angle-down"></i></span>');
+  }
+});
+jQuery('ul.all-tyre').on('click','.more', function(){
+  if( jQuery(this).hasClass('less') ){
+    jQuery(this).html('View All Tyre Brands <i class="fa fa-angle-down"></i>').removeClass('less');
+  }else{
+    jQuery(this).html('Hide All Tyre Brands <i class="fa fa-angle-up"></i>').addClass('less');
+  }
+  jQuery(this).siblings('li.toggleable').slideToggle();
+});
+
+});
+</script>
+
+
+
+<script type="text/javascript">
+
+        require(['jquery', 'underscore', 'owl_carousel', 'owl_config' ],
+            function ($, _) {
+                $(document).ready(function() {
+
+                    var slider_id = 3;
+                    var slider_config = {"title":"New","show_title":"0","status":"1","scheduled_ajax":"1","nav":"1","dots":"0","center":"1","items":"3","loop":"1","margin":"0","merge":null,"URLhashListener":null,"stagePadding":"0","lazyLoad":"1","transition":"slide","autoplay":"1","autoplayTimeout":"4000","autoplayHoverPause":"1","autoHeight":"0","nav_brk1":"1","items_brk1":"1","nav_brk2":"1","items_brk2":"1","nav_brk3":"1","items_brk3":"1","nav_brk4":"1","items_brk4":"1"};
+
+                    var items = ((slider_config.items >= 2 && slider_config.items != null) ? slider_config.items : 3);
+                    if(slider_config.transition != 'slide') {
+                        items = 3;
+                    }
+
+                    var stagePadding = slider_config.stagePadding != '' ? parseInt(slider_config.stagePadding) : 0;
+                    var animate_Out = slider_config.transition != 'fadeOut' ? true : false;
+
+
+                                        $('.owl-carousel-custom-'+slider_id).on('initialize.owl.carousel', function(event){
+                        var $this = $(this);
+                        var carouselItems = $this.children();
+                        var nrOfElements = carouselItems.length;
+                        var requestUrl = 'https://tyres.clarksfield.com/ajaxowl/banner/validity/slider_id/1/';
+                        $.get({
+                            url: requestUrl,
+                            cache: false,
+                            async: false
+                        }, function(responseData) {
+                            var invalidBanners = responseData.invalidBanners;
+                            if (invalidBanners) {
+                                for (var i=0; i<nrOfElements; i++) {
+                                    var itemClasses = $(carouselItems[i]).get(0).className.split(' ');
+                                    if (_.intersection(itemClasses, invalidBanners).length) {
+                                        $(carouselItems[i]).remove();
+                                    }
+                                }
+                            }
+                        });
+                    });
+                     /** Lazyload bug when fewer items exist in the carousel then the ones displayed */
+                    $('.owl-carousel-custom-'+slider_id).on('initialized.owl.carousel', function(event){
+                        var scopeSize = event.page.size;
+                        for (var i = 0; i < scopeSize; i++){
+                            var imgsrc = $(event.target).find('.owl-item').eq(i).find('img').attr('data-src');
+                            $(event.target).find('.owl-item').eq(i).find('img').attr('src', imgsrc);
+                            $(event.target).find('.owl-item').eq(i).find('img').attr('style', 'opacity: 1;');
+                        }
+                    });
+
+                    $('.owl-carousel-custom-'+slider_id).owlCarousel({
+                        nav               :parseInt(slider_config.nav) == 1 ? true : false,
+                        dots              :parseInt(slider_config.dots) == 1 ? true : false,
+                        center            :(slider_config.center == 1 && animate_Out) ? true : false,
+                        items             :3,
+                        loop              :parseInt(slider_config.loop) == 1 ? true : false,
+                        margin            :(slider_config.margin != '' && animate_Out) ? parseInt(slider_config.margin) : 0,
+                        stagePadding      :parseInt(slider_config.center) == 1 ? 0 : stagePadding,
+                        lazyLoad          :parseInt(slider_config.lazyLoad) == 1 ? true : false,
+                        autoplay          :parseInt(slider_config.autoplay) == 1 ? true : false,
+                        autoplayTimeout   :(parseInt(slider_config.autoplayTimeout) > 0 && slider_config.autoplayTimeout != null) ? parseInt(slider_config.autoplayTimeout) : 3000,
+                        autoplayHoverPause:parseInt(slider_config.autoplayHoverPause) == 1 ? true : false,
+                        autoHeight        :parseInt(slider_config.autoHeight) == 1 ? true : false,
+                        animateOut        :slider_config.transition == 'slide' ? false : slider_config.transition,
+
+
+                        responsive:{
+                            0:{
+                                nav     :parseInt(slider_config.nav_brk1) == 1 ? true : false,
+                                items   :parseInt(slider_config.items_brk1  >= 0 ? slider_config.items_brk1 : 0),
+                            },
+                            768:{
+                                nav     :parseInt(slider_config.nav_brk2) == 1 ? true : false,
+                                items   :parseInt(slider_config.items_brk2  >= 0 ? slider_config.items_brk2 : 0),
+                            },
+                            1024:{
+                                nav     :parseInt(slider_config.nav_brk3) == 1 ? true : false,
+                                items   :3,
+                            },
+                            1280:{
+                                nav     :parseInt(slider_config.nav_brk4) == 1 ? true : false,
+                                items   :3,
+                            }
+                        }
+                    });
+
+                    $('.owl-carousel-custom-'+slider_id).on('resized.owl.carousel', function (event) {
+                        var $that = $(this);
+                        setTimeout(function(){
+                            $that.find('.owl-height').css('height', $that.find('.owl-item.active').height());
+                        }, 1);
+                    });
+
+                    $('.owl-carousel-custom-'+slider_id).on('initialized.owl.carousel', function(event) {
+                        setTimeout(function(){
+                            $('.owl-thumbs').each(function() {
+                                if (!$('.owl-thumbs').children().length) {$(this).remove();}
+                            });
+                            $('.cssload-loader').parent().remove();
+                        }, 370);
+                    });
+
+                    setTimeout(function(){
+                        var $that = $('.owl-carousel-custom-'+slider_id);
+                        $that.find('.owl-height').css('height', $that.find('.owl-item.active').height());
+                    }, 1);
+
+                });
+            });
+
+    require(['jquery'], function($) {
+        $( "#testimonialPopup1, #testimonialPopup2" ).on('shown.bs.modal', function(){
+            var src = $(this).find('iframe').data('src');
+            $(this).find('iframe').attr('src', src)
+        });
+        $( "#testimonialPopup1, #testimonialPopup2" ).on('hide.bs.modal', function(){
+            $(this).find('iframe').attr('src', '')
+        });
+    });
+    
+    require([ "jquery" ], function($){
+        $(".brand-price").insertAfter(".logo-card");
+        //$(".logo-card faq-section col-md-12").insertBefore(".brand-price");
+		if (window.matchMedia('(max-width: 767px)').matches) {
+			$( ".category-description" ).insertBefore( ".list_img_wrap" );
+		}
+	});
+
+</script>
+
+
+
+
+<?php
+ if ($current_category_id_path == 3404){
+        echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('battery-page-css')->toHtml();
+
+        }
+?>

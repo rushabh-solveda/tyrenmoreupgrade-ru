@@ -1,0 +1,20 @@
+{
+    "name": "webkul/categorymassupload",
+    "description": "Category Massupload For Magento2",
+    "require": {
+        "magento/project-community-edition": "2.2.*"
+    },
+    "type": "magento2-module",
+    "version": "2.0.0",
+    "license": [
+        "proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Webkul\\CategoryMassUpload\\": ""
+        }
+    }
+}

@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style type="text/css">
+	.page-bottom {
+    background: #f5f5f5;
+    padding: 20px 5px;
+}
+.accordion {
+  width: 100%;
+  max-width: 1000px;
+  margin: 5px auto;
+}
+.accordion-item {
+  margin:8px 0;
+  background-color: #fff;
+  color: #111;
+  padding: 7px 0px;
+}
+.accordion-item-header {
+  padding: 0.5rem 3rem 0.5rem 1rem;
+  min-height: 3.5rem;
+  line-height: 1.25rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  color: #666666;
+}
+.accordion-item-header:after {
+  content: "\002B";
+  position: absolute;
+  right: 1rem;
+  font-size: 2rem;
+}
+.accordion-item-header.active:after {
+  content: "\2212";
+}
+.accordion-item-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+.accordion-item-body-content {
+  padding: 1rem;
+  line-height: 1.5rem;
+  border-top: 1px solid;
+  border-image: linear-gradient(to right, transparent, #34495e, transparent) 1;
+}
+
+@media(max-width:767px) {
+  html { 
+    font-size: 14px; 
+  }
+}
+span.when {
+    font-weight: 700;
+    color: #000;
+    margin: 0px 5px;
+}
+span.read {
+    color: red;
+    font-weight: 600;
+    margin: 0px 20px;
+}
+.tyre_blog img {
+    width: 100%;
+    height: 100px;
+}
+.blog-section {
+    overflow: auto;
+    background-color: #fbf9f9;
+    color: #111;
+    padding: 7px 0px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
+}
+h1.page-bottom_title {
+    margin: 22px 0px;
+    font-size: 28px;
+}
+.tyre_blog h4 {
+    margin-bottom: 0;
+    color: #000;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.tyre_blog p {
+    padding: 0;
+    color: #666666;
+}
+.footer-middle, .footer-bottom {
+    width: 100%;
+}
+
+.footer-middle, .footer-middle p {
+    color: #a4a4a4;
+}
+.footer-middle {
+    background-color: #212121;
+}
+.footer-middle, .footer-bottom {
+    width: 100%;
+}
+.footer-middle {
+    background-color: #121214;
+    color: #777;
+    padding: 40px 0;
+}
+.page-footer {
+    margin-top: 0!important;
+}
+.footer-middle .block {
+    text-align: left;
+    line-height: 1.5;
+    margin: 0;
+    width: auto;
+}
+.footer-middle .block .block-title {
+    margin-bottom: 20px;
+}
+.block .block-title {
+    margin: 5px 0 10px;
+    line-height: 1.2;
+    font-size: 16px;
+}
+.footer-middle .block .block-title strong {
+    font-family: Lato;
+}
+.footer-middle .block .block-title strong {
+    color: #fff;
+}
+.footer-middle .block .block-title strong {
+    font-weight: 400;
+    padding: 0;
+    font-size: 16px;
+    color: #fff;
+    text-transform: none;
+}
+.footer-middle ul.links {
+    margin-top: -5px;
+}
+.footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.footer-middle ul.links li {
+    margin-bottom: 13px!important;
+}
+
+.footer-middle ul.links li {
+    position: relative;
+    padding: 10px 0;
+    line-height: 1;
+    display: block;
+    margin: 0;
+}
+
+.footer-middle ul.links li i {
+    margin-left: -5px;
+}
+.footer-middle ul.links li i {
+    color: #fff!important;
+    padding: 0px 5px;
+}
+.footer-middle a {
+    color: #fff;
+}
+.footer-bottom {
+    margin-top: -50px;
+    padding-top: 0;
+}
+.footer-middle, .footer-bottom {
+    width: 100%;
+}
+.footer-bottom .custom-block.f-right {
+    margin-left: 60px;
+}
+.footer-bottom .custom-block {
+    float: left;
+    line-height: 1;
+    margin: 3px 0;
+}
+
+.f-right {
+    float: right !important;
+}
+.footer-bottom .custom-block {
+    float: left;
+    line-height: 1;
+    margin: 3px 0;
+}
+.footer-bottom .custom-block img {
+    display: inline-block;
+    vertical-align: middle;
+}
+.footer-bottom .social-icons {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 60px;
+}
+.footer-bottom .social-icons a {
+    border-radius: 36px;
+}
+
+.footer-bottom a {
+    color: #80868a;
+}
+
+element.style {
+}
+.footer-bottom address {
+    background: none;
+}
+.footer-bottom address {
+    float: right;
+    line-height: 30px;
+    margin: 0;
+    color: #fff;
+}
+address {
+    background: #121211;
+    text-align: center;
+}
+address {
+    margin-bottom: 20px;
+    font-style: normal;
+    line-height: 1.42857143;
+}
+.cust_speak {
+    margin: 30px 0px;
+    clear: both;
+    overflow: auto;
+    padding: 30px 0px;
+}
+.reve_section {
+    background: #fff;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
+}
+.rev_content {
+    padding: 8px;
+}
+.rev_content h3 {
+    font-size: 21px;
+    color: red;
+}
+.rev_content h4 {
+    color: #000;
+    font-weight: 600;
+    font-size: 17px;
+}
+.cust_spek_title {
+    text-align: center;
+}
+.image_title_botom {
+    text-align: center;
+    margin: 22px 0px;
+}
+.cust_spek_title span {
+    color: #d31e23;
+    font-weight: 700;
+}
+.cust_spek_title h1 {
+    font-weight: 700;
+}
+.p03__boxs{
+  display:flex;
+  justify-content: center;
+}
+
+.p03__box {
+    background-color: #fbf9f9;
+    color: #666666;
+    width: 100%;
+    padding: 50px 15px 15px 15px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+}
+
+article.p03__box h3 {
+    color: #000;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.p03__box__title{
+  font-size: 2.2rem;
+    padding-top:-10rem;
+  font-family: "Circular Std Black";
+  color: white;
+  margin-left: 3rem;
+}
+
+.p03__box__text--top{
+  margin-left: 3rem;
+  font-size: 1.5rem;
+  color: white;
+  font-family: "Circular Std book";
+}
+
+.p03__box__text--bottom{
+  margin-left: 3rem;
+  margin-top:-1rem;
+  font-size: 1.5rem;
+  color: white;
+  font-family: "Circular Std book";
+}
+
+.p03__image {
+    z-index: 1;
+    margin-top: -33px;
+    margin-right: -27%;
+    border-radius: 50%;
+    border: 0.2rem solid black;
+}
+.cust_speak_bottom {
+    overflow: auto;
+    padding: 50px 0px;
+}
+
+</style>
+</head>
+<body>
+<!-- ===========================what our custmer speek====================== -->
+<div class="container-fluid">
+  <div class="container">
+    <div class="cust_speak">
+      <div class="cust_spek_title">
+        <h1><span>Customers</span> Speak</h1>
+      </div>
+      <div class="image_title_botom">
+        <img src="rule.png">
+      </div>
+      <div class="col-md-4">
+        <div class="reve_section">
+          <video width="100%" height="240" controls>
+           <source src="movie.mp4" type="video/mp4">
+           <source src="movie.ogg" type="video/ogg">
+          </video>
+          <div class="rev_content">
+            <h3>Mr. Abhishek Agrwal New Delhi</h3>
+            <h4>MAruti Swift ZXi</h4>
+          </div>
+        </div>
+      </div>
+     <div class="col-md-4">
+        <div class="reve_section">
+          <video width="100%" height="240" controls>
+           <source src="movie.mp4" type="video/mp4">
+           <source src="movie.ogg" type="video/ogg">
+          </video>
+          <div class="rev_content">
+            <h3>Mr. Abhishek Agrwal New Delhi</h3>
+            <h4>MAruti Swift ZXi</h4>
+          </div>
+        </div>
+      </div>
+    <div class="col-md-4">
+        <div class="reve_section">
+          <video width="100%" height="240" controls>
+           <source src="movie.mp4" type="video/mp4">
+           <source src="movie.ogg" type="video/ogg">
+          </video>
+          <div class="rev_content">
+            <h3>Mr. Abhishek Agrwal New Delhi</h3>
+            <h4>MAruti Swift ZXi</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cust_speak_bottom">
+      <div class="col-md-4">
+        <section class="p03__boxs">
+        <img class="p03__image"  src="us.jpg" alt="Lamp" width="80" height="80">
+        
+        <article class="p03__box">
+        <h3>Name Of Person</h3>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. </p>
+        </article>
+      
+     </section>
+      </div>
+      <div class="col-md-4">
+        <section class="p03__boxs">
+        <img class="p03__image"  src="us.jpg" alt="Lamp" width="80" height="80">
+        
+        <article class="p03__box">
+        <h3>Name Of Person</h3>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+        </article>
+      
+     </section>
+      </div>
+      <div class="col-md-4">
+        <section class="p03__boxs">
+        <img class="p03__image"  src="us.jpg" alt="Lamp" width="80" height="80">
+        
+        <article class="p03__box">
+        <h3>Name Of Person</h3>
+         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+        </article>
+      
+     </section>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ======================page bottom======================= -->
+<div class="container-fluid">
+   <div class="page-bottom">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-6">
+               <h1 class="page-bottom_title">Faq</h1>
+               <div class="accordion">
+                  <div class="accordion-item">
+                     <div class="accordion-item-header">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                     </div>
+                     <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                           Web Development broadly refers to the tasks associated with developing functional websites and applications for the Internet. The web development process includes web design, web content development, client-side/server-side scripting and network security configuration, among other tasks.
+                        </div>
+                     </div>
+                  </div>
+                  <div class="accordion-item">
+                     <div class="accordion-item-header">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                     </div>
+                     <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                           HTML, aka HyperText Markup Language, is the dominant markup language for creating websites and anything that can be viewed in a web browser.
+                        </div>
+                     </div>
+                  </div>
+                  <div class="accordion-item">
+                     <div class="accordion-item-header">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                     </div>
+                     <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                           <ul style="padding-left: 1rem;">
+                              <li>HTML, CSS, JavaScript</li>
+                              <li>Frameworks (CSS and JavaScript frameworks)</li>
+                              <li>Responsive Design</li>
+                              <li>Version Control/Git</li>
+                              <li>Testing/Debugging</li>
+                              <li>Browser Developer Tools</li>
+                              <li>Web Performance</li>
+                              <li>SEO (Search Engine Optimization)</li>
+                              <!-- <li>CSS Preprocessing</li> -->
+                              <li>Command Line</li>
+                              <li>CMS (Content Management System)</li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="accordion-item">
+                     <div class="accordion-item-header">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                     </div>
+                     <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                           HTTP, aka HyperText Transfer Protocol, is the underlying protocol used by the World Wide Web and this protocol defines how messages are formatted and transmitted, and what actions Web servers and browsers should take in response to various commands.
+                        </div>
+                     </div>
+                  </div>
+                  <div class="accordion-item">
+                     <div class="accordion-item-header">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                     </div>
+                     <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                           CORS, aka Cross-Origin Resource Sharing, is a mechanism that enables many resources (e.g. images, stylesheets, scripts, fonts) on a web page to be requested from another domain outside the domain from which the resource originated.
+                        </div>
+                     </div>
+                  </div>
+                  <div class="accordion-item">
+                     <div class="accordion-item-header">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                     </div>
+                     <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                           <ul style="padding-left: 1rem;">
+                              <li>HTML, CSS, JavaScript</li>
+                              <li>Frameworks (CSS and JavaScript frameworks)</li>
+                              <li>Responsive Design</li>
+                              <li>Version Control/Git</li>
+                              <li>Testing/Debugging</li>
+                              <li>Browser Developer Tools</li>
+                              <li>Web Performance</li>
+                              <li>SEO (Search Engine Optimization)</li>
+                              <!-- <li>CSS Preprocessing</li> -->
+                              <li>Command Line</li>
+                              <li>CMS (Content Management System)</li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="accordion-item">
+                     <div class="accordion-item-header">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                     </div>
+                     <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                           HTTP, aka HyperText Transfer Protocol, is the underlying protocol used by the World Wide Web and this protocol defines how messages are formatted and transmitted, and what actions Web servers and browsers should take in response to various commands.
+                        </div>
+                     </div>
+                  </div>
+                  <div class="accordion-item">
+                     <div class="accordion-item-header">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                     </div>
+                     <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                           CORS, aka Cross-Origin Resource Sharing, is a mechanism that enables many resources (e.g. images, stylesheets, scripts, fonts) on a web page to be requested from another domain outside the domain from which the resource originated.
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-6">
+               <h1 class="page-bottom_title">TNM Try Blog</h1>
+               <div class="blog-section">
+                  <div class="tyre_blog">
+                     <div class="col-md-3">
+                        <img src="tyre.jpg">
+                     </div>
+                     <div class="col-md-9">
+                        <h4>Select Tyre For Your Bike Or Car</h4>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's</p>
+                        <p><span class="when">December 26,2019</span><span class="read">Read More...</span></p>
+                     </div>
+                  </div>
+                  <div class="tyre_blog">
+                     <div class="col-md-3">
+                        <img src="tyre.jpg">
+                     </div>
+                     <div class="col-md-9">
+                        <h4>Select Tyre For Your Bike Or Car</h4>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's</p>
+                        <p><span class="when">December 26,2019</span><span class="read">Read More...</span></p>
+                     </div>
+                  </div>
+                  <div class="tyre_blog">
+                     <div class="col-md-3">
+                        <img src="tyre.jpg">
+                     </div>
+                     <div class="col-md-9">
+                        <h4>Select Tyre For Your Bike Or Car</h4>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's</p>
+                        <p><span class="when">December 26,2019</span><span class="read">Read More...</span></p>
+                     </div>
+                  </div>
+                  <div class="tyre_blog">
+                     <div class="col-md-3">
+                        <img src="tyre.jpg">
+                     </div>
+                     <div class="col-md-9">
+                        <h4>Select Tyre For Your Bike Or Car</h4>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's</p>
+                        <p><span class="when">December 26,2019</span><span class="read">Read More...</span></p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- ==============================footer===================== -->
+<div class="container-fluid">
+  <footer class="page-footer">
+   <div class="footer">
+      <div class="footer-middle">
+         <div class="container">
+            <div class="row">
+               <div class="col-sm-4">
+                  <div class="block about-us-footer">
+                     <div class="block-title"><strong>Shop by Best Tyre Brands</strong></div>
+                     <div class="block-content">
+                        <ul class="links">
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Apollo">Apollo</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Bridgestone">Bridgestone</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="CEAT">CEAT</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Continental">Continental</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Good Year">Good Year</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Hankook">Hankook</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="JK">JK</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Kenda">Kenda</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Michelin">Michelin</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Nankang">Nankang</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Pirelli">Pirelli</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Yokohama">Yokohama</a></li>
+                        </ul>
+                     </div>
+                     <div class="block-title"><strong>Shop by Your Car Make &amp; Model</strong></div>
+                     <div class="block-content">
+                        <ul class="links">
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Audi">Audi</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="BMW">BMW</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Ford">Ford</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Maruti-Suzuki">Maruti-Suzuki</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Hyundai">Hyundai</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Tata">Tata</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Fiat">Fiat</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Renault">Renault</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Honda">Honda</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Toyota">Toyota</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Skoda">Skoda</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Mahindra">Mahindra</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Nissan">Nissan</a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-2">
+                  <div class="widget block block-static-block">
+                     <div class="combined-footer container-fluid">
+                        <div class="row">
+                           <div class="block col-xs-2">
+                              <div class="block-title"><strong>About</strong></div>
+                              <div class="block-content">
+                                 <ul class="links">
+                                    <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="About Us">About Us</a></li>
+                                    <li><a href="#">Board of Directors and Advisors</a></li>
+                                    <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Our Team">Our Team</a></li>
+                                    <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Customer Testimonials">Customer Testimonials</a></li>
+                                    <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Press">In the News</a></li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="block col-xs-8 ">
+                              <div class="block-title"><strong>CUSTOMER CENTRE</strong></div>
+                              <div class="block-content">
+                                 <ul class="links">
+                                    <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Terms and Conditions">Terms and Conditions</a></li>
+                                    <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Privacy Policy">Privacy Policy</a></li>
+                                    <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="#" title="Orders and Refunds">Orders and Refunds</a></li>
+                                 </ul>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <style>@media (max-width:480px){.about-us-footer,.help-and-tips-footer{display:none}.help-content{float:right!important}.combined-footer{padding-left:0;margin-left:-6px}}@media (min-width:481px){.combined-footer{display:none}}.footer-middle ul.links li{margin-bottom:13px!important}</style>
+                  </div>
+                  <!-- phone-footer -->
+                  <div class="block about-us-footer">
+                     <div class="block-title"><strong>About</strong></div>
+                     <div class="block-content">
+                        <ul class="links">
+                           <li><<i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/about" title="About Us">About Us</a></li>
+                           <li><a href="https://tyresnmore.com/all/board-of-directors-and-advisors/">Board of Directors</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/our-team" title="Our Team">Our Team</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/testimonials" title="Customer Testimonials">Customer Testimonials</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/about" title="Press">In the News</a></li>
+                        </ul>
+                     </div>
+                     <div class="block-title"><strong>Shop by Your Bike Make &amp; Model</strong></div>
+                     <div class="block-content">
+                        <ul class="links">
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/bike-tyres/bajaj.html" title="Bajaj">Bajaj</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/bike-tyres/hero-motors.html" title="Heo Motors">Heo Motors</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/bike-tyres/honda.html" title="Honda">Honda</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/bike-tyres/mahindra-and-mahindra.html" title="Mahindra">Mahindra</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/bike-tyres/royal-enfield.html" title="Royal Enfield">Royal Enfield</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/bike-tyres/suzuki.html" title="Suzuki">Suzuki</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/bike-tyres/tvs.html" title="TVS">TVS</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/bike-tyres/yamaha-tyres.html" title="Yamaha">Yamaha</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/bike-tyres/ktm.html" title="KTM">KTM</a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-2">
+                  <div class="block help-and-tips-footer">
+                     <div class="block-title"><strong>CUSTOMER CENTRE </strong></div>
+                     <div class="block-content">
+                        <ul class="links">
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/order" title="Orders and Refunds">Orders and Refunds</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/terms" title="Terms and Conditions">Terms and Conditions</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/privacy" title="Privacy Policy">Privacy Policy</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://blog.tyresnmore.com/" title="blog">Blog</a></li>
+                        </ul>
+                     </div>
+                     <div class="block-title"><strong>Shop By Tyre Size</strong></div>
+                     <div class="block-content">
+                        <ul class="links">
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/catalogsearch/advanced/result/?car_tyre_width=58&amp;car_tyre_aspect=13&amp;car_tyre_rim=25" title="145/80 R12">145/80 R12</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/catalogsearch/advanced/result/?car_tyre_width=60&amp;car_tyre_aspect=11&amp;car_tyre_rim=26" title="155/70 R13">155/70 R13</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/catalogsearch/advanced/result/?car_tyre_width=60&amp;car_tyre_aspect=13&amp;car_tyre_rim=26" title="155/80 R13">155/80 R13</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/catalogsearch/advanced/result/?car_tyre_width=61&amp;car_tyre_aspect=10&amp;car_tyre_rim=27" title="165/65 R14">165/65 R14</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/catalogsearch/advanced/result/?car_tyre_width=61&amp;car_tyre_aspect=13&amp;car_tyre_rim=27" title="165/80 R14">165/80 R14</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/catalogsearch/advanced/result/?car_tyre_width=62&amp;car_tyre_aspect=10&amp;car_tyre_rim=27" title="175/65 R14">175/65 R14</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/catalogsearch/advanced/result/?car_tyre_width=62&amp;car_tyre_aspect=10&amp;car_tyre_rim=28" title="175/65 R15">175/65 R15</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/catalogsearch/advanced/result/?car_tyre_width=63&amp;car_tyre_aspect=9&amp;car_tyre_rim=28" title="185/60 R15">185/60 R15</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/catalogsearch/advanced/result/?car_tyre_width=63&amp;car_tyre_aspect=10&amp;car_tyre_rim=28" title="185/65 R15">185/65 R15</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/catalogsearch/advanced/result/?car_tyre_width=63&amp;car_tyre_aspect=10&amp;car_tyre_rim=27" title="185/65 R14">185/65 R14</a></li>
+                           <li><i class="fa fa-caret-right" aria-hidden="true"></i><a href="https://tyresnmore.com/all/catalogsearch/advanced/result/?car_tyre_width=65&amp;car_tyre_aspect=10&amp;car_tyre_rim=28" title="205/65 R15">205/65 R15</a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-sm-4">
+                  <div class="block footer-contact-us">
+                     <div class="block-title"><strong>Contact Us</strong></div>
+                     <ul>
+                        <li style="list-style-type: none;" class="company-name-footer">
+                           <p>Tyresnmore Online Private Limited</p>
+                           <p style=" color: #fff; "><b>CIN:U25119DL2014PTC267768</b></p>
+                        </li>
+                     </ul>
+                     <div class="block-content">
+                        <ul class="contact-info">
+                           <li class="footer-company-location">
+                              <i class="fa fa-map-marker" aria-hidden="true"></i>
+                              <p><b>New Delhi:Registered Office</b>
+                                 <br>S-40, First Floor, Janta Market, Rajouri Garden, New Delhi, India 110027
+                              </p>
+                              <p><b>GSTIN No:07AAFCT0178A1ZP</b></p>
+                           </li>
+                        </ul>
+                        <ul>
+                           <li class="footer-company-location">
+                              <i class="fa fa-map-marker" aria-hidden="true"></i>
+                              <p><b>Bangalore</b>
+                                 <br>No 19/1 , 1st and 2nd floor, ST. John's Road , Near Commercial Street , Bangalore - 560042
+                              </p>
+                              <p><b>GSTIN No: 29AAFCT0178A1ZJ</b></p>
+                              <b>
+                              </b>
+                           </li>
+                           <b>
+                           </b>
+                        </ul>
+                        <b>
+                           <ul>
+                              <li class="footer-company-location">
+                                 <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                 <p><b>Pune</b>
+                                    <br>1st Floor, Sno 54, Pragati Gardan, Keshav Nagar Rd, Mundhawa, Pune, Maharashtra- 411036
+                                 </p>
+                                 <p><b>GSTIN No: 27AAFCT0178A1ZN</b></p>
+                                 <b>
+                                 </b>
+                              </li>
+                              <b> </b>
+                           </ul>
+                           <b>
+                              <ul>
+                                 <li class="footer-company-location">
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                    <p><b>Gurgaon</b>
+                                       <br>Village Hasanpur, Badshapur, Gurgaon, Haryana- 122001
+                                    </p>
+                                    <p><b>GSTIN No: 06AAFCT0178A1ZR</b></p>
+                                    <b>
+                                    </b>
+                                 </li>
+                                 <b> </b>
+                              </ul>
+                              <b>
+                                 <ul>
+                                    <li class="footer-company-location">
+                                       <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                       <p><b>Hyderabad</b>
+                                          <br>Ground Floor, Plot No. 30, Uma Nagar, Old Airport Road, Bowenpally, Secunderabad,, Hyderabad, Telangana, 500011
+                                       </p>
+                                       <p><b>GSTIN No: 36AAFCT0178A1ZO</b></p>
+                                    </li>
+                                 </ul>
+                                 <ul>
+                                    <li>
+                                      <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                       <p><b>Email:</b><a href="mailto:care@tyresnmore.com">care@tyresnmore.com</a></p>
+                                    </li>
+                                 </ul>
+                                 <ul>
+                                    <li>
+                                      <i class="fa fa-phone" aria-hidden="true"></i>
+                                       <p><b>Phone:</b>92.1275.1275</p>
+                                    </li>
+                                 </ul>
+                              </b>
+                           </b>
+                        </b>
+                     </div>
+                     <b><b>
+                     </b></b>
+                  </div>
+                  <b>
+                     <b>
+                        <p style="padding-top:20px">* Tyresnmore Online pvt. Ltd. reserves the right to ask for partial or full advance payment for the orders being placed.</p>
+                        <style>.footer-middle .contact-info b{font-family:Lato;color:#fff}.footer-middle .block .block-title strong{font-family:Lato}.footer-middle .contact-info p{line-height:1.5}@media (max-width:480px){.block-title,.footer-company-location,.company-name-footer{display:block}.footer-middle.contact-info{margin-top:0!important}.footer-contact-us{margin-left:-6px!important}}</style>
+                     </b>
+                  </b>
+               </div>
+            </div>
+         </div>
+      </div>
+      <b>
+         <b>
+            <div class="footer-bottom">
+               <div class="container">
+                  <div class="custom-block f-right">
+                     <div class="block-bottom">
+                        <div class="custom-block footer-payment" style="float:left;margin-right:86px;"><img style="max-width: 100%;" alt="" data-pagespeed-url-hash="4242449297" width="267" height="36" src="https://tyresnmore.com/pub/media/wysiwyg/smartwave/porto/footer/xpayment-icon.png.pagespeed.ic.UOJtdlr5Dc.webp" onerror="this.onerror=null;pagespeed.lazyLoadImages.loadIfVisibleAndMaybeBeacon(this);"></div>
+                        <div class="social-icons" style="float:right;">
+                           <a href="https://www.facebook.com/tyresnmore/" title="Facebook" target="_blank" rel="noopener"><i class="porto-icon-facebook" aria-hidden="true"></i></a>
+                           <a href="https://twitter.com/TyresnmoreIndia" title="Twitter" target="_blank" rel="noopener"><i class="porto-icon-twitter" aria-hidden="true"></i></a>
+                           <a href="https://linkedin.com/" title="Linkedin" target="_blank" rel="noopener"><i class="porto-icon-linkedin-squared" aria-hidden="true"></i></a>
+                        </div>
+                     </div>
+                     <style>@media (max-width:480px){.footer-payment{display:none}}.footer-bottom .container:before{display:none}.footer-bottom{margin-top:-50px;padding-top:0}.footer-bottom .social-icons{margin-left:-9px}.footer-bottom .social-icons a{border-radius:36px}.footer-bottom .social-icons a i{color:#171718!important}address{background:#121211;text-align:center}</style>
+                  </div>
+                  <address>Copyright - Tyresnmore Online Private Limited. All Rights Reserved.</address>
+               </div>
+            </div>
+         </b>
+      </b>
+   </div>
+   <b><b><a href="javascript:void(0)" id="totop" style="display: inline;"><em class="porto-icon-up-open"></em></a></b></b>
+</footer>
+</div>
+<script>
+	const accordionItems = document.querySelectorAll(".accordion-item-header");
+
+accordionItems.forEach(accordionItem => {
+  accordionItem.addEventListener("click", event => {
+
+    accordionItem.classList.toggle("active");
+    const accordionItemBody = accordionItem.nextElementSibling;
+    if(accordionItem.classList.contains("active")) {
+      accordionItemBody.style.maxHeight = accordionItemBody.scrollHeight + "px";
+    }
+    else {
+      accordionItemBody.style.maxHeight = 0;
+    }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<?php
+$blockObj= $block->getLayout()->createBlock('Magento\Catalog\Block\Product\View\Attributes');
+$blockObj->getAdditionalData();
+//print_r($block->getAdditionalData());
+    $_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+    $_product = $block->getProduct();
+    $rimlabel = $_product->getResource()->getAttribute('car_alloys_rim');
+    $holeslabel = $_product->getResource()->getAttribute('car_alloys_holes');
+    $colorlabel = $_product->getResource()->getAttribute('car_alloys_color');
+    $_additional = $blockObj->getAdditionalData();
+     ?>
+    <!-- Added By Mahesh Custom Atribute  Start -->
+    <?php 
+     $skulabel = $_product->getResource()->getAttribute('sku');
+    if($_product->getSku()):?>
+    <!-- <div id="sku_id"><b>Sku : <span><?php echo $_product->getSku(); ?></span></b></div> -->
+     <strong class="text_left11"><?=$skulabel->getFrontend()->getLabel($_product);?> :</strong> <span class="value_right1"><b><?=$_product->getSku()?></b></span>
+    <?php endif;?>
+    <!-- Alloy Attribute -->
+    <?php $rim  = $_product->getAttributeText('car_alloys_rim');
+          $holes  = $_product->getAttributeText('car_alloys_holes');
+          $color  = $_product->getAttributeText('car_alloys_color');
+     ?>
+     <?php if($rim):?>
+    <strong class="text_left11"><?=$rimlabel->getFrontend()->getLabel($_product);?> :</strong> <span class="value_right1"><?=$rim?></span>
+    <?php endif;?>
+     <?php if($holes):?>
+    <strong class="text_left11"><?=$holeslabel->getFrontend()->getLabel($_product);?> :</strong> <span class="value_right1"><?=$holes?></span>
+    <?php endif;?>
+     <?php if($color):?>
+    <strong class="text_left11"><?=$colorlabel->getFrontend()->getLabel($_product);?> :</strong> <span class="value_right1"><?=$color?></span>
+    <?php endif;?>
+    <!-- End -->
+    <?php if($_product->getAmpere()):?>
+    <strong class="text_left11">Ampere</strong> <span class="value_right1"><?php echo $_product->getAmpere(); ?></span>
+    <?php endif;?>
+    <?php if($_product->getFreeWarranty()):?>
+    <strong class="text_left11"> Free Warranty </strong> <span class="value_right1"><?php echo $_product->getFreeWarranty(); ?></span>
+    <?php endif;?>
+     <?php if($_product->getTerminal()):?>
+    <strong class="text_left11">Terminal</strong><span class="value_right1"><?php echo $_product->getTerminal(); ?></span>
+    <?php endif;?>
+    <!-- End -->
+    <?php if ( $_additional = $blockObj->getAdditionalData()) :?>
+         <?php foreach ($_additional as $_data) :
+                  if($_data['label'] !== "warranty_period" && $_data['label'] !== "Description" && $_data['label'] !== "specifications" &&  $_data['label'] !== "faq" ){ ?>
+                  <div class="attriute-section">
+                    <strong class="text_left11"><?= $block->escapeHtml($_data['label']) ?></strong>
+                    <span class="value_right1"><?= /* @noEscape */ $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></span>
+                  </div>
+             <?php } ?>
+                    
+            <?php endforeach; ?>
+        <?php endif ?>
+<?php
+echo $this->getLayout()
+->createBlock('Magento\Cms\Block\Block')
+->setBlockId('genuine_and_verified')
+->toHtml();
+?>
+      

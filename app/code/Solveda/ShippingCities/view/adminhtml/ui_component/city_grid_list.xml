@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">city_grid_list.city_grid_list_data_source</item>
+        </item>
+    </argument>
+    <settings>
+		<spinner>city_grid_list_columns</spinner>
+		<deps>
+			<dep>city_grid_list.city_grid_list_data_source</dep>
+		</deps>
+		<buttons>
+			<button name="add">
+				<url path="*/*/create"/>
+				<class>primary</class>
+				<label translate="true">Add New City</label>
+			</button>
+		</buttons>
+	</settings>
+    <dataSource name="city_grid_list_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>                
+				<param name="indexField" xsi:type="string">entity_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Solveda_ShippingCities::manage_cities</aclResource>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="city_grid_list_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+				<primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+		<settings>
+			<sticky>true</sticky>
+		</settings>
+		<bookmark name="bookmarks"/>
+		<columnsControls name="columns_controls"/>
+		<filters name="listing_filters"/>
+		<paging name="listing_paging"/>
+	</listingToolbar>
+    <columns name="city_grid_list_columns">
+		<settings>
+			<editorConfig>
+				<param name="selectProvider" xsi:type="string">city_grid_list.city_grid_list.city_grid_list_columns.ids</param>
+				<param name="enabled" xsi:type="boolean">true</param>
+				<param name="indexField" xsi:type="string">entity_id</param>
+				<param name="clientConfig" xsi:type="array">
+					<item name="saveUrl" path="shipping_city/city/inlineEdit" xsi:type="url"/>
+					<item name="validateBeforeSave" xsi:type="boolean">false</item>
+				</param>
+			</editorConfig>
+			<childDefaults>
+				<param name="fieldAction" xsi:type="array">
+					<item name="provider" xsi:type="string">city_grid_list.city_grid_list.city_grid_list_columns_editor</item>
+					<item name="target" xsi:type="string">startEdit</item>
+					<item name="params" xsi:type="array">
+						<item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+						<item name="1" xsi:type="boolean">true</item>
+					</item>
+				</param>
+			</childDefaults>
+		</settings>
+
+		<selectionsColumn name="ids">
+			<settings>
+				<indexField>entity_id</indexField>
+			</settings>
+		</selectionsColumn>
+
+		<column name="entity_id">
+			<settings>
+				<sorting>asc</sorting>
+				<label translate="true">Id</label>
+			</settings>
+		</column>
+
+		<column name="city_name">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">City</label>
+				<editor>
+					<editorType>text</editorType>
+					<validation>
+						<rule name="required-entry" xsi:type="boolean">true</rule>
+					</validation>
+				</editor>
+			</settings>
+		</column>
+
+		<column name="position">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Position</label>
+				<editor>
+					<editorType>text</editorType>
+					<validation>
+						<rule name="required-entry" xsi:type="boolean">true</rule>
+					</validation>
+				</editor>
+			</settings>
+		</column>
+
+		<column name="cod_available">
+			<argument name="data" xsi:type="array">
+				<item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+				<item name="config" xsi:type="array">
+					<item name="sortOrder" xsi:type="number">30</item>
+					<item name="filter" xsi:type="string">select</item>
+					<item name="label" translate="true" xsi:type="string">COD Available</item>
+					<item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+					<item name="dataType" xsi:type="string">select</item>
+				</item>
+			</argument>
+		</column>
+
+		<column name="enable_for_battery">
+			<argument name="data" xsi:type="array">
+				<item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+				<item name="config" xsi:type="array">
+					<item name="sortOrder" xsi:type="number">40</item>
+					<item name="filter" xsi:type="string">select</item>
+					<item name="label" translate="true" xsi:type="string">Enable for battery</item>
+					<item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+					<item name="dataType" xsi:type="string">select</item>
+				</item>
+			</argument>
+		</column>
+
+		<column name="status">
+			<argument name="data" xsi:type="array">
+				<item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+				<item name="config" xsi:type="array">
+					<item name="sortOrder" xsi:type="number">50</item>
+					<item name="filter" xsi:type="string">select</item>
+					<item name="label" translate="true" xsi:type="string">Status</item>
+					<item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+					<item name="dataType" xsi:type="string">select</item>
+				</item>
+			</argument>
+		</column>
+
+		<column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<!-- <item name="filter" xsi:type="string">dateRange</item> -->
+					<item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+					<item name="dataType" xsi:type="string">date</item>
+					<item name="label" xsi:type="string" translate="true">Created At</item>
+					<item name="sortOrder" xsi:type="number">60</item>
+				</item>
+			</argument>
+		</column>
+
+		<actionsColumn class="Solveda\ShippingCities\Ui\Component\Listing\Column\Actions" name="actions">
+			<settings>
+				<indexField>entity_id</indexField>
+				<resizeEnabled>false</resizeEnabled>
+				<resizeDefaultWidth>107</resizeDefaultWidth>
+			</settings>
+		</actionsColumn>
+
+	</columns>
+</listing>

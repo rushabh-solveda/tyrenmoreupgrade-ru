@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- <referenceContainer name="content">
+            <block 
+                class="Magento\Catalog\Block\Category\View" 
+                name="Solveda_Brand_Name" 
+                template="Solveda_Brand::category/authorized-brand.phtml">
+                <arguments>
+                    <argument name="resize_image" xsi:type="object">
+                        Solveda\Brand\ViewModel\ResizeImage
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer> -->
+        <referenceBlock name="category.image" template="Solveda_Brand::category/image.phtml">
+            <arguments>
+                <argument name="resize_image" xsi:type="object">
+                    Solveda\Brand\ViewModel\ResizeImage
+                </argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="category.image" remove="true" />
+        <referenceBlock name="category.description" template="Solveda_Brand::category/description.phtml">
+            <arguments>
+                <argument name="resize_image" xsi:type="object">
+                    Solveda\Brand\ViewModel\ResizeImage
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

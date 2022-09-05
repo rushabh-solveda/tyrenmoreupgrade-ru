@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="shipping_cities" resource="default" engine="innodb" comment="Shipping City">
+        <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment=""/>
+        <column xsi:type="varchar" length="255" name="city_name" comment=""/>
+        <column xsi:type="int" name="cod_available" default="1" comment=""/>
+        <column xsi:type="int" name="enable_for_battery" default="1" comment=""/>
+        <column xsi:type="int" name="status" default="1" comment=""/>
+        <column xsi:type="int" name="position" default="1" comment=""/>
+        <column xsi:type="int" name="display_input_for_city" default="0" comment=""/>
+        <column xsi:type="timestamp" name="created_at" comment="" default="CURRENT_TIMESTAMP"/>
+        
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>

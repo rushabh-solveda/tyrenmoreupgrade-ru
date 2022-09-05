@@ -1,0 +1,30 @@
+<?php
+/** @var Magento\Backend\Block\Template $block */
+
+/** @var Bodak\CheckoutCustomForm\Model\Data\CustomFields $customFields */
+
+$blockObj= $block->getLayout()->createBlock('Magento\Sales\Block\Adminhtml\Order\Invoice\View\Form');
+$orderId=explode("/",$blockObj->getOrderUrl());
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$order = $objectManager->create('Magento\Sales\Api\Data\OrderInterface')->load($orderId[8]);
+?>
+
+<?php //if($customFields): ?>
+    <section class="admin__page-section">
+        <div class="admin__page-section-title">
+            <span class="title"><?php /* @escapeNotVerified */ echo __('Other information') ?></span>
+        </div>
+        <div class="admin__page-section-content">
+            <div class="order-information">
+                <div class="box">
+                    <strong class="box-title"><span><?php /* @escapeNotVerified */ echo __('Your Business GST (Optional)') ?>
+                        
+                    </span></strong>
+                    <div class="box-content">
+                        <?php echo $order->getData()['custom_notes']; ?>
+                    </div>
+                </div> 
+        </div>
+    </section>
+<?php //endif; ?>

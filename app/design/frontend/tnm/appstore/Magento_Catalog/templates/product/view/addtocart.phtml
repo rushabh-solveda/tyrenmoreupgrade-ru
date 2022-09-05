@@ -1,0 +1,278 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+                                                        <!-- increeemenr dexreement page  -->
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+<input type="hidden" id="pnames" value="<?php echo $_product->getName(); ?>">
+<?php $enquire=$_product->getAttributeText('enquire_now');
+$getQty=$_product->getExtensionAttributes()->getStockItem()->getQty();
+if($enquire=='Yes' || $getQty==0)
+{
+?>
+<div class="box-tocart">
+<div>
+  <a class="enquire_nowbutton" href="javascript:void(0)" id="click-me">
+    Enquire Now</a>
+</div>
+
+
+
+<div style="
+    background-color: #eaecf1;
+    padding: 20px 15px 35px 15px !important;
+">
+
+<div style="
+    width: 100%;
+    margin-left: 0px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+"><div><span style="font-size: large;">Price includes&nbsp; GST</span></div>
+<div style="
+    padding-top: 15px;
+">Customers in Bangalore, Delhi NCR , Hyderabad will also get :<br><br></div>
+<div style="
+    padding-bottom: 15px;
+    text-transform: capitalize;
+"><strong style=""><span style="color: #d61d28;/* color: #fcc624; */">FREE </span>Wheel balancing  <br>You save <span style="/* color: #d61d28; *//* color: #fcc624; */">Rs.150 </span> per tyre !</strong></div>
+<div style="
+    padding-bottom: 15px;
+    text-transform: capitalize;
+"><strong><span style="color: #d61d28;/* color: #fcc624; */text-transform: uppercase;"> Free </span>tyre installation at your doorstep.&nbsp;</strong></div>
+<div style="
+    /* padding-bottom: 15px; */
+"><span style=" font-weight:900; color: #d61d28;/* color: #fcc624; */">FREE </span> 4 point Tyre check up for :<br><br></div>
+<div>
+<ul style="
+    list-style: disc;
+    font-size: 15px;
+    padding-left: 20px;
+">
+<li style="
+    list-style: disc;
+">Air pressure</li>
+<li style="
+    list-style: disc;
+">Uneven wear and tear</li>
+<li style="
+    list-style: disc;
+">Tyre Side Wall check</li>
+<li style="
+    list-style: disc;
+">Tyre Tread Depth test</li>
+</ul>
+
+</div>
+<!--</div>
+</div>-->
+
+
+  <div class=" visible-xs">
+<div class="seq_img"><img src="/media/wysiwyg/seq.jpg" alt=""></div>
+<div class="secure_text">Warranty : Our team will help you to register the product warranty as per T&C of the tyre manufacturer.</div>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+<?php
+}
+else
+{
+?>
+<?php if ($_product->isSaleable()) :?>
+<div class="box-tocart">
+    <div class="fieldset">
+        <?php if ($block->shouldRenderQuantity()) :?>
+        <div class="field qty">
+
+  <div class="quntity_sect">
+            <form class="fqty">
+              <div class="value-button" id="decrease" onclick="decreaseValue()" value="Decrease Value">-</div>
+
+                 <input type="number"
+                       name="qty"
+                       id="number"
+                       min="0"
+                       value="1"
+
+                       class="input-text qty"
+                       data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                       />
+              <div class="value-button" id="increase" onclick="increaseValue()" value="Increase Value">+</div>
+            </form>
+          </div>
+
+
+        </div>
+        <?php endif; ?>
+        <div class="actions">
+          <!--  <button type="submit"
+                    title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                    class="action primary tocart"
+                    id="product-addtocart-button" disabled>
+                <span><?= $block->escapeHtml($buttonTitle) ?></span>
+            </button> -->
+            <?= $block->getChildHtml('', true) ?>
+        </div>
+    </div>
+
+
+
+
+<div style="
+    background-color: #eaecf1;
+    padding: 20px 15px 35px 15px !important;
+">
+
+<div style="
+    width: 100%;
+    margin-left: 0px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+"><div><span style="font-size: large;">Price includes&nbsp; GST</span></div>
+<div style="
+    padding-top: 15px;
+">Customers in Bangalore, Delhi NCR , Hyderabad will also get :<br><br></div>
+<div style="
+    padding-bottom: 15px;
+    text-transform: capitalize;
+"><strong style=""><span style="color: #d61d28;/* color: #fcc624; */">FREE </span>Wheel balancing  <br>You save <span style="/* color: #d61d28; *//* color: #fcc624; */">Rs.150 </span> per tyre !</strong></div>
+<div style="
+    padding-bottom: 15px;
+    text-transform: capitalize;
+"><strong><span style="color: #d61d28;/* color: #fcc624; */text-transform: uppercase;"> Free </span>tyre installation at your doorstep.&nbsp;</strong></div>
+<div style="
+    /* padding-bottom: 15px; */
+"><span style=" font-weight:900; color: #d61d28;/* color: #fcc624; */">FREE </span> 4 point Tyre check up for :<br><br></div>
+<div>
+<ul style="
+    list-style: disc;
+    font-size: 15px;
+    padding-left: 20px;
+">
+<li style="
+    list-style: disc;
+">Air pressure</li>
+<li style="
+    list-style: disc;
+">Uneven wear and tear</li>
+<li style="
+    list-style: disc;
+">Tyre Side Wall check</li>
+<li style="
+    list-style: disc;
+">Tyre Tread Depth test</li>
+</ul>
+
+</div>
+<!--</div>
+</div>-->
+
+
+  <div class=" visible-xs">
+<div class="seq_img"><img src="/media/wysiwyg/seq.jpg" alt=""></div>
+<div class="secure_text">Warranty : Our team will help you to register the product warranty as per T&C of the tyre manufacturer.</div>
+</div>
+</div>
+</div>
+</div>
+<?php endif; }?>
+<script>
+function increaseValue() {
+  var value = parseInt(document.getElementById('number').value, 10);
+  value = isNaN(value) ? 0 : value;
+  value++;
+  document.getElementById('number').value = value;
+}
+
+function decreaseValue() {
+  var value = parseInt(document.getElementById('number').value, 10);
+  value = isNaN(value) ? 0 : value;
+  value < 1 ? value = 1 : '';
+  value--;
+  document.getElementById('number').value = value;
+}
+
+</script>
+ <script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+
+</script>
+<script type="text/javascript">
+  require(['jquery', 'jquery/ui'], function($){
+    $(document).ready(function() {
+      var pname=$("#pnames").val();
+      $("#project_title").val(pname);
+       $('#buy-now').insertBefore('#product-addtocart-button');
+});
+    /*moblie js*/
+    $(document).ready(function(){
+  if ($(window).width() <= 767) {
+     $( ".p_price" ).append( $( ".product-add-form" ) );
+     $( ".product-info-price" ).prepend( $( ".p_tittle" ) );
+     $( ".addtocart_tittle" ).append( $( ".secure_payment_sec" ) );
+     $( ".P_name" ).append( $( ".product-reviews-summary" ) );
+ }
+ });
+    /*close mobile js*/
+ });
+require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function(
+            $,
+            modal
+        ) {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: 'Enquire Now',
+                buttons: [{
+                    text: $.mage.__('Continue'),
+                    class: '',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }],
+                opened: function($Event) {
+                    $(".modal-footer").hide();
+                }
+            };
+
+            var popup = modal(options, $('#popup-modal'));
+            $("#click-me").on('click',function(){
+                $("#popup-modal").modal("openModal");
+            });
+
+        }
+    );
+</script>
+
+  <div class="secure_payment_sec hidden-xs">
+      <?php
+echo $this->getLayout()
+->createBlock('Magento\Cms\Block\Block')
+->setBlockId('secure_payments')
+->toHtml();
+?>
+</div>
+

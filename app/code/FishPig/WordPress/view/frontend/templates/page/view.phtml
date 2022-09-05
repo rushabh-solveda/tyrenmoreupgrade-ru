@@ -1,0 +1,187 @@
+<?php
+/**
+ * @category    FishPig
+ * @package     FishPig_WordPress
+ * @author      Ben Tideswell <help@fishpig.co.uk>
+ */
+?>
+<?php
+	
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$posts = $objectManager->create('\FishPig\WordPress\Model\ResourceModel\Post\Collection')
+	->addPostTypeFilter('post')
+	->setOrderByPostDate()
+	->addIsViewableFilter()
+	->setPageSize(5)
+	->load();
+?>
+<?php if (count($posts) > 0): ?>
+	<div id="blog-slider"  class="owl-carousel">
+	  <?php foreach($posts as $post): ?>
+		<div class="blog-page-slider">
+			  <div class="post-img">
+				<?php if ($image = $post->getFeaturedImage()): ?>
+					<a href="<?php echo $post->getUrl() ?>">
+						<img src="<?php echo $image->getImageByType('full') ?>" alt="<?php echo $this->escapeHtml($post->getPostTitle()) ?>" />
+					</a>
+				<?php endif; ?>
+			  </div>
+			  <div class="post-title">
+                <a class=""href="<?php echo $post->getUrl() ?>"><?php echo $this->escapeHtml($post->getPostTitle()) ?></a>
+              </div>
+<!--              <div class="post-date"><?php echo $post->getPostDate(); ?></div>-->
+        </div>
+	  <?php endforeach; ?>
+	</div>
+<?php endif; ?>
+
+<?php
+	
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$posts = $objectManager->create('\FishPig\WordPress\Model\ResourceModel\Post\Collection')
+	->addPostTypeFilter('post')
+    ->addTermFilter('care-maintenance', 'category')
+	->setOrderByPostDate()
+	->addIsViewableFilter()
+	->setPageSize(9)
+	->load();
+?>
+<?php if (count($posts) > 0): ?>
+<div class="blog-heading"><h2>Care and Maintenance</h2>
+	<ul id="care-maintenance"  class="owl-carousel post-list">
+		<?php foreach($posts as $post): ?>
+			<li>
+			  <div class="post-img">
+				<?php if ($image = $post->getFeaturedImage()): ?>
+					<a href="<?php echo $post->getUrl() ?>">
+						<img src="<?php echo $image->getImageByType('full') ?>" alt="<?php echo $this->escapeHtml($post->getPostTitle()) ?>" />
+					</a>
+				<?php endif; ?>
+			  </div>
+			  <div class="post-title">
+                <a href="<?php echo $post->getUrl() ?>"><?php echo $this->escapeHtml($post->getPostTitle()) ?></a>
+              </div>
+<!--				<p><?php echo $post->getPostExcerpt(40) ?></p>-->
+<!--              <div class="post-date"><p><?php echo $post->getPostDate(); ?></p></div>-->
+        </li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+
+<?php
+	
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$posts = $objectManager->create('\FishPig\WordPress\Model\ResourceModel\Post\Collection')
+	->addPostTypeFilter('post')
+    ->addTermFilter('tyresnmore-recommends', 'category')
+	->setOrderByPostDate()
+	->addIsViewableFilter()
+	->setPageSize(9)
+	->load();
+?>
+<?php if (count($posts) > 0): ?>
+  <div class="blog-heading"><h2>TyresNMore Recommends</h2>
+	<ul id="tyresnmore-recommends" class="owl-carousel post-list">
+		<?php foreach($posts as $post): ?>
+			<li>
+			  <div class="post-img">
+				<?php if ($image = $post->getFeaturedImage()): ?>
+					<a href="<?php echo $post->getUrl() ?>">
+						<img src="<?php echo $image->getImageByType('full') ?>" alt="<?php echo $this->escapeHtml($post->getPostTitle()) ?>" />
+					</a>
+				<?php endif; ?>
+			  </div>
+			  <div class="post-title">
+                <a href="<?php echo $post->getUrl() ?>"><?php echo $this->escapeHtml($post->getPostTitle()) ?></a>
+              </div>
+<!--				<p><?php echo $post->getPostExcerpt(40) ?></p>-->
+<!--              <div class="post-date"><p><?php echo $post->getPostDate(); ?></p></div>-->
+        </li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>
+<?php
+$blockObj= $block->getLayout()->createBlock('Clarksfield\Customersspeak\Block\CustomersspeakListData');
+$blockObj->getCustomersspeakCollection();
+  $_additional = $blockObj->getCustomersspeakCollection();
+
+
+
+?>
+<div class="blog-heading"><h2>Customer Speak</h2>
+  <ul id="customer-speak"  class="owl-carousel post-list">
+   <?php foreach ($_additional as $key => $data): ?>
+        <li>
+            <div class="reve_section">
+            <iframe width="100%" height="240" src="<?php  echo $data['content']?>">
+            </iframe>
+              <div class="rev_content">
+              <h4><span> Customer Location:</span> <?php echo $data["location"]; ?></h4>
+                <h3> Tyre Size <?php echo $data->getAuthor();?></h3>
+
+                <h3> Car :<?php echo $data->getTitle(); ?></h3>
+
+                 <h3 class="cust_text_video"> Customer Experience : <?php echo $data['experiance'];?>
+
+                  </h3>
+
+               </div>
+             </div>
+        </li>
+
+    <?php   endforeach;?>
+  </ul>
+</div>
+
+<script>
+
+(function  () {
+   require(["jquery","owlcarousel"],function($) {
+        $(document).ready(function() {
+                $(".post-list").owlCarousel({
+                    margin: 10,
+                    lazyLoad:true,
+                    loop: false,
+                    autoWidth: false,
+                    responsiveClass:true,
+                    responsive:{
+                        0:{
+                            items:1,
+                            dots: true,
+                            nav: true
+                        },
+                        767:{
+                            items:3,
+                            nav:true,
+                            dots: true
+                        }
+                    }
+                });
+
+            var owl = $('#blog-slider');
+                owl.owlCarousel({
+                    margin: 10,
+                    lazyLoad:true,
+                    loop: false,
+                    autoWidth: false,
+                    responsiveClass:true,
+                    responsive:{
+                        0:{
+                            items:1,
+                            dots: true,
+                            nav: true
+                        },
+                        767:{
+                            items:1,
+                            nav:true,
+                            dots: true
+                        }
+                    }
+                });
+        });
+    });
+})();
+
+</script>

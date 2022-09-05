@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
+/**
+ * Category view template
+ *
+ * @var $block \Magento\Catalog\Block\Category\View
+ */
+$helper = $block->getResizeImage();
+?>
+<div class="category-description">
+
+    <div class="row">
+        <div class="col-md-12">
+            <?php if($categoryBanner = $block->getCurrentCategory()->getCategoryBanner()) : ?>
+                <?php
+                    $categoryBannerImage = $helper->getBannerImage($categoryBanner);
+                    
+                ?>
+                <img src="<?= $categoryBannerImage ?>" />
+            <?php endif ?>
+        </div>
+        <div class="col-md-12 hidden-md hidden-lg">
+        
+            <?php 
+                $helper = $this->helper(Solveda\Brand\ViewModel\ResizeImage::class);
+                echo $this->getLayout()
+                    ->createBlock("Magento\Catalog\Block\Category\View")
+                    ->setResizeImage($helper)
+                    ->setTemplate("Solveda_Brand::category/image.phtml")
+                    ->toHtml();
+            ?>
+            
+        </div>
+    </div>
+
+    <div class="row">
+        <?php if ($_description = $block->getCurrentCategory()->getDescription()) : ?>
+            <div class="col-md-9">
+                <?= /* @noEscape */ $this->helper(Magento\Catalog\Helper\Output::class)->categoryAttribute(
+                    $block->getCurrentCategory(),
+                    $_description,
+                    'description'
+                ) ?>
+            </div>
+            <?php endif; ?>
+            <div class="col-md-3 hidden-xs hidden-sm">
+                <?php 
+                    $helper = $this->helper(Solveda\Brand\ViewModel\ResizeImage::class);
+                    echo $this->getLayout()
+                        ->createBlock("Magento\Catalog\Block\Category\View")
+                        ->setResizeImage($helper)
+                        ->setTemplate("Solveda_Brand::category/image.phtml")
+                        ->toHtml();
+                ?>
+            </div>
+    </div>
+</div>

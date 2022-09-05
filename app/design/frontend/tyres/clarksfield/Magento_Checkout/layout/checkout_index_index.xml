@@ -1,0 +1,290 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<body>
+    <!-- <referenceBlock name="top.search" remove="true"/>
+    <referenceBlock name="navigation.sections" remove="true"/> -->
+    <referenceBlock name="footer-container" remove="true"/>
+    <!-- <referenceBlock name="form.subscribe" remove="true"/>
+    <referenceBlock name="copyright" remove="true"/>
+    <referenceBlock name="wish-list-link" remove="true" />-->
+    <referenceBlock name="minicart" remove="true" /> 
+    <referenceBlock name="checkout.root">
+        <arguments>
+            <argument name="jsLayout" xsi:type="array">
+                <item name="components" xsi:type="array">
+                    <item name="checkout" xsi:type="array">
+                        <item name="children" xsi:type="array">
+                            <item name="steps" xsi:type="array">
+                                <item name="children" xsi:type="array"> 
+
+                                    <item name="shipping-step" xsi:type="array">
+                                        <item name="children" xsi:type="array">
+                                            <item name="shippingAddress" xsi:type="array">
+                                                <item name="children" xsi:type="array">
+                                                    <item name="shipping-address-fieldset" xsi:type="array">
+                                                        <item name="children" xsi:type="array">
+
+                                                            <item name="full_name" xsi:type="array">
+                                                                <item name="component" xsi:type="string">Magento_Checkout/js/form/element/full_name</item>
+                                                                <item name="config" xsi:type="array">
+                                                                    <item name="customScope" xsi:type="string">shippingAddress</item>
+                                                                    <item name="template" xsi:type="string">ui/form/field</item>
+                                                                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                                                                </item>
+                                                                <item name="provider" xsi:type="string">checkoutProvider</item>
+                                                                <item name="dataScope" xsi:type="string">shippingAddress.full_name</item>
+                                                                <item name="label" xsi:type="string">Full Name</item>
+                                                                <item name="sortOrder" xsi:type="string">1</item>
+                                                                <item name="validation" xsi:type="array">
+                                                                  <!--   <item name="min-words" xsi:type="number">2</item> -->
+                                                                    <item name="required-entry" xsi:type="string">true</item>
+                                                                </item>
+                                                            </item>
+                                                            
+                                                            <item name="telephone" xsi:type="array">
+                                                                <item name="validation" xsi:type="array">
+                                                                    <item name="min_text_length" xsi:type="number">10</item>
+                                                                    <item name="max_text_length" xsi:type="number">10</item>
+                                                                    <item name="validate-digits" xsi:type="number">1</item>
+                                                                </item>
+                                                                <item name="config" xsi:type="array">
+                                                                    <item name="tooltip" xsi:type="boolean">false</item>
+                                                                </item>
+                                                                <item name="sortOrder" xsi:type="number">41</item>
+                                                            </item>
+                                                            <item name="postcode" xsi:type="array">
+                                                                <item name="validation" xsi:type="array">
+                                                                    <item name="min_text_length" xsi:type="number">6</item>
+                                                                    <item name="max_text_length" xsi:type="number">6</item>
+                                                                    <item name="validate-digits" xsi:type="number">1</item>
+                                                                </item>
+                                                            </item>
+                                                            <item name="region_id" xsi:type="array">
+                                                                <item name="sortOrder" xsi:type="number">130</item>
+                                                            </item>
+                                                            <item name="country_id" xsi:type="array">
+                                                                <item name="config" xsi:type="array">
+                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                            
+                                        </item>
+                                    </item>
+
+                                    <item name="billing-step" xsi:type="array">
+                                        <item name="children" xsi:type="array">
+                                            <item name="payment" xsi:type="array">
+                                                <item name="children" xsi:type="array">
+                                                    <item name="payments-list" xsi:type="array">
+                                                        <item name="children" xsi:type="array">
+                                                            <!-- Billing forms start -->
+                                                            <item name="cashondelivery-form" xsi:type="array">
+                                                                <item name="children" xsi:type="array">
+                                                                    <item name="form-fields" xsi:type="array">
+                                                                        <item name="children" xsi:type="array">
+                                                                            <!-- form fields here -->
+
+                                                                            <item name="full_name" xsi:type="array">
+                                                                                <item name="component" xsi:type="string">Magento_Checkout/js/form/element/billing_full_name</item>
+                                                                                <item name="config" xsi:type="array">
+                                                                                    <item name="customScope" xsi:type="string">billingAddresscashondelivery</item>
+                                                                                    <item name="template" xsi:type="string">ui/form/field</item>
+                                                                                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                                                                                </item>
+                                                                                <item name="provider" xsi:type="string">checkoutProvider</item>
+                                                                                <item name="dataScope" xsi:type="string">billingAddresscashondelivery.full_name</item>
+                                                                                <item name="label" xsi:type="string">Full Name</item>
+                                                                                <item name="sortOrder" xsi:type="string">1</item>
+                                                                                <item name="validation" xsi:type="array">
+                                                                                    <item name="min-words" xsi:type="number">2</item>
+                                                                                    <item name="required-entry" xsi:type="string">true</item>
+                                                                                </item>
+                                                                            </item>
+
+                                                                            <item name="postcode" xsi:type="array">
+                                                                                <item name="validation" xsi:type="array">
+                                                                                    <item name="min_text_length" xsi:type="number">6</item>
+                                                                                    <item name="max_text_length" xsi:type="number">6</item>
+                                                                                    <item name="validate-digits" xsi:type="number">1</item>
+                                                                                </item>
+                                                                            </item>
+
+                                                                            <item name="company" xsi:type="array">
+                                                                                <item name="sortOrder" xsi:type="number">140</item>
+                                                                            </item>
+                                                                            <item name="country_id" xsi:type="array">
+                                                                                <item name="config" xsi:type="array">
+                                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                                </item>
+                                                                            </item>
+                                                                            
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                            <item name="pumbolt-form" xsi:type="array">
+                                                                <item name="children" xsi:type="array">
+                                                                    <item name="form-fields" xsi:type="array">
+                                                                        <item name="children" xsi:type="array">
+                                                                            <!-- form fields here -->
+
+                                                                            <item name="full_name" xsi:type="array">
+                                                                                <item name="component" xsi:type="string">Magento_Checkout/js/form/element/billing_full_name</item>
+                                                                                <item name="config" xsi:type="array">
+                                                                                    <item name="customScope" xsi:type="string">billingAddresscashondelivery</item>
+                                                                                    <item name="template" xsi:type="string">ui/form/field</item>
+                                                                                    <item name="elementTmpl" xsi:type="string">ui/form/element/input</item>
+                                                                                </item>
+                                                                                <item name="provider" xsi:type="string">checkoutProvider</item>
+                                                                                <item name="dataScope" xsi:type="string">billingAddresscashondelivery.full_name</item>
+                                                                                <item name="label" xsi:type="string">Full Name</item>
+                                                                                <item name="sortOrder" xsi:type="string">1</item>
+                                                                                <item name="validation" xsi:type="array">
+                                                                                    <item name="min-words" xsi:type="number">2</item>
+                                                                                    <item name="required-entry" xsi:type="string">true</item>
+                                                                                </item>
+                                                                            </item>
+
+                                                                            <item name="postcode" xsi:type="array">
+                                                                                <item name="validation" xsi:type="array">
+                                                                                    <item name="min_text_length" xsi:type="number">6</item>
+                                                                                    <item name="max_text_length" xsi:type="number">6</item>
+                                                                                    <item name="validate-digits" xsi:type="number">1</item>
+                                                                                </item>
+                                                                            </item>
+
+                                                                            <item name="company" xsi:type="array">
+                                                                                <item name="sortOrder" xsi:type="number">140</item>
+                                                                            </item>
+                                                                            <item name="country_id" xsi:type="array">
+                                                                                <item name="config" xsi:type="array">
+                                                                                    <item name="visible" xsi:type="boolean">false</item>
+                                                                                </item>
+                                                                            </item>
+                                                                            
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+                                                            </item>
+                                                            <!-- Billing forms end -->
+                                                        </item>
+                                                    </item>
+                                                    <item name="afterMethods" xsi:type="array">
+                                                        <item name="children" xsi:type="array">
+                                                            <item name="discount" xsi:type="array">
+                                                                <item name="config" xsi:type="array">
+                                                                    <item name="componentDisabled" xsi:type="boolean">false</item>
+                                                                </item>
+                                                            </item>
+                                                            <item name="coupon-link" xsi:type="array">
+                                                                <item name="config" xsi:type="array">
+                                                                    <item name="componentDisabled" xsi:type="boolean">false</item>
+                                                                </item>
+                                                            </item>
+                                                            <item name="coupon-list" xsi:type="array">
+                                                                <item name="config" xsi:type="array">
+                                                                    <item name="componentDisabled" xsi:type="boolean">false</item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+
+                            <item name="sidebar" xsi:type="array">
+                                <item name="children" xsi:type="array">
+                                    <item name="summary" xsi:type="array">
+                                        <item name="children" xsi:type="array">
+                                            <item name="discount" xsi:type="array">
+                                                <item name="config" xsi:type="array">
+                                                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                </item>
+                                                <item name="component" xsi:type="string">Magento_SalesRule/js/view/payment/discount</item>
+                                                <item name="children" xsi:type="array">
+                                                    <item name="errors" xsi:type="array">
+                                                        <item name="sortOrder" xsi:type="string">0</item>
+                                                        <item name="component" xsi:type="string">Magento_SalesRule/js/view/payment/discount-messages</item>
+                                                        <item name="displayArea" xsi:type="string">messages</item>
+                                                    </item>
+                                                </item>
+                                            </item>
+
+                                            <item name="coupon-link" xsi:type="array"> 
+                                                <item name="config" xsi:type="array">
+                                                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                </item>
+                                                <item name="component" xsi:type="string">Ambab_CouponList/js/coupon/link</item>
+                                            </item>
+                                            <item name="coupon-list" xsi:type="array">
+                                                <item name="config" xsi:type="array">
+                                                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                    </item>
+                                                <item name="component" xsi:type="string">Ambab_CouponList/js/coupon/list</item>
+                                                <item name="children" xsi:type="array">
+                                                    <item name="errors" xsi:type="array">
+                                                        <item name="sortOrder" xsi:type="string">0</item>
+                                                        <item name="component" xsi:type="string">Magento_SalesRule/js/view/payment/discount-messages</item>
+                                                        <item name="displayArea" xsi:type="string">messages</item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                            <item name="block-totals" xsi:type="array">
+                                                <item name="component" xsi:type="string">Magento_Checkout/js/view/cart/totals</item>
+                                                <item name="displayArea" xsi:type="string">totals</item>
+                                                <item name="config" xsi:type="array">
+                                                    <item name="template" xsi:type="string">Magento_Checkout/cart/totals</item>
+                                                </item>
+                                                <item name="children" xsi:type="array">
+                                                    <item name="subtotal" xsi:type="array">
+                                                        <item name="component"  xsi:type="string">Magento_Checkout/js/view/summary/subtotal</item>
+                                                        <item name="config" xsi:type="array">
+                                                            <item name="title" xsi:type="string" translate="true">Subtotal</item>
+                                                            <item name="template" xsi:type="string">Magento_Checkout/cart/totals/subtotal</item>
+                                                        </item>
+                                                    </item>
+                                                    <item name="discount" xsi:type="array">
+                                                        <item name="component" xsi:type="string">Magento_SalesRule/js/view/cart/totals/discount</item>
+                                                        <item name="config" xsi:type="array">
+                                                            <item name="title" xsi:type="string" translate="true">Discount</item>
+                                                        </item>
+                                                    </item>
+                                                    <item name="shipping" xsi:type="array">
+                                                        <item name="component"  xsi:type="string">Magento_Checkout/js/view/cart/totals/shipping</item>
+                                                        <item name="config" xsi:type="array">
+                                                            <item name="title" xsi:type="string" translate="true">Shipping</item>
+                                                            <item name="template" xsi:type="string">Magento_Checkout/cart/totals/shipping</item>
+                                                        </item>
+                                                    </item>
+                                                    <item name="grand-total" xsi:type="array">
+                                                        <item name="component"  xsi:type="string">Magento_Checkout/js/view/summary/grand-total</item>
+                                                        <item name="config" xsi:type="array">
+                                                            <item name="title" xsi:type="string" translate="true">Order Total</item>
+                                                            <item name="template" xsi:type="string">Magento_Checkout/cart/totals/grand-total</item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                    <item name="shipping-information" xsi:type="array">
+                                        <item name="config" xsi:type="array">
+                                            <item name="componentDisabled" xsi:type="boolean">true</item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </referenceBlock>
+</body>
+</page>

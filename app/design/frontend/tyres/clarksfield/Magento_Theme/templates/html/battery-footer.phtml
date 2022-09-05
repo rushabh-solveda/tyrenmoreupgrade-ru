@@ -1,0 +1,440 @@
+
+<?php 
+    $objectManager =  \Magento\Framework\App\ObjectManager::getInstance();        
+    $storeManager  = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+    $storeID       = $storeManager->getStore()->getStoreId(); 
+    $storeName     = $storeManager->getStore()->getName();
+?>
+
+
+
+ <!--  footer is start from here desktop -->
+<div>
+
+<a style="color: #fff!important;background: #00e676;border-radius: 50%;position: fixed;z-index: 1;right: 15px;bottom: 6rem;width: 60px;height: 60px;display: flex;font-size: 30px;align-items: center;justify-content: center;" href="//wa.me/message/CY23JMRASSV6E1"><i class="fa fa-whatsapp"></i></a>
+
+
+
+</div>
+
+<div class="container-fluid">
+  <div class="brand_section_last">
+    <div class="container">
+      <div class="row">
+       <div class="col-md-12">
+<div class="brand_last_inner">
+<p class="footer-seo-title-desktop h3">You can buy tyres online for the following  brand </p>
+<ul>
+ <?php  $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$catId = 376; //Parent Category ID
+$subCategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subCats = $subCategory->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php
+foreach ($subCats as $subcat) {
+  ?><?php
+$_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+$subcaturl = $subcat->getUrl();
+?>
+<li><a href="<?php echo $subcaturl ;?>" title="<?php echo $subcat->getName(); ?>"><?php echo $subcat->getName(); ?></a></li>
+
+<?php }?>
+</ul>
+</div>
+<div class="brand_last_inner">
+<p class="footer-seo-title-desktop h3">Check tyre prices and tyre size for your car from the list below </p>
+<ul>
+ <?php  $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$catId = 46; //Parent Category ID
+$subCategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subCats = $subCategory->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php
+foreach ($subCats as $subcat) {
+  ?><?php
+$_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+$subcaturl = $subcat->getUrl();
+?>
+<li><a href="<?php echo $subcaturl ;?>" title="<?php echo $subcat->getName(); ?>"><?php echo $subcat->getName(); ?></a></li>
+
+<?php }?>
+</ul>
+</div>
+<div class="brand_last_inner">
+<p class="footer-seo-title-desktop h3">Check tyre prices and tyre size for your bike from the list below </p>
+<ul>
+ <?php  $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$catId = 42; //Parent Category ID
+$subCategory = $objectManager->create('Magento\Catalog\Model\Category')->load($catId);
+$subCats = $subCategory->getChildrenCategories();
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+?>
+<?php
+foreach ($subCats as $subcat) {
+  ?><?php
+$_category = $objectManager->create('Magento\Catalog\Model\Category')->load($subcat->getId());
+$subcaturl = $subcat->getUrl();
+?>
+<li><a href="<?php echo $subcaturl ;?>" title="<?php echo $subcat->getName(); ?>"><?php echo $subcat->getName(); ?></a></li>
+
+<?php }?>
+</ul>
+</div>
+        
+      </div>
+    </div>  
+  </div>
+</div>
+<!-- ==============================footer Desktop===================== -->
+<div class="container-fluid">
+  <footer class="page-footer">
+   <div class="footer">
+      <div class="footer-middle footer_desktop">
+         <div class="container">
+            <div class="row">
+               
+               <?php echo $this->getLayout()
+                              ->createBlock('Magento\Cms\Block\Block')
+                              ->setBlockId('footer_top_1')
+                              ->toHtml();
+                              ?>
+               
+               <?php echo $this->getLayout()
+                              ->createBlock('Magento\Cms\Block\Block')
+                              ->setBlockId('footer_top_2')
+                              ->toHtml();
+                              ?>
+                               <?php echo $this->getLayout()
+                              ->createBlock('Magento\Cms\Block\Block')
+                              ->setBlockId('footer_top_3-battery')
+                              ->toHtml();
+                              ?>
+                              
+</div>      
+      <b>
+         <b>
+            <div class="footer-bottom">
+              <?php echo $this->getLayout()
+                              ->createBlock('Magento\Cms\Block\Block')
+                              ->setBlockId('Copyright ')
+                              ->toHtml();
+                              ?>
+              </div>
+            </b>
+          </b>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- ==============================footer===================== -->
+<!-- ==============================footer mobile view===================== -->
+<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('footer_mobile_content')->toHtml();?>
+<!-- ==============================footer mobile view end===================== -->
+
+<script>
+	const accordionItems = document.querySelectorAll(".accordion-item-header");
+
+accordionItems.forEach(accordionItem => {
+  accordionItem.addEventListener("click", event => {
+
+    accordionItem.classList.toggle("active");
+    const accordionItemBody = accordionItem.nextElementSibling;
+    if(accordionItem.classList.contains("active")) {
+      accordionItemBody.style.maxHeight = accordionItemBody.scrollHeight + "px";
+    }
+    else {
+      accordionItemBody.style.maxHeight = 0;
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+require(['jquery'], function($) {
+
+  $('.location_icone_1t').click(function(){ $("#collapseOne").slideToggle(); })
+  $('.location_icone_2').click(function(){ $("#collapsetwo").slideToggle(); })
+
+  $('.location_icone_3').click(function(){ $("#collapsethree").slideToggle(); })
+  $('.location_icone_4').click(function(){ $("#collapsefour").slideToggle(); })
+
+ $('.location_icone_5').click(function(){ $("#collapsefive").slideToggle(); })
+ $('.location_icone_6').click(function(){ $("#collapsesix").slideToggle(); })
+
+	// Polyfill for older browsers (just in case)
+    if (typeof sessionStorage !== "object" ||
+        typeof sessionStorage.setItem !== "function" ||
+        typeof sessionStorage.getItem !== "function" ||
+        typeof sessionStorage.removeItem !== "function") {
+		window.sessionStorage = function() {
+            return {
+                setItem: function(key, value) {
+                    document.cookie = key + "=" + value;
+                },
+                getItem: function(key) {
+                    var m = document.cookie.split(";");
+                    for (var i = 0; i < m.length; m++) {
+                        var g = m[i].split("=");
+                        if (g[0] === key) {
+                            return g[1];
+                        }
+                    }
+                    return undefined;
+                },
+                removeItem: function(key) {
+                    document.cookie = key + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                }
+            };
+        };
+    }
+
+	// Check if we need to show the modal (popup)
+	var store = sessionStorage.getItem("storefront");
+
+	if (store === null || store === undefined) {
+	    // We're ready to show modal here
+	    var modal = $('[data-modal="city"]');
+            modal.css("display", "block");
+            modal.addClass("in");
+	    $('body').css("overflow", "hidden");
+	  /*  $('.price').css({
+	    	opacity: "0.6",
+		filter: "blur(3px)"
+	});*/
+	}
+
+    // Define data-store-uri attribute on your link to activate
+    $("[data-store-uri]").on("click", function(e) {
+        try {
+            e.preventDefault();
+            e.stopPropagation();
+        } catch {}
+
+        // Define data-href attribute on your link
+        var uri = $(this).data("href");
+        sessionStorage.setItem("storefront", uri);
+		window.location.href = uri;
+        return false;
+    });});
+</script>
+
+
+<?php
+    $url = $this->getBaseUrl();
+    $urlBase = $this->getBaseUrl();
+    $url = explode("/", $url);
+    $targetUrl = "";
+    for($i = 0; $i < sizeof($url) - 1; $i ++)
+    {
+        $targetUrl .= $url[$i] . "/";
+    }
+    $imageLocation = $targetUrl . "pub/media/wysiwyg/phone_icon.png";
+    $imagehomeLocation = $targetUrl . "pub/media/wysiwyg/mob-menu-home.png";
+    $imagecallLocation = $targetUrl . "pub/media/wysiwyg/mob-menu-call.png";
+    $imagecallEnquire = $targetUrl . "pub/media/wysiwyg/mob-menu-enquire.png";
+?>
+<!-- <a href="tel:9212751275"  class="mobile-view-call-btn" >Call Us</a> -->
+<div class="container mob-menu-bar">
+    <div class="row">
+    <div class="col-md-3 col-xs-3 col-sm-3 border-right-white">
+            <a href="tel:9212751275">
+                <img src="<?php echo $imagecallLocation; ?>" alt="Call">
+            </a>
+            <span class="header_title">Call</span>
+        </div>
+        <div class="col-md-3 col-xs-3 col-sm-3 border-right-white">
+          <a href="#!" id="click-doorstep">
+            <span class="header_title fixed-footer-mobile">DOORSTEP FITMENT</span>
+            <span class="header_title read_more">Read More</span>
+          </a>
+        </div>
+        <div class="col-md-3 col-xs-3 col-sm-3 border-right-white">
+            <!-- <span data-action="toggle-nav" class="action nav-toggle"><span>Toggle Nav</span></span>
+            <span class="header_title">Category</span> -->
+            <a href="#" id="click-header">
+              <span class="header_title fixed-footer-mobile">Pay on delivery</span>
+              <span class="header_title read_more">Read More</span>
+            </a>
+        </div>
+      <!--  <div class="col-md-3 col-xs-3 col-sm-3" id="enquireform"> -->
+	<div class="col-md-3 col-xs-3 col-sm-3" data-form1="open" >
+          <img style="filter: brightness(0) invert(1);" src="<?php echo $imagecallEnquire; ?>" alt="enquire">
+          <span class="header_title web-chat">Enquire</span>
+      </div>
+    </div>
+</div>
+
+<div id="doorstep-modal" style="display:none;">
+    <div class="heading">
+        <p style=" font-size: 2rem; ">DOORSTEP FITMENT & PAY On DELIVERY</p>
+    </div>
+    <div class="content">
+        <p>What is included in Doorstep tyre fitting at your home or office?</p>
+
+        <p>TyreNmore has a dedicated team that will reach your address and provide the following services:</p>
+        <ul>
+            <li>Replace old tyres with new tyres</li>
+            <li>Inflate and check the air pressure</li>
+            <li>Wheel balancing of new tyres(For car tyres only)</li>
+        </ul>
+        <br />
+        <p>This option of DOORSTEP TYRE FITTING & PAY ON DELIVERY is available only for customers in</p>
+        <ul>
+            <li>Bangalore</li>
+            <li>Hyderabad</li>
+            <li>Delhi NCR</li>
+        </ul>
+
+        <p>We will come to your address and give you the best service for installing tyres on your car or bike.</p>
+
+        <p>You save time, your time is important.</p>
+
+        <p>For any clarification call <a href="tel:9212751275" target="_blank">92.1275.1275</a></p>
+
+        <p>You can also pay on delivery of tyres by debit card or credit card –our team carries the card machine for your convenience,or you can by cash or mobile wallet,net banking.</p>
+
+        <p>For customers in cities OTHER than the cities mentioned above , we provide delivery of tyres to the address provided by you through courier service (like FEDEX).</p>
+    </div>
+</div>
+
+<div id="header-modal" style="display:none;">
+    <div class="heading">
+        <p style=" font-size: 2rem; ">PAY ON DELIVERY</p>
+    </div>
+    <div class="content">
+        <p>If you don’t want to pay online now, <strong>in the payment section of the website select PAY ON DELIVERY option.</strong></p>
+        <p>The options of PAY ON DELIVERY & DOORSTEP TYRE FITTING are <strong>available</strong> only for customers <strong>in</strong></p>
+        <ul>
+            <li>Bangalore</li>
+            <li>Hyderabad</li>
+            <li>Delhi NCR</li>
+        </ul>
+        <br/>
+        <p>Our team will come to your address to fit the tyres so you can pay by:</p>
+        <ul>
+            <li>Debit card/credit card-we will send credit/debit card payment machine with tyre fitting team</li>
+            <li>Cash</li>
+            <li>Mobile wallet(Paytm, Payumoney etc.)</li>
+        </ul>
+
+        <p>For any clarification call <a href="tel:9212751275" target="_blank">92.1275.1275</a></p>
+
+        <p>For customers in cities OTHER than the cities mentioned above , please pay with our online payment options at the time of placing the order.</p>
+
+        <p><strong>India’s # 1 tyre retailer online-Tyresnmore.com</strong></p>
+
+        <p>More than 15,000 smiling tyre customers got tyres fitted at home with <a href="tyresnmore.com" target="_blank">TyresNmore.com</a></p>
+<p>Tyresnmore Online pvt. Ltd. reserves the right to ask for partial or full advance payment for the orders being placed.  </p>
+    </div>
+</div>
+
+
+<script type="application/ld+json">
+{ "@context" : "http://schema.org",
+  "@type" : "Organization",
+  "url" : "https://tyresnmore.com/",
+  "contactPoint" : [
+    { "@type" : "ContactPoint",
+      "telephone" : "+919212751275",
+      "contactType" : "customer service"
+    } ] }
+</script>
+<script type="text/javascript">
+require(['jquery'], function($){
+jQuery(document).click(function(){
+if (jQuery('#shipping-method-buttons-container').size() == 1) { jQuery('.optional-pay-button').hide();} else {
+    jQuery('.optional-pay-button').show();
+  }
+});
+  });
+</script>
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function(
+            $,
+            modal
+        ) {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: '',
+                buttons: [{
+                    text: $.mage.__('Close'),
+                    class: '',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }]
+            };
+
+            var popup = modal(options, $('#header-modal'));
+            $("#click-header").on('click',function(){
+                $("#header-modal").modal("openModal");
+            });
+             var popup2 = modal(options, $('#doorstep-modal'));
+            $(" #click-doorstep").on('click',function(){
+                $("#doorstep-modal").modal("openModal");
+            });
+	    $('#enquireform').click(function(e) {
+                $('.popup-right').animate({"margin-right": '220'});
+                $('#pop_button-right').animate({"margin-right": '280'});
+            });
+	    $(".close").click(function() {
+      $('.youtube-iframe').each(function(index) {
+        $('.youtube-iframe').attr('src', $(this).attr('src'));
+        return false;
+      });
+  });
+        }
+    );
+
+//jQuery('#enquireform').click(function(jQuery) {
+//                    jQuery('.popup-right').animate({"margin-right": '220'});
+//                    jQuery('#pop_button-right').animate({"margin-right": '280'});
+//    });
+</script>
+<!-- <script>
+   require(['jquery', 'jquery/ui'], function($){ 
+    $(".location_icone_1t").click(function(){
+  $(".location_icone_1t").toggleClass("active1");
+   
+});  
+ });
+</script> -->
+<script>
+require(['jquery'], function($){ 
+$(document).ready(function($){
+  $(".location_icone_1t").click(function(){
+    $(".location_icone_1t").toggleClass("main");
+  });
+});
+});
+</script>
+  
+<style>
+.checkout-index-index .payment-group .payment-method .payment-method-title.field.choice input[type="radio"]
+{background-color: transparent !important ; }
+.checkout-index-index .payment-group .payment-method._active .payment-method-title.field.choice input[type="radio"]
+{background-color: #d31f24 !important ; }
+
+
+#checkout input[type="checkbox"] { height:18px; width:18px;}
+.checkout-index-index .payment-method-content .checkout-agreements-block .checkout-agreement button.action.action-show span {font-size:12px;}
+
+.payment-option._collapsible.opc-payment-additional.discount-code {
+    display: none;
+}
+
+.modal-popup.agreements-modal{z-index:999999;}
+
+
+
+</style>

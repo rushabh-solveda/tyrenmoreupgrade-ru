@@ -1,0 +1,13 @@
+<?php
+$_item = $block->getItem();
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$priceHelper = $_objectManager->create('Magento\Framework\Pricing\Helper\Data'); // Instance of Pricing Helper
+if ($_item->getGstExclusive() ) {
+    $taxableAmount = $_item->getRowTotal();
+    $subTotal = $_item->getRowTotal() +  $_item->getCgstAmount() + $_item->getSgstAmount() + $_item->getIgstAmount() + $_item->getUtgstAmount();
+} else {
+    $taxableAmount = $_item->getRowTotal() - $_item->getCgstAmount() - $_item->getSgstAmount() - $_item->getIgstAmount() - $_item->getUtgstAmount();
+}
+$formattedPrice = $priceHelper->currency($taxableAmount, true, false);
+echo $formattedPrice;
+

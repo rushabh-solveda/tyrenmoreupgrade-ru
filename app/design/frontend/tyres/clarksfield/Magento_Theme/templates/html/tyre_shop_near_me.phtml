@@ -1,0 +1,553 @@
+<?php /*Car and Bike Section start*/ ?>
+<script>
+    require(["jquery", "js/select2"], function($) {
+        var local = false;
+        var availableModes = {
+            brand: "brand",
+            size: "size"
+        };
+        var searchMode;
+        var brandOrWidthSelector, modelOrProfileSelector, variantOrRimSelector;
+        var currentToggleState, _selected, _id, _level, _globalResponse;
+        var getData = function() {};
+        var CACHE = {};
+
+        function __ddmap(o) {
+            var obj = {
+                id: o.entity_id,
+                text: o.name
+            };
+            return obj;
+        }
+
+        function __find(id) {
+            return function(o) {
+                return o.entity_id == id;
+            };
+        }
+
+        function __formatForSize(level, path, entities) {
+            return function(obj) {
+                var id = obj[entities[level]];
+                var nextPath = path + "/" + id;
+                // Get non numerical keys
+                var children = Object.keys(obj)
+                    .filter(function(k) {
+                        return !isNaN(parseInt(k));
+                    })
+                    .map(function(k) {
+                        return obj[k];
+                    });
+                return {
+                    entity_id: id,
+                    name: obj.label,
+                    path: nextPath,
+                    is_active: "1",
+                    is_anchor: obj.url ? "1" : "0",
+                    request_path: obj.url || null,
+                    childes: children.map(__formatForSize(level + 1, nextPath, entities))
+                };
+            };
+        }
+
+        function formatData(data) {
+            if (searchMode === availableModes.brand) {
+                return data;
+            } else if (searchMode === availableModes.size) {
+                var path = "1/375/3161/" + currentToggleState.toString();
+                var ientity = currentToggleState == 42 ? "bikeid" : "carid";
+                var name = currentToggleState == 42 ? "Bike Search" : "Car Search";
+                var wrapper = [{
+                    entity_id: currentToggleState.toString(),
+                    name: name,
+                    path: path,
+                    is_active: "1",
+                    is_anchor: "1",
+                    request_path: "",
+                    childes: data.map(
+                        __formatForSize(0, path, [ientity, "profileid", "rimid"])
+                    )
+                }];
+                return wrapper;
+            }
+        }
+
+        function _init(response) {
+            if (typeof response === "string") {
+                response = formatData(JSON.parse(response));
+                console.log(response);
+            }
+            _globalResponse = response;
+            _level = 0;
+            refresh();
+        }
+
+        function fromSelected(level) {
+            var ps = _selected.path.split("/");
+            ps.shift();
+            ps.shift();
+            ps.shift();
+            ps.shift();
+            var e = _globalResponse.find(__find(currentToggleState));
+            for (var i = 0; i < level; i++) {
+                e = e.childes.find(__find(ps[i]));
+            }
+            return e;
+        }
+
+        function switchMode(el) {
+            var placeholder = "";
+            var mode = el.data("selector");
+            switch (mode) {
+                case "brand width":
+                    if (searchMode === availableModes.brand) {
+                        placeholder = "Select Brand";
+                    } else if (searchMode === availableModes.size) {
+                        placeholder = "Select Width";
+                    }
+                    break;
+                case "model profile":
+                    if (searchMode === availableModes.brand) {
+                        placeholder = "Select Model";
+                    } else if (searchMode === availableModes.size) {
+                        placeholder = "Select Profile";
+                    }
+                    break;
+                case "variant rim":
+                    if (searchMode === availableModes.brand) {
+                        placeholder = "Select Variant";
+                    } else if (searchMode === availableModes.size) {
+                        placeholder = "Select Rim";
+                    }
+                    break;
+            }
+            $('[data-label="' + mode + '"]').html(placeholder);
+            el.html("").select2({
+                placeholder: placeholder,
+                sortResults: data => data.sort((a, b) => a.text.localeCompare(b.text)),
+                minimumResultsForSearch: -1
+            });
+            return placeholder;
+        }
+
+        function initSelect(el) {
+            var placeholder = switchMode(el);
+            return function(_e) {
+                var entry = _e.childes.map(__ddmap);
+                entry.unshift({
+                    id: "",
+                    text: ""
+                });
+                el.html("").select2({
+                    data: entry.sort((a, b) => a.text.localeCompare(b.text)),
+                    placeholder: placeholder,
+                    minimumResultsForSearch: -1
+                });
+                // Trigger Change Event
+                el.trigger("change");
+            };
+        }
+
+        function refresh() {
+            _selected = _globalResponse.find(__find(currentToggleState));
+            if (_selected !== undefined) {
+                initSelect(brandOrWidthSelector)(_selected);
+                initSelect(modelOrProfileSelector);
+                initSelect(variantOrRimSelector);
+                _level = 0;
+            }
+        }
+
+        function submitSearch(e) {
+            console.log("submitSearch", e);
+            try {
+                e.preventDefault();
+                e.stopPropagation();
+            } catch (err) {
+                console.error(err);
+            }
+            var next = undefined;
+            if (_id !== null) {
+                next = _selected.childes.find(__find(_id));
+            } else {
+                next = _selected;
+            }
+            if (next) {
+                window.location.href = next.request_path;
+            }
+        }
+
+        function toggleState(e) {
+            console.log("toggleState", e);
+            try {
+                e.preventDefault();
+                e.stopPropagation();
+            } catch (err) {
+                console.error(err);
+            }
+            currentToggleState = $(this).data("state");
+            $("[data-state-toggle]").removeClass("active");
+            $(this).addClass("active");
+            if (searchMode === availableModes.brand) {
+                refresh();
+            } else {
+                getData().then(_init);
+            }
+        }
+
+        function updateSelector(level, nselector) {
+            return function(e) {
+                try {
+                    e.preventDefault();
+                    e.stopPropagation();
+                } catch {}
+                console.log(_selected);
+                var current = $(this).val();
+                if (current === "") {
+                    if (nselector !== null && nselector !== undefined) {
+                        switchMode(nselector);
+                    }
+                    return;
+                }
+                var next;
+                if (level == _level) {
+                    next = _selected;
+                } else {
+                    next = fromSelected(level);
+                }
+                next = next.childes.find(__find(current));
+                if (next !== undefined) {
+                    _id = next.childes.length > 0 ? current : null;
+                    _selected = next;
+                    _level++;
+                    if (nselector !== null) {
+                        initSelect(nselector)(next);
+                        console.log(next);
+                    }
+                } else {
+                    console.log("Something's amiss");
+                }
+            };
+        }
+
+        function toggleSearchMode(e) {
+            console.log("toggleSearchMode", e);
+            try {
+                e.preventDefault();
+                e.stopPropagation();
+            } catch (err) {
+                console.error(err);
+            }
+            searchMode = $(this).data("mode");
+            $("[data-mode-toggle]").removeClass("active");
+            $(this).addClass("active");
+            getData().then(_init);
+        }
+
+        function getPath() {
+            console.log(currentToggleState);
+            if (currentToggleState === 46) {
+                return "Carsearch";
+            } else {
+                return "Bikesearch";
+            }
+        }
+
+        function _cachedGetData() {
+            // Setup Initial Cache
+            CACHE = {};
+            return function() {
+                $("#overlay").fadeOut();
+                return new Promise(function(resolve, reject) {
+                    var url;
+                    var urlPrefix = window.location.origin;
+                    if (local) {
+                        urlPrefix = "https://tyres.clarksfield.com";
+                    }
+                    if (searchMode === availableModes.brand) {
+                        // url = urlPrefix + "/tyreadvanceserch/index/parentcetegory";
+                        url = urlPrefix + "/api/all-data.json";
+                    } else if (searchMode === availableModes.size) {
+                        url = urlPrefix + "/tyreadvanceserch/index/" + getPath();
+                    } else {
+                        reject(new Error("No Mode Available for " + searchMode));
+                    }
+                    // Check if CACHED data exists
+                    if (CACHE[url] !== undefined) {
+                        resolve(CACHE[url]);
+                    } else {
+                        $("#overlay").fadeIn();
+                        console.log('SENDING: ', url);
+                        $.get(url)
+                            .then(function(response) {
+                                // Store in Cache
+                                console.log('RESPONSE:', response);
+                                CACHE[url] = response;
+                                $("#overlay").fadeOut();
+                                resolve(response);
+                            }, function(err) {
+                                $("#overlay").fadeOut();
+                                console.error(err);
+                                reject(err);
+                            });
+                    }
+                });
+            };
+        }
+
+        getData = _cachedGetData();
+
+        // Script Entry Point
+        // Dropdowns with Select2
+        $("[data-selector]").select2();
+        brandOrWidthSelector = $('[data-selector="brand width"]').first();
+        modelOrProfileSelector = $('[data-selector="model profile"]').first();
+        variantOrRimSelector = $('[data-selector="variant rim"]').first();
+        // Add Event Listener on Dropdowns
+        brandOrWidthSelector.on("change", updateSelector(0, modelOrProfileSelector));
+        modelOrProfileSelector.on("change", updateSelector(1, variantOrRimSelector));
+        variantOrRimSelector.on("change", updateSelector(2, null));
+        // Toggle Event Listeners
+        $("[data-mode-toggle]").on("click", toggleSearchMode);
+        $("[data-search-toggle]").on("click", toggleState);
+        // Configure Search Button
+        $("[data-search-init]").on("click", submitSearch);
+        // Set search Mode
+        searchMode = $("[data-mode-toggle].active")
+            .first()
+            .data("mode");
+        // Set current State
+        currentToggleState = $("[data-search-toggle].active")
+            .first()
+            .data("state");
+        getData().then(_init);
+    });
+</script>
+<div class="car_bike_section">
+    <div class="container">
+    <p style="
+    padding: 15px;
+    color: #fcc624;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    padding-top: 0px;
+    line-height: 31px;
+   
+">Hey!<br> Looking for a Tyre Shop Near You ??  <br>
+You have come to the Right Place. <br>
+You don't need to go anywhere.<br>
+We bring the Tyre Shop to Your Doorstep.<br>
+Place Your order Online Now and we will do the rest.<br>
+<br>
+CLICK IT, FIT IT, FORGET IT</p>
+
+<?php echo $this->getLayout()
+                    ->createBlock('Magento\Cms\Block\Block')
+                    ->setBlockId('tyre-shop-near-me-in-delhi-bttom-image')
+                    ->toHtml();
+                ?>
+                
+        <div class="section_second">
+            <div class="row">
+
+                
+                    <div class="col-md-6 col-md-offset-3">
+                        <div id="overlay" style="display:none;">
+                            <div class="spinner"></div>
+                            <br/>
+                        </div>
+                        <div class="find_tyre_sec2">
+                            <div class="tyre_title" style=" background: #f2f2f2; text-align: center; ">
+                                <!--   <p class="form-heading-h2">Tyres fitted at your doorstep</p> -->
+                                <p class="form-heading-h2">Tyres fitted at your doorstep</p>
+                                <p>In Hyderabad, Bangalore, Pune, Mumbai & Delhi NCR</p>
+                            </div>
+                            <p style="text-align: center;font-size: 17px;border-bottom: 1px solid #f3f3f3;
+      padding: .6rem 0;">Tyres home delivered in major cities in India
+                            </p>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="row brd_vichle_1">
+                                        <p>Search By</p>
+                                        <div class="col-xs-6">
+                                            <button data-mode-toggle data-mode="brand" class="vech_btn_1 active">Vehicle Brands</button>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <button data-mode-toggle data-mode="size" class="vech_btn_1">Tyres Size</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="brd_vichle_1 tt1 row">
+                                        <p>Tyres for?</p>
+                                        <div class="btn_second col-xs-6">
+                                            <button data-search-toggle data-state="46" id="bike46" class="vech_btn_2 active tt">Car</button>
+                                        </div>
+                                        <div class="btn_first col-xs-6">
+                                            <button data-search-toggle data-state="42" id="bike42" class="vech_btn_1 tt">Bike</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="select_brand_sec">
+                                    <label data-label="brand width">Select Brand</label>
+                                    <select data-selector="brand width"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="select_brand_sec">
+                                    <label data-label="model profile">Select Model</label>
+                                    <select data-selector="model profile"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="select_brand_sec">
+                                    <label data-label="variant rim">Select Variant</label>
+                                    <select data-selector="variant rim"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="find_tyre_btn" data-search-init>
+                                    <a data-search-init href="#">Find Tyres</a>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="expert_sec">
+                                    <!--     <i class="fa fa-volume-control-phone expert" aria-hidden="true"></i> <a href="#">Talk to our tyres expert</a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                  
+                
+                    <?php echo $this->getLayout()
+                    ->createBlock('Magento\Cms\Block\Block')
+                    ->setBlockId('tyre-shop-near-me-in-delhi-bttom')
+                    ->toHtml();
+                ?>
+                
+                
+                
+                 <div class="tyrswiderange_section" style="background-color: unset;">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="hw_tittle" style="color: #fcc624;">
+                      <p class="h1">We offer the following tyre brands online:</p>
+                  </div>
+                  <div class="title_img">
+                      <img src="<?php echo $this->getViewFileUrl('images/line.png'); ?>" alt="section-start">
+                  </div>
+              </div>
+              
+             <?php echo $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")->setTemplate("Magento_Theme::html/tyres.phtml")->toHtml();?>
+          </div>
+      </div>
+  </div>
+    </div>
+  
+                <!-- new ends -->
+                
+                  <?php echo $this->getLayout()
+                    ->createBlock('Magento\Cms\Block\Block')
+                    ->setBlockId('tyre-shop-near-me-in-delhi')
+                    ->toHtml();
+                ?>
+		
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<?php
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager  = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+$storeID       = $storeManager->getStore()->getStoreId();
+$storeName     = $storeManager->getStore()->getName();
+?>
+
+
+
+<!--  footer is start from here desktop -->
+<?php echo $this->getLayout()
+    ->createBlock('Magento\Cms\Block\Block')
+    ->setBlockId('select_city')
+    ->toHtml();
+?>
+
+<script type="text/javascript">
+    require(['jquery'], function($) {
+
+        $('.location_icone_1t').click(function(){ $("#collapseOne").slideToggle(); })
+        $('.location_icone_2').click(function(){ $("#collapsetwo").slideToggle(); })
+
+        $('.location_icone_3').click(function(){ $("#collapsethree").slideToggle(); })
+        $('.location_icone_4').click(function(){ $("#collapsefour").slideToggle(); })
+
+        $('.location_icone_5').click(function(){ $("#collapsefive").slideToggle(); })
+        $('.location_icone_6').click(function(){ $("#collapsesix").slideToggle(); })
+
+        // Polyfill for older browsers (just in case)
+        if (typeof sessionStorage !== "object" ||
+            typeof sessionStorage.setItem !== "function" ||
+            typeof sessionStorage.getItem !== "function" ||
+            typeof sessionStorage.removeItem !== "function") {
+            window.sessionStorage = function() {
+                return {
+                    setItem: function(key, value) {
+                        document.cookie = key + "=" + value;
+                    },
+                    getItem: function(key) {
+                        var m = document.cookie.split(";");
+                        for (var i = 0; i < m.length; m++) {
+                            var g = m[i].split("=");
+                            if (g[0] === key) {
+                                return g[1];
+                            }
+                        }
+                        return undefined;
+                    },
+                    removeItem: function(key) {
+                        document.cookie = key + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                    }
+                };
+            };
+        }
+
+        // Check if we need to show the modal (popup)
+        var store = sessionStorage.getItem("storefront");
+
+        if (store === null || store === undefined) {
+            // We're ready to show modal here
+            var modal = $('[data-modal="city"]');
+            modal.css("display", "block");
+            modal.addClass("in");
+            $('body').css("overflow", "hidden");
+            /*  $('.price').css({
+                  opacity: "0.6",
+              filter: "blur(3px)"
+          });*/
+        }
+
+        // Define data-store-uri attribute on your link to activate
+        $("[data-store-uri]").on("click", function(e) {
+            try {
+                e.preventDefault();
+                e.stopPropagation();
+            } catch {}
+
+            // Define data-href attribute on your link
+            var uri = $(this).data("href");
+            sessionStorage.setItem("storefront", uri);
+            window.location.href = uri;
+            return false;
+        });});
+</script>
+

@@ -1,0 +1,28 @@
+<?php $categories = $block->getCategories(); ?>
+ 
+<?php if (count($categories) > 0): ?>
+
+
+    <div class="container category-section">
+      <div class="row blog-section">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <div class="row">
+              <?php foreach ($categories as $category): ?>
+                <div class="category-id"> <a  class="level0" href="<?= $block->escapeUrl($category->getUrl()) ?>" title="<?= $block->escapeHtml($category->getName()) ?>"><?= $block->escapeHtml($category->getName()) ?></a></div>
+              <?php endforeach; ?>
+          </div>
+        </div>
+      </div>
+    </div>
+<?php endif; ?>
+
+<script>
+    require([ "jquery" ], function($){
+    if (window.matchMedia('(max-width: 767px)').matches) {
+    $('.sidebar.sidebar-main').each(function() {
+        $(this).insertAfter($(this).parent().find('.blog-page-slider.hidden-lg.hidden-md'));
+    });
+    }
+    });
+</script>

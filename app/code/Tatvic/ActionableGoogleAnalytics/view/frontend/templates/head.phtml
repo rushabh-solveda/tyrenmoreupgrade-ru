@@ -1,0 +1,142 @@
+<script>
+
+    var tvc_UA_ID = <?php echo json_encode($block->getUaId()); ?>;
+    var tvc_cur = <?php echo json_encode($block->getLocalCurrency());?>;
+    var tvc_df = <?php echo json_encode($block->checkDF_enabled());?>;
+    var tvc_ip = <?php echo json_encode($block->checkIP_anonymization());?>;
+    var tvc_ClientIDEnable = <?php echo json_encode($block->checkClientId_Enabled());?>;
+    var tvc_user_id = <?php echo json_encode($block->get_user_ID());?>;
+    var tvc_ver =  <?php echo json_encode($block->getMagentoVersion());?>;
+    var tvc_OptOut = <?php echo json_encode($block->checkOptOut_Enabled());?>;
+    var tvc_fbPixel = <?php echo json_encode($block->FBPixelEnabled());?>;
+    var tvc_fbPixelID = <?php echo json_encode($block->getFbPixelID());?>;
+    var tvc_smd= {
+        'tvc_UA_ID': tvc_UA_ID,
+        'tvc_cur'  : tvc_cur,
+        'tvc_version':tvc_ver,
+        'tvc_eeV':'1.2.0',
+        'tvc_license':'Premium',
+        'tvc_ip':tvc_ip,
+        'tvc_OptOut' : tvc_OptOut,
+        'tvc_ClientIDEnable': tvc_ClientIDEnable,
+        'tvc_OptOut':tvc_OptOut,
+        'tvc_user_id':tvc_user_id,
+    };
+    if(tvc_OptOut == 1){
+        // Set to the same value as the web property used on the site
+        var gaProperty = tvc_UA_ID;
+
+        // Disable tracking if the opt-out cookie exists.
+        var disableStr = "ga-disable-" + gaProperty;
+        if (document.cookie.indexOf(disableStr + "=true") > -1) {
+            window[disableStr] = true;
+        }
+
+        // Opt-out function
+        function gaOptout() {
+            var expDate = new Date;
+            expDate.setMonth(expDate.getMonth() + 26);
+            document.cookie = disableStr + "=true; expires="+expDate.toGMTString()+";path=/";
+            window[disableStr] = true;
+        }
+    }
+    (function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,"script","//www.google-analytics.com/analytics.js","ga");
+    ga("create", tvc_UA_ID, "auto");
+    ga("require", "ec", "ec.js");
+    ga('set', 'currencyCode', tvc_cur);
+    if(tvc_df == 1){
+        ga('require', 'displayfeatures');
+    }
+    if(tvc_ip == 1){
+        ga('set', 'anonymizeIp', true);
+    }
+    if(tvc_user_id && tvc_user_id != null){
+        ga('set', 'userId', tvc_user_id);
+    }
+    if(tvc_ClientIDEnable == 1) {
+        ga(function(tracker) {
+            tvc_clientID = tracker.get('clientId');
+            ga("set", "dimension1", tvc_clientID);
+        });
+    }
+
+    ga("send", "pageview");
+
+</script>
+<?php
+list($tvc_data,$get_action) = $block->getAction();
+
+if( $get_action == 'catalog_product_view') {
+    echo"<script>
+			var tvc_pp =".$tvc_data.";
+			require(
+					['Tatvic_ActionableGoogleAnalytics/js/enhanced_ecommerce','jquery'], 
+						function(enhanced_ecommerce){
+							var obj = new enhanced_ecommerce();
+							obj.tvc_pro_detail(tvc_pp);
+							obj.tvc_add_to_cart(tvc_pp);
+						}
+			);
+		</script>";
+}
+if( $get_action == 'catalog_category_view') {
+    echo"<script>
+			var tvc_pgc =".$tvc_data.";
+			require(
+					['Tatvic_ActionableGoogleAnalytics/js/enhanced_ecommerce','jquery'], 
+						function(enhanced_ecommerce){
+							var obj = new enhanced_ecommerce();
+							obj.tvc_get_impression(tvc_pgc);
+							obj.tvc_impr_click(tvc_pgc);
+						}
+			);
+		</script>";
+}
+if( $get_action == 'checkout_cart_index') {
+    echo"<script>
+        var tvc_remove =".$tvc_data.";
+        require(
+                ['Tatvic_ActionableGoogleAnalytics/js/enhanced_ecommerce','jquery'], 
+                    function(enhanced_ecommerce){
+                        var obj = new enhanced_ecommerce();
+                        obj.tvc_remove_cart(tvc_remove);
+                    }
+        );
+        </script>";
+}
+if( $get_action == 'checkout_index_index') {
+    echo"<script>
+			var tvc_ch =".$tvc_data.";
+			var t_keys = Object.keys(tvc_ch);
+			var t_last = t_keys[tvc_ch.length-1];
+			require(
+					['Tatvic_ActionableGoogleAnalytics/js/enhanced_ecommerce','jquery'], 
+						function(enhanced_ecommerce){
+							var obj = new enhanced_ecommerce();
+							obj.tvc_checkout_steps(tvc_ch, tvc_ch[t_last]);
+						}
+			);
+		</script>";
+}
+if( $get_action == 'checkout_onepage_success') {
+
+    echo"<script>
+		var tvc_oo =".$tvc_data.";
+		var t_keys = Object.keys(tvc_oo);
+		var t_last = t_keys[tvc_oo.length-1];
+		var tvc_oc = tvc_oo.pop(tvc_oo[t_last]);
+		
+		require(
+				['Tatvic_ActionableGoogleAnalytics/js/enhanced_ecommerce','jquery'], 
+					function(enhanced_ecommerce){
+						var obj = new enhanced_ecommerce();
+						obj.tvc_transaction_call(tvc_oo,tvc_oc);
+					}
+		);
+		</script>";
+}
+
+?>

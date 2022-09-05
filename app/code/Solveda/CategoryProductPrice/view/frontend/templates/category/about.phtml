@@ -1,0 +1,29 @@
+<?php
+
+/** @var \Magento\Catalog\Block\Category\View $block */
+
+$category = $block->getCategory();
+$categoryName = '';
+if ($category) {
+    $categoryName = $category->getCategoryName();
+}
+
+?>
+
+<?php
+$aboutCategory = $block->getCurrentCategory()->getCategoryShortDescription();
+if ($aboutCategory) {
+?>
+
+    <div class="custom-accordian col-md-6">
+        <div class="inner-accordian">
+            <div data-toggle="collapse" data-target="#about-category">
+                <h4> <?= __('About ') ?> <?= $categoryName; ?></h4>
+            </div>
+            <div id="about-category" class="collapse">
+                <?= __($aboutCategory); ?>
+            </div>
+        </div>
+    </div>
+
+<?php } ?>

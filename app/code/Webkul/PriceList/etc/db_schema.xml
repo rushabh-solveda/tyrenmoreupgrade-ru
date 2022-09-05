@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="wk_pricelist_list" resource="default" engine="innodb">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true"/>
+    <column xsi:type="int" name="priority" padding="10" unsigned="true" nullable="false" identity="false" />
+    <column xsi:type="int" name="status" padding="10" unsigned="true" nullable="false" identity="false" />
+    <column xsi:type="varchar" name="title" nullable="false" length="255"/>
+    <column xsi:type="datetime" name="start_date" on_update="false" nullable="true"/>
+    <column xsi:type="datetime" name="end_date" on_update="false" nullable="true"/>
+    <column xsi:type="datetime" name="date" on_update="false" nullable="true"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+  </table>
+  <table name="wk_pricelist_rule" resource="default" engine="innodb">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="id"/>
+    <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Title"/>
+    <column xsi:type="int" name="priority" padding="10" unsigned="true" nullable="false" identity="false" comment="Priority" />
+    <column xsi:type="int" name="status" padding="10" unsigned="true" nullable="false" identity="false" comment="Status" />
+    <column xsi:type="int" name="calculation_type" padding="10" unsigned="true" nullable="false" comment="Calculation Type" identity="false" default="0"/>
+    <column xsi:type="int" name="price_type" padding="10" unsigned="true" nullable="false" comment="Price Type" identity="false" default="0"/>
+    <column xsi:type="int" name="apply_on" padding="10" unsigned="true" nullable="false" comment="Applicable On" identity="false" />
+    <column xsi:type="int" name="rule_type" padding="10" unsigned="true" nullable="false" identity="false" comment="Rule Type" />
+    <column xsi:type="int" name="is_combination" padding="10" unsigned="true" nullable="false" identity="false" comment="Is combination" />
+    <column xsi:type="decimal" name="amount" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Amount"/>
+    <column xsi:type="decimal" name="total" scale="4" precision="12" unsigned="false" nullable="false"
+                default="0" comment="Total Product Price"/>
+    <column xsi:type="int" name="qty" padding="10" unsigned="true" nullable="false" identity="false" comment="Quantity"/>
+    <column xsi:type="datetime" name="date" on_update="false" nullable="true"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+  </table>
+  <table name="wk_pricelist_assigned_rule" resource="default" engine="innodb">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true"/>
+    <column xsi:type="int" name="pricelist_id" padding="10" unsigned="true" nullable="false" identity="false" default="0"/>
+    <column xsi:type="int" name="rule_id" padding="10" unsigned="true" nullable="false" identity="false" default="0"/>
+    <column xsi:type="datetime" name="date" on_update="false" nullable="true"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+  </table>
+   <table name="wk_pricelist_rule_items" resource="default" engine="innodb">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true"/>
+    <column xsi:type="int" name="entity_type" padding="10" unsigned="true" nullable="false" identity="false" default="0"/>
+    <column xsi:type="int" name="parent_id" padding="10" unsigned="true" nullable="false" identity="false" default="0"/>
+    <column xsi:type="int" name="entity_value" padding="10" unsigned="true" nullable="false" identity="false" default="0"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+  </table>
+  <table name="wk_pricelist_user_details" resource="default" engine="innodb">
+    <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true"/>
+    <column xsi:type="int" name="pricelist_id" padding="10" unsigned="true" nullable="false" identity="false" default="0"/>
+    <column xsi:type="int" name="type" padding="10" unsigned="true" nullable="false" identity="false" default="0"/>
+    <column xsi:type="int" name="user_id" padding="10" unsigned="true" nullable="false" identity="false" default="0"/>
+    <column xsi:type="datetime" name="date" on_update="false" nullable="true"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="id"/>
+    </constraint>
+  </table>
+</schema>

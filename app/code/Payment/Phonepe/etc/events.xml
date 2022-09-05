@@ -1,0 +1,13 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="payment_method_assign_data_phonepe">
+        <observer name="phonepe_gateway_data_assign" instance="Payment\Phonepe\Observer\DataAssignObserver" />
+    </event>
+     <event name="payment_method_is_active">  
+     <observer name="restrict_payment_methods" instance="Payment\Phonepe\Observer\RestrictPaymentMethods" />  
+     </event> 
+    
+    <!--<event name="sales_order_place_after">-->
+    <!--<observer name="custom_end_order" instance="Payment\Phonepe\Observer\CustomPaymentObserver" />-->
+    <!--</event>-->
+    
+</config>

@@ -1,0 +1,132 @@
+<?php 
+	$bankcollection = $block->getBankName();
+	$currentProductPrice= $block->getProductPrice();
+	$index = 0;
+?>
+<div class="emi_process">
+	<h4 class="heading">EMI (Easy Instalment)</h4>
+	<ul class="emi_list">
+     <li class="list">
+      Choose the EMI option on the payment page on this website, in case you want to avail EMI. 
+    </li>
+    <li class="list">
+      The EMI transaction is as per terms and conditions of the debit card/credit card agreement between you (card holder) and the card issuing bank.
+    </li>
+	<li class="list">
+      Intrest rates that are shown above are indicative. The exact interest rates are available on the payment page when you click to pay through EMI.
+    </li>
+  </ul>
+	<select name="card_option" id="card">
+		<option value="CC" selected="selected">Credit Card</option>
+		<option value="DC">Debit Card</option>
+	</select>
+</div>
+<div class="emi_bank_details">
+	<table class="tableHeading table" width="100%">
+		<tr class='credit card_details'  data-card="CC" >
+			<?php 
+			$cardType = $block->getCardType('CC');
+			foreach ($cardType as $key => $item): 
+				if($key == 0){
+					$index = $item->getBankId();
+				}
+			?>
+				<td data-id="<?php echo $item->getBankId(); ?>" class="bankTab bankTabData <?php if($key == 0){echo 'active';}?>">
+					<?php echo $item->getBankName(); ?>
+				</td>
+			<?php endforeach; ?>
+		</tr>
+		<tr class='debit card_details hidden'  data-card="DC">
+			<?php 
+			$cardType = $block->getCardType('DC');
+			foreach ($cardType as $key => $item): ?>
+				<td data-id="<?php echo $item->getBankId(); ?>" class="bankTab bankTabData <?php if($key == 0){echo 'active';}?>">
+					<?php echo $item->getBankName(); ?>
+				</td>
+			<?php endforeach; ?>
+		</tr>
+	</table>
+	<div class="emi-table-data">     
+	<table class="emi_details_table">
+		<thead class="emi_heading">
+			<tr>
+				<td>PLANS<br />
+					<div class="subText">(Months)</div>
+				</td>
+				<td>EMI
+				</td>
+				<td>ANNUAL INTEREST
+				</td>
+				<td>TOTAL COST
+				</td>
+				<td>INTEREST
+				</td>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($bankcollection as $bank):
+				$bankDetails = $block->getBankDetails($bank->getBankId());
+			?>
+				<tr data-bankId="<?php echo $bank->getBankId(); ?>" class="emi_details <?php if($bank->getBankId() == $index){echo 'active';}else{echo 'hidden';}?>">
+					<td colspan="5">
+						<table>
+							<?php foreach($bankDetails as $details):
+								if($details->getIntrestRate() != 0){
+									$EMI = $block->getPmt($details->getIntrestRate()/1200,$details->getPlan(),$currentProductPrice,0,0);
+								}
+								$totalAmount = $EMI * $details->getPlan();
+							?>
+								<?php if($details->getIntrestRate() != 0 && $currentProductPrice >= $bank->getMinAmt()):?>
+									<tr>
+										<td><?php echo $details->getPlan(); ?></td>
+										<td><?php echo round($EMI);?></td>
+										<td><?php echo $details->getIntrestRate().'%'; ?></td>
+										<td><?php echo round($totalAmount); ?></td>
+										<td><?php echo round($totalAmount) - $currentProductPrice; ?></td>
+									</tr>
+								<?php else: ?>
+									<tr>
+										<td><?php echo $details->getPlan(); ?></td>
+										<td>-</td>
+										<td><?php echo $details->getIntrestRate().'%'; ?></td>
+										<td>-</td>
+										<td>-</td>
+									</tr>
+								<?php endif;?>
+							<?php endforeach;?>
+						</table>
+					</td>
+				</tr>
+			<?php endforeach;?>
+		</tbody>
+	</table>
+	</div>
+</div>
+<script>
+	require([
+        'jquery'
+    ], function ($) {
+		$('.emi_bank_details .tableHeading  tbody > tr[data-card=cc] td:first-child').trigger('click');
+		$(document).on('click','.tableHeading.table > tbody > tr > td',function(){
+			var bankid = $(this).data("id");
+			 $('.tableHeading.table > tbody > tr > td.active').removeClass('active');
+			$(this).addClass('active');
+			$('.emi_details_table .emi_details').addClass('hidden');
+			$('.emi_details_table .emi_details[data-bankid='+bankid+']').removeClass('hidden');
+		});
+		$('select#card').on('change',function(){
+			var cardType = $(this).val();
+			$('.emi_bank_details .tableHeading  tbody > tr').addClass('hidden');
+			$('.emi_bank_details .tableHeading  tbody > tr[data-card='+cardType+']').removeClass('hidden');
+			$('.emi_bank_details .tableHeading  tbody > tr[data-card='+cardType+'] td:first-child').trigger('click');
+		});
+	});
+</script>
+<style>
+@media(min-width:768px){
+	.emi_bank_details .emi_details_table :is(tbody,thead) > tr > td{
+		width:20% !important;
+	}
+}
+
+</style>

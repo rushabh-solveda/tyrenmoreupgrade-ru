@@ -1,0 +1,53 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<div class="cart-step">
+    <div class="header">
+        <a href="<?= $block->getUrl('/') ?>">
+            <i class="fa fa-home" ></i>
+        </a>
+        <span>Cart</span>
+    </div>
+</div>
+<div class="opc-estimated-wrapper">
+    <div class="estimated-block">
+        <span class="estimated-price" id="grand_total"></span>
+        <script>
+            require([
+                'jquery',
+                'Magento_Checkout/js/model/quote', 
+                'Magento_Catalog/js/price-utils'
+            ], function($, quote, priceUtils){
+                "use strict";
+                quote.totals.subscribe(function (total) {
+                    var price = total.grand_total;
+                    var finalPrice = priceUtils.formatPrice(price, quote.getPriceFormat());
+                    console.log(`finalPrice`, finalPrice)
+                    $('#grand_total').html(finalPrice);
+                }, this);
+            });
+        </script>
+    </div>
+    <div class="proceed-wrapper">
+        <a href="<?= $block->getUrl('checkout') ?>">
+            Proceed to Checkout
+        </a>
+    </div>    
+</div>
+<?php
+/**
+ * Shopping cart template
+ *
+ * @var $block \Magento\Checkout\Block\Cart
+ */
+
+if ($block->getItemsCount()) {
+    // phpcs:ignore Magento2.Security.LanguageConstruct.DirectOutput
+    echo $block->getChildHtml('with-items');
+} else {
+    // phpcs:ignore Magento2.Security.LanguageConstruct.DirectOutput
+    echo $block->getChildHtml('no-items');
+}

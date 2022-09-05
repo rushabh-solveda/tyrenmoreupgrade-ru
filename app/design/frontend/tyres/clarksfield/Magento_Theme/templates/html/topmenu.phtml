@@ -1,0 +1,44 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * Top menu for store
+ *
+ * @var $block \Magento\Theme\Block\Html\Topmenu
+ */
+
+$columnsLimit = $block->getColumnsLimit() ?: 0;
+$_menuHtml = $block->getHtml('level-top', 'submenu', $columnsLimit);
+//echo $_menuHtml;
+?>
+
+
+<nav class="navigation web" data-action="navigation">
+	<div class="navbar-header">
+        <button type="button" class="navbar-toggle"  data-toggle="collapse" data-target="#myNavbar">
+            <i class="fa fa-bars" aria-hidden="true"></i>                   
+        </button>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+    <ul data-mage-init='{"menu":{"responsive":true, "expanded":true, "position":{"my":"left top","at":"left bottom"}}}'>
+        <?= /* @noEscape */ $_menuHtml?>
+        <?= $block->getChildHtml() ?>
+	<li class="level0 nav-4 category-item level-top ui-menu-item" role="presentation">
+        <!-- <h2 class="top-menu-navigation"> -->
+            <a href="<?php echo $this->getUrl("battery.html");?>" class="level-top ui-corner-all" id="ui-id-5" tabindex="-1" role="menuitem"><span>Batteries</span></a>
+
+        <!-- </h2>         -->
+    </li>
+        <li class="level0 nav-2 category-item level-top ui-menu-item" role="presentation">
+            <a href="<?php echo $this->getUrl("alloy-wheels.html");?>" class="level-top ui-corner-all" id="ui-id-2" tabindex="-1" role="menuitem"><span>Alloy Wheels</span></a>
+    </li>
+    <li class="level0 nav-3 category-item level-top ui-menu-item" role="presentation"><a href="<?php echo $this->getUrl("blog");?>" class="level-top ui-corner-all" id="ui-id-4" tabindex="-1" role="menuitem"><span>Blog</span></a></li>
+    </ul>
+    </div>
+</nav>
+
+
+

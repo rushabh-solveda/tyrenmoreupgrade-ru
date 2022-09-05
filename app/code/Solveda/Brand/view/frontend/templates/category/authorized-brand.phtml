@@ -1,0 +1,53 @@
+<?php
+
+
+$helper = $block->getResizeImage();
+
+$isDealerAuthorized = $block->getCurrentCategory()->getAuthorizedDealer();
+$certificateImage = $block->getCurrentCategory()->getCertificateImage();
+
+$brandSmallCertificate = $helper->getSmallCertificateImage($certificateImage);
+$brandCertificate = $helper->getCertificateImage($certificateImage);
+
+?>
+<?php if ($isDealerAuthorized && $brandCertificate && $brandSmallCertificate) { ?>
+    <div class="row authorized-dealer-certificate logo-card faq-section">
+        <div class="col-md-12">
+            <h3>Authorized Dealer Certificate</h3>
+
+            <img src="<?= $brandSmallCertificate ?>" id="open-modal" />
+
+            <div id="popup-modal" style="display:none;">
+                <img src="<?= $brandCertificate ?>" />
+            </div>
+            <script>
+                require(['jquery', 'Magento_Ui/js/modal/modal'], function($, modal) {
+                    var options = {
+                        type: 'popup',
+                        responsive: true,
+                        innerScroll: true,
+                        title: 'Authorized Dealer Certificate',
+                        buttons: [{
+                            text: $.mage.__('Close'),
+                            class: '',
+                            click: function() {
+                                this.closeModal();
+                            }
+                        }]
+                    };
+                    var popup;
+                    $(document).ready(function() {
+                        popup = modal(options, $('#popup-modal'));
+                        $("#open-modal").on('click', function() {
+                            if ($('#popup-mpdal').length != 0) {
+                                // $("#popup-modal").modal("openModal");
+                                popup.openModal();
+                            }
+                        });
+                    })
+
+                });
+            </script>
+        </div>
+    </div>
+<?php } ?>

@@ -1,0 +1,46 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * Top menu for store
+ *
+ * @var $block \Magento\Theme\Block\Html\Topmenu
+ */
+
+$columnsLimit = $block->getColumnsLimit() ?: 0;
+$_menuHtml = $block->getHtml('level-top', 'submenu', $columnsLimit);
+//echo $_menuHtml;
+?>
+
+<nav class="navigation" data-action="navigation">
+	<div class="navbar-header">
+        <button type="button" class="navbar-toggle"  data-toggle="collapse" data-target="#myNavbar">
+            <i class="fa fa-bars" aria-hidden="true"></i>                   
+        </button>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+    <ul data-mage-init='{"menu":{"responsive":true, "expanded":true, "position":{"my":"left top","at":"left bottom"}}}'>
+        <?= /* @noEscape */ $_menuHtml?>
+        <?= $block->getChildHtml() ?>
+    </ul>
+    </div>
+</nav>
+<script>
+require(["jquery"],function($){
+  $(".navbar-toggle").click(function(){
+    $(".navbar-collapse").toggle();
+});
+});
+ require(['jquery', 'jquery/ui'], function($){ 
+    $(document).ready(function()
+{
+ if ($(window).width() <= 943) {
+    $('.level2').css('display','none');
+}
+});
+ });
+</script>
+

@@ -1,0 +1,80 @@
+/*Common CSS Changes for padding and margin*/
+.pr-0{padding-right:0px !important}
+.pl-0{padding-left:0px !important}
+
+.find-cat-product{display: none;}
+.cms-home .find-cat-product{display: flex; width: 100%;}
+.find-cat-product .find-cat-product-items{width: 100%; color: #000; text-transform: uppercase;font-weight: bold; position: relative;}
+.find-cat-product-items span{width: 100%; display: block;color: #000; padding-left: 5px; font-size: 14px; text-align: left; font-weight: bold;}
+.find-cat-product .fa-angle-double-right {font-size: 18px;position: absolute;}
+
+
+.mob-title{font-size: 18px;}
+.bt-tyres-title{font-size: 18px;text-align: center;font-weight: bold; margin-top:0px}
+.bt-tyres .a-link{color:#d61d28}
+.bt-tyres{margin-top:15px}
+
+.hw-it-work {background: #f3f3f3; padding:15px 0; margin-top:15px;}
+.mob-hw-title, .yug-title{margin: 0 0 10px 0;}
+.grid-items{border:1px solid #d61d28; background:#fff;display: flex;}
+.grid-item {width: 33.3%;text-align: center;border-right: 1px solid #d61d28; padding: 4px 0;}
+.grid-item:last-child{border:0px;}
+.grid-sub-text {font-size: 10px;color: #000;}
+.grid-numb {font-size: 24px;color: #d61d28;font-weight: bold;}
+.grid-step-text {font-size: 12px; margin: 0px;}
+
+.what-you-get {background: #ffe3e3;padding: 15px 0;}
+.row-items{display:flex;}
+.row-item-image{min-width: 62px;}
+.yug-col-text{padding-left:15px; font-size:12px;}
+.yug-sub-title{margin:0; font-size:14px; font-weight:bold;}
+.faq-container .accordion-item{margin: 5px auto;}
+.faq-container .accordion{float:left; width:100%; margin-bottom: 10px;}
+
+.review-items{border: 1px solid #ddd; padding:10px;min-height: 170px;}
+.review-profile{display:flex; position:relative;}
+.company-tag{float: right;position: absolute;right: 0px; font-weight: bold;}
+.review-user-text {font-size: 12px;}
+.review-profile-details{padding-left: 10px;font-size: 12px;font-weight: bold;}
+.cms-home .header{position: fixed;top: 0px;z-index: 900;width: 100%;}
+.cms-home .city-dropdown-md{position: fixed;top: 0px;right: 0; z-index: 900;}
+.cms-home #maincontent{margin-top: 108px;}
+
+.door-step-title {margin-bottom: 0;text-align: center;font-size: 16px;font-weight: normal;}
+.door-step-title span{color:#d61d28; font-weight: bold;}
+
+.review-slider .owl-dots {margin-top: -25px;}
+.what-you-get .owl-dots{margin-top: -15px;}
+.cms-home .minicart-div{display:none;}
+.review-slider .owl-nav{top: 42%;position: absolute;font-size: 20px;width: 98%;margin: auto;opacity: 0.8;left:0; right:0}
+.review-slider .owl-nav .owl-next{float: right;}
+
+.what-you-get .owl-nav{text-align: right;}
+.what-you-get .owl-nav .owl-prev{margin-right: 10px;}
+.find-cat-product .btn {
+    padding: 0px 5px;
+    font-size: 12px;
+    display: flex;
+    border: 1px solid #e7e7e7;
+    background: #f4f4f4;
+    margin-right: 5px;
+    border-radius: 0;
+    align-items: center;
+    height: 42px;
+}
+.find-tyre span{color: #ca000c;}
+.find-battery span{color: #383838;}
+.find-alloy span{color: #000d87;}
+.wheel-size-modal{font-size: 12px;}
+.find-cat-product-items:last-child .btn {margin-right: 0;}
+@media only screen and (max-width: 320px) {
+    .find-cat-product .btn img{max-width: 28px;}
+    .find-cat-product-items span{font-size: 12px;}
+}
+@media only screen and (min-width: 321px) and (max-width: 393px)  {
+    .find-cat-product .btn img{max-width: 32px;}
+}
+
+@media only screen and (min-width: 394px) {
+    .find-cat-product .btn img{max-width: 38px;}
+}

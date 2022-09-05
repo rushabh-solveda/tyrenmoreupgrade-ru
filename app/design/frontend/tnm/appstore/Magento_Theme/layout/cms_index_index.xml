@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<!-- <head>
+        <script src="Custom_Js::js/homepage1.js"/>
+</head> -->
+<!-- <referenceBlock name="page.main.title" remove="true"/> --> 
+<referenceContainer name="main.content" htmlTag="main" htmlId="maincontent" htmlClass="tt"/>
+
+</page>

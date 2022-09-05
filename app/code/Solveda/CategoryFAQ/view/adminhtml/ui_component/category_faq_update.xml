@@ -1,0 +1,168 @@
+<?xml version="1.0" ?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+	<argument name="data" xsi:type="array">
+		<item name="js_config" xsi:type="array">
+			<item name="provider" xsi:type="string">category_faq_update.categoryfaq_form_data_source</item>
+		</item>
+		<item name="label" translate="true" xsi:type="string">Update FAQ</item>
+		<item name="template" xsi:type="string">templates/form/collapsible</item>
+	</argument>
+
+	<settings>
+		<buttons>
+			<button class="Solveda\CategoryFAQ\Block\Adminhtml\CategoryFAQ\Edit\BackButton" name="back"/>
+			<button class="Solveda\CategoryFAQ\Block\Adminhtml\CategoryFAQ\Edit\DeleteButton" name="delete"/>
+			<button class="Solveda\CategoryFAQ\Block\Adminhtml\CategoryFAQ\Edit\SaveButton" name="save"/>
+			<button class="Solveda\CategoryFAQ\Block\Adminhtml\CategoryFAQ\Edit\SaveAndContinueButton" name="save_and_continue"/>
+		</buttons>
+		<namespace>category_faq_update</namespace>
+		<dataScope>data</dataScope>
+		<deps>
+			<dep>category_faq_update.categoryfaq_form_data_source</dep>
+		</deps>
+	</settings>
+
+	<!-- <dataSource name="categoryfaq_form_data_source">
+		<argument name="data" xsi:type="array">
+			<item name="js_config" xsi:type="array">
+				<item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+			</item>
+		</argument>
+		<settings>
+			<submitUrl path="*/*/save"/>
+		</settings>
+		<dataProvider class="Solveda\CategoryFAQ\Model\CategoryFAQ\DataProvider" name="categoryfaq_form_data_source">
+			<settings>
+				<requestFieldName>entity_id</requestFieldName>
+				<primaryFieldName>entity_id</primaryFieldName>
+			</settings>
+		</dataProvider>
+	</dataSource> -->
+
+
+	<dataSource name="categoryfaq_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Solveda\CategoryFAQ\Model\CategoryFAQ\DataProvider</argument>
+            <argument name="name" xsi:type="string">categoryfaq_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="*/*/save"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+
+
+	<fieldset name="general">
+		<argument name="data" xsi:type="array">
+			<item name="config" xsi:type="array">
+				<item name="collapsible" xsi:type="boolean">true</item>
+				<item name="opened" xsi:type="boolean">true</item>
+				<item name="label" xsi:type="string" translate="true">General</item>
+			</item>
+		</argument>
+
+		<field formElement="input" name="question" sortOrder="10">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="source" xsi:type="string">question</item>
+					<item name="notice" xsi:type="string" translate="true">Use {brand} {model} {submodel}</item>
+				</item>
+			</argument>
+			<settings>
+				<dataType>text</dataType>
+				<label translate="true">Question</label>
+				<dataScope>question</dataScope>
+				<validation>
+					<rule name="required-entry" xsi:type="boolean">true</rule>
+				</validation>
+			</settings>
+		</field>
+
+		<field formElement="textarea" name="answer" sortOrder="20">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="source" xsi:type="string">answer</item>
+					<item name="notice" xsi:type="string" translate="true">
+						{faq_tyre_size} {faq_best_tyre} {faq_air_pressure} {faq_tyre_life} {faq_tyre_fuel_savings} {faq_tyre_grip} 
+						{faq_cheapest_price} {faq_highest_price} {faq_tyre_warranty}
+					</item>
+				</item>
+			</argument>
+			<settings>
+				<dataType>text</dataType>
+				<label translate="true">Answer</label>
+				<dataScope>answer</dataScope>
+				<validation>
+					<rule name="required-entry" xsi:type="boolean">true</rule>
+				</validation>
+			</settings>
+		</field>
+
+		<!-- <field formElement="select" name="category_attribute" sortOrder="30">
+			<argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Solveda\CategoryFAQ\Model\Source\CategoryAttribute</item>
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">category_attribute</item>
+                </item>
+            </argument>
+			<settings>
+				<dataType>text</dataType>
+				<label translate="true">Category Attribute</label>
+				<dataScope>category_attribute</dataScope>
+				<validation>
+					<rule name="required-entry" xsi:type="boolean">true</rule>
+				</validation>
+			</settings>
+		</field> -->
+
+		<!-- <field formElement="select" name="keyword" sortOrder="40">
+			<argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Solveda\CategoryFAQ\Model\Source\Keywords</item>
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">keyword</item>
+                </item>
+            </argument>
+			<settings>
+				<dataType>text</dataType>
+				<label translate="true">Keyword</label>
+				<dataScope>keyword</dataScope>
+				<validation>
+					<rule name="required-entry" xsi:type="boolean">false</rule>
+				</validation>
+			</settings>
+		</field> -->
+
+		<field name="status" component="Magento_Ui/js/form/element/single-checkbox-toggle-notice" formElement="checkbox">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="default" xsi:type="number">1</item>
+				</item>
+			</argument>
+			<settings>
+				<dataType>boolean</dataType>
+				<label translate="true">Status</label>
+			</settings>
+			<formElements>
+				<checkbox>
+					<settings>
+						<valueMap>
+							<map name="false" xsi:type="number">0</map>
+							<map name="true" xsi:type="number">1</map>
+						</valueMap>
+						<prefer>toggle</prefer>
+					</settings>
+				</checkbox>
+			</formElements>
+		</field>
+
+	</fieldset>
+</form>

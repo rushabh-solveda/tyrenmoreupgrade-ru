@@ -1,0 +1,62 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+?>
+<?php /** @var $block \Magento\Checkout\Block\Onepage\Success */ ?>
+<div class="checkout-success">
+    <?php if ($block->getOrderId()) :?>
+        <?php if ($block->getCanViewOrder()) :?>
+            <p><?= $block->escapeHtml(__('Your order number is: %1.', sprintf('<a href="%s" class="order-number"><strong>%s</strong></a>', $block->escapeUrl($block->getViewOrderUrl()), $block->getOrderId())), ['a', 'strong']) ?></p>
+        <?php  else :?>
+            <p><?= $block->escapeHtml(__('Your order # is: <span>%1</span>.', $block->getOrderId()), ['span']) ?></p>
+        <?php endif;?>
+            <p><?= $block->escapeHtml(__('We\'ll email you an order confirmation with details and tracking info.')) ?></p>
+    <?php endif;?>
+
+    <?= $block->getAdditionalInfoHtml() ?>
+
+    <div class="actions-toolbar">
+        <div class="primary">
+            <a class="action primary continue" href="<?= $block->escapeUrl($block->getContinueUrl()) ?>"><span><?= $block->escapeHtml(__('Continue Shopping')) ?></span></a>
+        </div>
+    </div>
+</div>
+
+
+<?php
+
+$orderIncrementId=$block->getOrderId();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$orderInfo = $objectManager->create('Magento\Sales\Model\Order')->loadByIncrementId($orderIncrementId);
+
+?>
+<script>
+
+  var enhanced_conversion_data = {
+
+    "email": '<?php echo $orderInfo->getCustomerEmail(); ?>',  
+
+    "phone_number": '<?php echo $orderInfo->getShippingAddress()->getTelephone(); ?>',
+
+  };
+
+</script>
+
+<!-- Global site tag (gtag.js) - Google Ads: 964790882-->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-964790882"></script>
+
+<script>
+
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag(){dataLayer.push(arguments);}
+
+  gtag('js', new Date());
+
+  gtag('config','AW-964790882', {'allow_enhanced_conversions':true});
+
+</script>

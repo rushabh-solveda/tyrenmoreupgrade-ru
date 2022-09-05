@@ -1,0 +1,106 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CategoryMassUpload
+ * @author    Webkul Software Private Limited
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+?>
+<?php
+    $helper = $this->helper("Webkul\CategoryMassUpload\Helper\Data");
+    $sampleCSV = $helper->getSampleCSV();
+    $sampleXLS = $helper->getSampleXLS();
+    $sampleXML = $helper->getSampleXML();
+?>
+<div class="wk-mu-sample-files">
+    <table style="width: 100%;">
+        <tr>
+            <td style="padding: 5px;">
+                <a href="<?php echo $sampleCSV; ?>" download><?php echo __("Sample CSV File"); ?></a>
+            </td>
+            <td style="padding: 5px;">
+                <a href="<?php echo $sampleXLS; ?>" download><?php echo __("Sample XLS File"); ?></a>
+            </td>
+            <td style="padding: 5px;">
+                <a href="<?php echo $sampleXML; ?>" download><?php echo __("Sample XML File"); ?></a>
+            </td>
+        </tr>        
+    </table>
+</div>
+
+<script>
+require([
+    'jquery',
+    'mage/validation',
+    'Magento_Ui/js/modal/alert',
+    'ko',
+    'mage/translate',
+], function ($j, validation, alertBox, ko, $t) {
+    'use strict';
+
+    var allowedCsvTypes = 'csv,xls,xml';
+    var allowedImageTypes = 'zip';
+
+    $j('body').on('change', '#massupload_csv', function () {
+        var self = $j(this);
+        var ext_arr = allowedCsvTypes.split(",");
+        var new_ext_arr = [];
+        for (var i = 0; i < ext_arr.length; i++) {
+            new_ext_arr.push(ext_arr[i]);
+            new_ext_arr.push(ext_arr[i].toUpperCase());
+        }
+        if (new_ext_arr.indexOf(self.val().split("\\").pop().split(".").pop()) < 0) {
+            self.val('');
+            $j('<div />').html('Invalid Extension. Allowed extensions are '+allowedCsvTypes)
+            .modal({
+                title: 'Attention!',
+                autoOpen: true,
+                buttons: [{
+                    text: 'Ok',
+                    attr: {
+                        'data-action': 'cancel'
+                    },
+                    'class': 'action',
+                    click: function () {
+                            self.val('');
+                            this.closeModal();
+                        }
+                }]
+            });
+        }
+    });
+
+    $j('body').on('change', '#massupload_images', function () {
+        var self = $j(this);
+        var ext_arr = allowedImageTypes.split(",");
+        var new_ext_arr = [];
+        for (var i = 0; i < ext_arr.length; i++) {
+            new_ext_arr.push(ext_arr[i]);
+            new_ext_arr.push(ext_arr[i].toUpperCase());
+        }
+        if (new_ext_arr.indexOf(self.val().split("\\").pop().split(".").pop()) < 0) {
+            self.val('');
+            $j('<div />').html('Invalid Extension. Allowed extensions are '+allowedImageTypes)
+            .modal({
+                title: 'Attention!',
+                autoOpen: true,
+                buttons: [{
+                    text: 'Ok',
+                    attr: {
+                        'data-action': 'cancel'
+                    },
+                    'class': 'action',
+                    click: function () {
+                            self.val('');
+                            this.closeModal();
+                        }
+                }]
+            });
+        }
+    });
+});
+
+</script>

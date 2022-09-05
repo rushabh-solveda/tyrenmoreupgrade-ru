@@ -1,0 +1,70 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_CategoryMassUpload
+ * @author    Webkul Software Private Limited
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+?>
+<?php
+    $helper = $this->helper("Webkul\CategoryMassUpload\Helper\Data");
+    $helper->getImagePostData();
+    $postDatas = $helper->getCategoryPostData();
+    $postData = $helper->utf8_converter($postDatas);
+    $categoryCount = 0;
+    foreach ($postData as $key => $value) {
+        if ($key === 0) {
+            continue;
+        }
+        $categoryCount++;    
+    }
+    $data = [
+            "importUrl" => $this->getUrl('categorymassupload/import/save'),
+            "finishUrl" => $this->getUrl('categorymassupload/import/finish'),
+            "completeLabel" => __("Completed"),
+            "noCategoryImportLabel" => __("No Category Imported"),
+            "categoryCount" => $categoryCount,
+            "postData" => $postData,
+        ];
+    $data = $this->helper('Magento\Framework\Json\Helper\Data')->jsonEncode($data);
+    $helper->getSession()->setCSVData($postData);
+?>
+<fieldset class="fieldset">
+    <div class="wk-mu-note wk-mu-box">
+        <?php echo __("Starting Execution..."); ?>
+    </div>
+    <div class="wk-mu-notice wk-mu-box">
+        <?php echo __("Please don't close or refresh the window while importing categories."); ?>
+    </div>
+    <div class="wk-mu-success wk-mu-box">
+        <?php echo __("Total %1 Category(s) to import.", $categoryCount); ?>
+    </div>
+    <?php if($categoryCount > 0): ?>
+        <div class="wk-mu-info-bar">
+            <div class="wk-mu-importing-loader"></div>
+            <div class="wk-mu-info-bar-content">
+                <?php echo __("Importing"); ?> <span class="wk-current">1</span> of <?php echo $categoryCount;?>
+            </div>
+        </div>
+        <div class="wk-mu-progress-bar">
+            <div class="wk-mu-progress-bar-current"></div>
+        </div>
+    <?php else: ?>
+        <div class="wk-mu-note wk-mu-box">
+            <?php echo __("No Category to import."); ?>
+        </div>
+        <div class="wk-mu-note wk-mu-box">
+            <?php echo __("Finsihed Execution."); ?>
+        </div>
+    <?php endif; ?>
+</fieldset>
+<script type="text/x-magento-init">
+    {
+        "body": {
+            "Webkul_CategoryMassUpload/js/category": <?php echo $data ?>
+        }
+    }
+</script>

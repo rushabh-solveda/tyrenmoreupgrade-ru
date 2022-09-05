@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Solveda_ShippingCities::manage_city" title="Manage Shipping Cities" 
+            module="Solveda_ShippingCities" sortOrder="10" 
+            action="shipping_city/city/grid" 
+            resource="Solveda_ShippingCities::manage_city"/>
+    </menu>
+</config>

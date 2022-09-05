@@ -1,0 +1,221 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Catalog\Block\Product\View\Details $block */
+
+
+
+
+?>
+
+
+<?php if ($detailedInfoGroup = $block->getGroupSortedChildNames('detailed_info', 'getChildHtml')) :
+   //print_r($detailedInfoGroup);
+    ?>
+    <div class="col-md-12 col-sm-12 product info detailed">
+         <?php $layout = $block->getLayout(); ?>
+        <div class="product data items" data-mage-init='{"tabs":{"openedState":"active"}}'>
+          <div class="data item title"
+                     data-role="collapsible" id="tab-label-test">
+                    <a class="data switch"
+                       tabindex="-1"
+                       data-toggle="trigger"
+                       href="#test"
+                       id="tab-label-test-title">
+                        FAQ
+                    </a>
+                </div>
+
+<?php
+
+ $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');
+$attributeSet = $objectManager->create('Magento\Eav\Api\AttributeSetRepositoryInterface');
+$attributeSetRepository = $attributeSet->get($product->getAttributeSetId());
+ $attribute_set_name = $attributeSetRepository->getAttributeSetName();
+       // if ($ids[2]==3386){
+ if(0 == strcmp($attribute_set_name, 'Battery')) {
+  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('faq-car-battery')->toHtml();
+
+}
+else if(0 == strcmp($attribute_set_name, 'Alloy')){
+echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('faq-car-alloy')->toHtml();
+}
+
+else {
+
+  echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('faq-car-tyres')->toHtml();
+}
+?>
+
+<!--                <div class="data item content"
+                     aria-labelledby="tab-label-test-title" id="test" data-role="content">
+                    <div class="col-md-12">
+                 <p class="page-bottom_title main-heading h4">FAQ</p>
+                 <div class="accordion">
+                     <div class="accordion-item">
+                     <div class="accordion-item-header">
+                    Q1..When will my order for tyres reach my location?
+                  </div>
+
+                  <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                                <p>We have experts with tyre changing equipment in the Tyresnmore Vans and they will reach your location , in Hyderabad , Bangalore , Delhi NCR to change tyres at your doorstep.</p>
+                                <p>Orders placed before 3 PM will be fulfilled today*
+                                Orders placed after 3 PM will be fulfilled tomorrow
+                                *The order fulfillment on same day is subject to availability of tyres in our warehouse. Our team will call you to fix an appointment for changing tyres at your location.</p>
+
+                                <p>For cities other than those mentioned above , our tyre experts will inform you about the time of delivery and additional shipping charges if any.</p>
+                               </div>
+                             </div>
+                   </div>
+                   <div class="accordion-item">
+                     <div class="accordion-item-header">
+                    Q2.How long does it take to change tyres?
+                  </div>
+
+                  <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                                <p>Once our team reaches your location we need parking space for our van next to your vehicle , we have the equipment to change 1 tyre in 20 to 30 minutes and up
+                                to 4 tyres in 30 to 60 minutes</p>
+                               </div>
+                             </div>
+                   </div>
+                   <div class="accordion-item">
+                     <div class="accordion-item-header">
+                    Q3.What are the Payment options , can I pay on delivery or through EMIs?
+                  </div>
+
+                  <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                                <p>You can:</p>
+                                <p>Pay on delivery *</p>
+                                <p>Easy EMI available</p>
+                                <p>Pay 100 % online now</p>
+                                <p>*TnM reserves the right to ask for partial or full advance payment for any orders</p>
+                               </div>
+                             </div>
+                   </div>
+                   <div class="accordion-item">
+                     <div class="accordion-item-header">
+                   Q4.Will the tyre experts come to my location with debit/credit card machine , in case I am paying on delivery?
+                  </div>
+
+                  <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                                <p>Yes the tyre experts will come with debit/credit card machine to your location to enable you to make payment,alternatively you can also pay via cash on delivery.
+                                Tyresnmore online private ltd. reserves the right to receive partial or full advance payment for any orders.</p>
+                               </div>
+                             </div>
+                   </div>
+                   <div class="accordion-item">
+                     <div class="accordion-item-header">
+                    Q5.How do I get my tyre manufacturer warranty registered?
+                  </div>
+
+                  <div class="accordion-item-body">
+                        <div class="accordion-item-body-content">
+                                <p>You can speak to our tyre expert on 92.1275.1275 , and they will guide you to get the tyre manufacturer's warranty registered.</p>
+                               </div>
+                             </div>
+                   </div>
+
+                    </div>
+                 </div>
+                </div> -->
+                       <?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');
+$custom = [];
+$attributes = $product->getCustomAttributes();
+foreach ($attributes as $attribute) {
+    $custom[$attribute->getAttributeCode() ] = [$attribute->getValue() ];
+}
+$features_and_benefits;
+if (array_key_exists('features_and_benefits', $custom)) {
+    $features_and_benefits = $custom['features_and_benefits'][0];
+}
+
+foreach ($detailedInfoGroup as $name):
+    $html = $layout->renderElement($name);
+    if (!trim($html)) {
+        continue;
+    }
+
+    $alias = $layout->getElementAlias($name);
+
+    $label = $block->getChildData($alias, 'title');
+?>
+                <!-- More Information -->
+                
+
+                <?php if ($label == 'Related Posts') { ?>
+                <?php } else { ?>
+
+                <div class="data item title"
+                     data-role="collapsible" id="tab-label-<?=$block->escapeHtmlAttr($alias) ?>">
+                    <a class="data switch"
+                       tabindex="-1"
+                       data-toggle="trigger"
+                       href="#<?=$block->escapeUrl($alias) ?>"
+                       id="tab-label-<?=$block->escapeHtmlAttr($alias) ?>-title">
+                        <?=$label?>
+                    </a>
+                </div>
+
+                <?php if ($label == 'SPECIFICATIONS') { ?>
+                <div class="data item content"
+                     aria-labelledby="tab-label-specifications.tab-title" id="specifications.tab" data-role="content">
+                    <?php
+                        if(isset($features_and_benefits)){
+                        echo $features_and_benefits ;
+                    }?>
+                </div>
+
+                <?php } else { ?>
+                <div class="data item content"
+                     aria-labelledby="tab-label-<?=$block->escapeHtmlAttr($alias) ?>-title" id="<?=$block->escapeHtmlAttr($alias) ?>" data-role="content">
+                    <?=$html?>
+                </div>
+            <?php } } ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+<script>
+    require(['jquery'], function($) {
+        $('[data-role="collapsible"]').on('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var selectId = $(this).find('a.switch').attr('href');
+          $('.detailed').find($('[data-role="collapsible"]')).removeClass('active');
+          $('.detailed').find($('[data-role="content"]')).css('display', 'none');
+          $(selectId).css('display', 'block');
+          $(this).addClass('active');
+      });
+      // $('[data-role="collapsible"]').on('click', function(){
+      //     var selectId = $(this).attr('aria-controls');
+      //     $('[role="tablist"]').find($('[data-role="collapsible"]')).removeClass('active');
+      //     $('[role="tablist"]').find($('[data-role="content"]')).css('display', 'none');
+      //     $('#'+selectId).css('display', 'block');
+      //     $(this).addClass('active');
+      // });
+
+   //Hide More information if data is not exist & its bug taking space 0 
+    $(document).ready(function () {
+        //$("#additional").find('tbody').html().trim().length;
+        if ($("#additional").find('tbody').html().trim().length <= 0) {
+            $("#tab-label-additional").hide();
+        }else{
+
+        }
+    });
+
+    });
+</script>
+
+

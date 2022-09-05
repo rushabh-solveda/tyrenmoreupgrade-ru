@@ -1,0 +1,220 @@
+<script>
+    console = {};
+    console.log = function(){}
+    console.error = function(){}
+    console.warn = function(){}
+    console.info = function(){}
+  </script>
+  
+<script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "WebSite",
+            "url": "http://www.youtdomain.com/",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://www.tyresnmore.com/catalogsearch/result/?q={search_term}&order=relevance&dir=desc",
+                "query-input": "required name=search_term"
+                }
+        }
+</script>
+
+<!-- =================Header Top html start ============================== -->
+<div class="header" id="myHeader">
+<div class="header_top_sec page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+ <?php echo $this->getLayout()
+                              ->createBlock('Magento\Cms\Block\Block')
+                              ->setBlockId('spock_to_our_header')
+                              ->toHtml();
+                             ?>
+			<!-- 	
+				<div class="contact_address">
+					<ul>
+						<li class="ph_sec"><a href="#"><i class="fa fa-volume-control-phone top_ph" aria-hidden="true"></i> Speak to our Expert 92-1275-1275</a></li>
+						<li class="mail_sec"><a href="#"><span class="_line">|</span> <span class="mail_1">@</span> tyresnmore@gmail.com</a></li>
+					</ul>
+				</div> -->
+			</div>
+			<div class="col-md-6">
+				<div class="login_section">
+					<ul>
+						
+						<li>
+							<!-- <span class="_line">|</span>  -->
+							<?php //echo $this->getChildHtml("store_language"); ?>
+							<!-- <a href="#">
+							<select class="select_1">
+								<option>New Delhi</option>
+								<option>New Delhi</option>
+								<option>New Delhi</option>
+							</select></a> -->
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- =================Header Top html start ============================== -->
+ <!-- ======================Header Section Start ================= -->
+<div class="header_container">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="header_logo">
+					<a href="<?php echo $this->getBaseUrl();?>"><div class="logo_link"><?php echo $this->getChildHtml("logo"); ?></div></a>
+					
+				</div>
+			</div>
+			<div class="col-md-7">
+				<div class="header_menu">
+                <?php 
+					echo $this->getLayout()->createBlock("Magento\Theme\Block\Html\Topmenu")->setTemplate("Magento_Theme::html/topmenu.phtml")->toHtml();
+					?>
+			</div>
+		</div>
+			<div class="col-md-2">
+				<div class="header_cart">
+					<?php echo $this->getChildHtml("minicart"); ?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!-- =======================Header Section End =================== -->
+<script type="text/javascript">
+	// When the user scrolls the page, execute myFunction
+// window.onscroll = function() {myFunction()};
+
+// // Get the header
+// var header = document.getElementById("myHeader");
+
+// // Get the offset position of the navbar
+// var sticky = header.offsetTop;
+
+// // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
+// function myFunction() {
+//   if (window.pageYOffset > sticky) {
+//     header.classList.add("sticky");
+//   } else {
+//   	console.log("fdf");
+//     header.classList.remove("sticky");
+//   }
+// }
+</script>
+<script type="text/javascript">
+require(['jquery', 'jquery/ui'], function($){
+$(document).ready(function(){
+	$(window).scroll(function(){
+  var sticky = $('#myHeader'),
+      scroll = $(window).scrollTop();
+
+  if (scroll >= 100) sticky.addClass('sticky');
+  else sticky.removeClass('sticky');
+});
+  if ($(window).width() <= 767) {  
+     $( ".logo_link" ).append( $( ".header_cart" ) );
+ }  
+ });
+ });
+</script>
+
+<script type="text/javascript">
+require(['jquery', 'jquery/ui'], function($){
+$(document).ready(function(){
+  if ($(window).width() <= 767) {  
+     $( ".p_price" ).append( $( ".product-add-form" ) );
+     $( ".product-info-price" ).prepend( $( ".p_tittle" ) );
+     $( ".addtocart_tittle" ).append( $( ".secure_payment_sec" ) );
+     $( ".P_name" ).append( $( ".product-reviews-summary" ) );
+
+ }
+
+ });
+ });
+</script>
+
+<style>
+	.catalog-product-view .column.main {
+    width: 70%;
+}
+@media(max-width:767px) {
+.catalog-product-view .column.main {
+    width: 100% !important;
+}
+}
+
+.cust_spek_title h4 {
+    font-size: 36px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0;
+}
+
+.hw_1 h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    padding: 2px 0;
+    color: #232323;
+    line-height: 26px;
+    min-height: 56px;
+}
+.hw_1_text h4 {
+    font-size: 16px;
+}
+.hw_tittle h4 {
+    font-size: 36px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0;
+}
+.hw_tittle.t_seller h4 {
+    font-size: 36px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0;
+}
+.top-sell h5 {
+    color: #d31e23;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 0;
+    margin-top: 7px;
+    line-height: 23px;
+}
+.top-sell-selected h5 {
+    color: #d31e23;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 0;
+    margin-top: 7px;
+    line-height: 23px;
+}
+h4.page-bottom_title.ff_text_new {
+    margin: 22px 0;
+    font-size: 32px;
+    font-weight: 700;
+}
+h4.page-bottom_title {
+    margin: 22px 0;
+    font-size: 32px;
+    font-weight: 700;
+}
+.brand_last_inner h4 {
+    margin: 0;
+    padding: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #232323;
+}
+.amount_tittle h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+</style>
+

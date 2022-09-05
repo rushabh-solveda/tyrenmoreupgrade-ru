@@ -1,0 +1,40 @@
+Legend
+
++ Features
+- Bugs
+
+-------------------------------- Version 3.0.0 --------------------------------------
+
+	+ Declarative Schema Added.
+	+ Enable/Disable module from admin system configuration. 
+	- Issue related to total product price rule fixed.
+	- Issue related to category rules with bundle and grouped products fixed.
+	- Issue related to multi currency fixed.
+
+-------------------------------- Version 2.1.0 --------------------------------------
+
+	+ Compatible with Magento 2.3.x.
+	+ Issue related to customer login fixed.
+
+-------------------------------- Version 2.0.1 --------------------------------------
+
+	+ Back button added in admin new/edit rule page.
+	+ Back button added in admin new/edit pricelist page.
+	+ Compatible with Magento 2.2.x.
+
+
+-------------------------------- Version 2.0.0 --------------------------------------
+	
+	+ Admin can create rules for pricelist.
+	+ Admin can assign multiple rules for pricelist.
+	+ Admin can assign multiple pricelist to customer or customer group.
+	+ Admin can set rule according to product.
+	+ Admin can set rule according to category.
+	+ Admin can set rule according to quantity.
+	+ Admin can set rule according to total product price.
+	+ Admin can create rule to increase price.
+	+ Admin can create rule to decrease price.
+	+ Admin can set priority of rules.
+	+ Admin can set priority of pricelists.
+	+ Admin can set start and end date for price.
+	+ Pricelist will be applied automatically according to priority.

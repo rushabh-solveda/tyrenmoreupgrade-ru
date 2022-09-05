@@ -1,0 +1,69 @@
+.wk-mu-sample-files {
+    display: inline-block;
+    font-size: 12px;
+    margin-bottom: 25px;
+    width: 100%;
+    text-align: center;
+}
+.wk-mu-box {
+    margin-bottom: 10px;
+    font-weight: 700;
+    padding: 10px;
+}
+.wk-mu-note {
+    color: rgb(49, 112, 143);
+    background-color: rgb(217, 237, 247);
+    border-color: rgb(188, 232, 241);
+}
+.wk-mu-notice {
+    color: rgb(138, 109, 59);
+    background-color: rgb(252, 248, 227);
+    border-color: rgb(250, 235, 204);
+}
+.wk-mu-success {
+    color: rgb(60, 118, 61);
+    background-color: rgb(223, 240, 216);
+    border-color: rgb(214, 233, 198);
+}
+.wk-no-padding {
+    padding: 0px !important;
+}
+.wk-mu-info-bar {
+    position: relative;
+    color: rgb(60, 118, 61);
+    font-weight: 700;
+    margin-top: 30px;
+    padding-left: 25px;
+}
+.wk-mu-progress-bar {
+    display: inline-block;
+    height: 15px;
+    margin-top: 5px;
+    width: 100%;
+    margin-bottom: 30px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(40, 203, 110);
+    border-image: initial;
+}
+.wk-mu-error {
+    color: rgb(169, 68, 66);
+    background-color: rgb(242, 222, 222);
+    border-color: rgb(235, 204, 209);
+}
+.wk-mu-importing-loader {
+    background: rgba(0, 0, 0, 0) url("../images/ajax-loader.gif") no-repeat scroll 0 0 / 20px 20px;
+    height: 20px;
+    left: 0;
+    margin-left: 0;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    width: 20px;
+}
+.wk-mu-progress-bar-current {
+    background: none repeat scroll 0 0 #61d896;
+    display: inline-block;
+    height: 15px;
+    width: 0;
+}

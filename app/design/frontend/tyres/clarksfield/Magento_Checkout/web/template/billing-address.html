@@ -1,0 +1,52 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="checkout-billing-address">
+    <div class="billing-address-same-as-shipping-block field choice" data-bind="visible: canUseShippingAddress()">
+        <input type="checkbox" name="billing-address-same-as-shipping"
+               data-bind="checked: isAddressSameAsShipping, click: useShippingAddress, attr: {id: 'billing-address-same-as-shipping-' + getCode($parent)}"/>
+        <label data-bind="attr: {for: 'billing-address-same-as-shipping-' + getCode($parent)}"><span
+                data-bind="i18n: 'My billing and shipping address are the same'"></span></label>
+    </div>
+    <render args="detailsTemplate"/>
+    <fieldset class="fieldset" data-bind="visible: !isAddressDetailsVisible()">
+        <each args="getRegion('billing-address-list')" render="" />
+        <div data-bind="fadeVisible: isAddressFormVisible">
+            <render args="formTemplate"/>
+        </div>
+        <render args="actionsTemplate"/>
+    </fieldset>
+</div>
+   <div class="term-condition-accordion">
+         <div class="panel-heading"  id="headingThree">
+            <h4 class="panel-title">
+               <a class="collapsed tnc-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+               Terms and Conditions
+               </a>
+            </h4>
+         </div>
+         <div id="collapseThree" class="panel-collapse collapse"  aria-labelledby="headingThree">
+            <div class="panel-body">
+               <div class="tnc-heading">
+                  <p>In <strong>DELHI NCR,BENGALURU,PUNE,MUMBAI,THANE, CHENNAI, NAVI MUMBAI & HYDERABAD</strong> - We provide DOORSTEP fitting of TYRES, ALLOYS & BATTERIES with the option of PAYMENT ON DELIVERY. </p>
+                  <ul class="tnc-list-text">
+                     <li>We require parking space for our van near your car or bike to enable our team to complete the process.</li>
+                     <li>Payment on delivery can be made in cash or debit card, credit card, net banking or mobile wallet.</li>
+                     <li>Orders will be executed subject to availability of stocks and the approval of the management of this website.</li>
+                     <li>Tyresnmore reserves the right to ask for advance payment to execute the order.In case of cancellation of orders, Tyresnmore online pvt. ltd. will be responsible only to the extent of refunding any advance received from the customer.</li>
+                     <li>If any additional accessories are used (Example tyre nozzle, weights for wheel balancing) these will be charged additionally.</li>
+                     <li><strong>For Battery Customers - </strong>The exchange of the old battery will be done based on the Ah capacity of the battery.In case the battery being returned is of a lower Ah capacity than the new battery, Tyresnmore Online Pvt. Ltd. Reserves the right to ask the customer for the amount of difference in the value of the old battery.</li>
+                     <li>We reserve the right to publish any reviews and or ratings given by you.</li>
+                     <li>Availability & Cancellation :Our endeavour is to fulfill all orders however, Tyresnmore Online Pvt,Ltd.reserves the right to cancel any orders.</li>
+                     <li>Refund of money paid for the cancelled order will be made limited to the amount the customer has paid in advance while placing the order. Tyresnmore Online Pvt,Ltd. is not responsible for any other dues to the customer in case of cancellation of order.</li>
+                     <li>Thank you for choosing Tyresnmore Online Pvt,Ltd. , by clicking on the Place Order button above ,your acceptance of these terms & conditions is confirmed.</li>
+                     <li>Tyresnmore is only an e-commerce facilitator to the Product, and an original manufacturer shall provide all warranty to the Product. Tyresnmore accepts no additional liability for any errors or omissions, to any buyer, due to use of any Product or Service. The Buyer has ordered the Products knowing after reading all specifications and warranty provided by manufacturer and all risks, consequences thereto.</li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+

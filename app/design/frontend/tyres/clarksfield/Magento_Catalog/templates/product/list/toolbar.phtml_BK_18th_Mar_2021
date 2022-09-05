@@ -1,0 +1,131 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Product list toolbar
+ *
+ * @var $block \Magento\Catalog\Block\Product\ProductList\Toolbar
+ */
+
+// phpcs:disable Magento2.Security.IncludeFile.FoundIncludeFile
+// phpcs:disable PSR2.Methods.FunctionCallSignature.SpaceBeforeOpenBracket
+?>
+<?php if ($block->getCollection()->getSize()) :?>
+
+    <div class="toolbar toolbar-products" data-mage-init='<?= /* @noEscape */ $block->getWidgetOptionsJson() ?>'>
+        <p id="selector_text" style="text-align: left;margin: 0 0 12px 10px;font-size: 22px;font-weight: 600;">Tyre Selector</p>
+        <div class="row new-search-design">
+            <!--<div class="col-md-4 text-left">-->
+            <!--    <label for="">Select Brand</label>-->
+            <!--    <select class="amfinder-select-wrapper">-->
+            <!--        <option>-- Select Brand --</option>-->
+            <!--    </select>-->
+            <!--</div>-->
+            <!--<div class="col-md-4 text-left my-15">-->
+            <!--    <label for="">Select Modal</label>-->
+            <!--    <select class="amfinder-select-wrapper">-->
+            <!--        <option>-- Select Model --</option>-->
+            <!--    </select>-->
+            <!--</div>-->
+            <!--<div class="col-md-4 text-left">-->
+            <!--    <label for="">Select Variant</label>-->
+            <!--    <select class="amfinder-select-wrapper">-->
+            <!--        <option>-- Select Variant --</option>-->
+            <!--    </select>-->
+            <!--</div>-->
+
+
+        <!--<div class="row">-->
+        <!--        <div class="col-xs-12">-->
+        <!--          <div class="row brd_vichle_1">-->
+        <!--            <p>Search By</p>-->
+        <!--            <div class="col-xs-6">-->
+        <!--              <button data-mode-toggle data-mode="brand" class="vech_btn_1 active">Vehicle Brands</button>-->
+        <!--            </div>-->
+        <!--            <div class="col-xs-6">-->
+        <!--              <button data-mode-toggle data-mode="size" class="vech_btn_1">Tyres Size</button>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+        <!--        <div class="col-xs-12">-->
+        <!--          <div class="brd_vichle_1 tt1 row">-->
+        <!--            <p>Tyres for?</p>-->
+        <!--            <div class="btn_second col-xs-6">-->
+        <!--              <button data-search-toggle data-state="46" id="bike46" class="vech_btn_2 active tt">Car</button>-->
+        <!--            </div>-->
+        <!--            <div class="btn_first col-xs-6">-->
+        <!--              <button data-search-toggle data-state="42" id="bike42" class="vech_btn_1 tt">Bike</button>-->
+        <!--            </div>-->
+
+        <!--          </div>-->
+        <!--        </div>-->
+        <!--      </div>-->
+              <div class="col-md-3 text-left">
+              <div class="select_brand_sec choose_brand">
+                  <label data-label="brand width">Select Brand </label>
+                  <select data-selector="brand width"></select>
+                </div>
+              </div>
+              <div class="col-md-3 text-left">
+                <div class="select_brand_sec choose_brand">
+                  <label data-label="model profile">Select Model</label>
+                  <select data-selector="model profile"></select>
+                </div>
+              </div>
+              <div class="col-md-3 text-left">
+                <div class="select_brand_sec choose_brand">
+                  <label data-label="variant rim">Select Variant</label>
+                  <select data-selector="variant rim"></select>
+                </div>
+              </div>
+              <div class="col-md-3 text-left">
+                <div class="find_tyre_btn" data-search-init>
+		  <a data-search-init href="#">
+
+<?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+$category = $objectManager->get('Magento\Framework\Registry')->registry('current_category');
+
+
+
+if(isset($category))
+
+{
+            $path = $category->getPath();
+            $ids = explode('/', $path);
+                $current_category_id_path= $ids[2];
+if ($current_category_id_path == 3404) {
+
+echo "Find Batteries";
+
+}else{
+
+echo "Find Tyres";
+}
+}
+?>
+</a>
+                </div>
+              </div>
+
+        </div>
+
+        <?php  if ($block->isExpanded()) :?>
+            <?php  include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/viewmode.phtml')) ?>
+        <?php  endif; ?>
+
+        <?php include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/amount.phtml')) ?>
+
+        <?= $block->getPagerHtml() ?>
+
+        <?php  include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/limiter.phtml')) ?>
+
+        <?php if ($block->isExpanded()) :?>
+            <?php  include ($block->getTemplateFile('Magento_Catalog::product/list/toolbar/sorter.phtml')) ?>
+        <?php  endif; ?>
+    </div>
+<?php endif ?>

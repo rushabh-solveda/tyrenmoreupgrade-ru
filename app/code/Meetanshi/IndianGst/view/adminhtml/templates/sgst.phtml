@@ -1,0 +1,7 @@
+<?php $_item = $block->getItem();
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$priceHelper = $_objectManager->create('Magento\Framework\Pricing\Helper\Data'); // Instance of Pricing Helper
+$formattedPrice = $priceHelper->currency($_item->getData('sgst_amount'), true, false);
+echo $formattedPrice;
+echo '<br>Rate:' . round($_item->getSgstPercent(), 2) . '%';
+?>

@@ -1,0 +1,50 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Category view template
+ *
+ * @var $block \Magento\Catalog\Block\Category\View
+ * @var $helper \Solveda\Brand\ViewModel\ResizeImage
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+// phpcs:disable Generic.WhiteSpace.ScopeIndent.IncorrectExact
+// phpcs:disable Magento2.Security.LanguageConstruct.DirectOutput
+$helper = $block->getResizeImage();
+?>
+<?php
+    $isDealerAuthorized = $block->getCurrentCategory()->getAuthorizedDealer();
+    $certificateIcon = $helper->getCertificateIcon();
+
+    $_helper    = $this->helper(Magento\Catalog\Helper\Output::class);
+    $_category  = $block->getCurrentCategory();
+    $_imgHtml   = '';
+    if ($_imgUrl = $_category->getImageUrl()) {
+        echo '<div class="category-image category-brand-image">';
+        $_imgHtml = '<img src="'
+            . $block->escapeUrl($_imgUrl)
+            . '" alt="'
+            . $block->escapeHtmlAttr($_category->getName())
+            . '" title="'
+            . $block->escapeHtmlAttr($_category->getName())
+            . '" class="catalog-image" />';
+        $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
+        /* @noEscape */ echo $_imgHtml;
+        
+        if ($isDealerAuthorized && $certificateIcon) {
+            echo '<img loading="lazy" class="certificate-icon" alt="Authorized Dealer Certificate" src="' . $certificateIcon . '">';
+        }
+        echo '</div>';
+    } elseif ($isDealerAuthorized && $certificateIcon) {
+        echo '<div class="category-image category-brand-image">';
+        echo '<img loading="lazy" class="certificate-icon" alt="Authorized Dealer Certificate" src="' . $certificateIcon . '">';
+        echo '</div>';
+    }
+    
+                
+?>

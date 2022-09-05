@@ -1,0 +1,72 @@
+<?php
+
+$_product = $block->getProduct();
+$productId =  $_product->getId();
+$cityModel = $block->getCities();
+$doorstepFitment = $cityModel->getCities($productId);
+$doorstepDelivery = $cityModel->getCities($productId, 1);
+
+$selectedCity = $cityModel->getSelectedCity();
+?>
+
+<div class="city_dropdown">
+    <select name="cities" id="product_cities" required>
+        <option selected value=""><?= __('Please select a city') ?></option>
+        <optgroup label="<?= __("Doostep fitment cities") ?>">
+            <?php foreach ($doorstepFitment as $city) { ?>
+                <option value="<?= $city['value'] ?>" data-fittment="<?= $city['display_input_for_city'] ?>">
+                    <?= $city['label'] ?>
+                </option>
+            <?php } ?>
+        </optgroup>
+        <?php if(count($doorstepDelivery)){ ?>
+        <optgroup label="<?= __("Doorstep delivery cities") ?>">
+
+            <?php foreach ($doorstepDelivery as $city) { ?>
+                <option value="<?= $city['value'] ?>" data-fittment="<?= $city['display_input_for_city'] ?>">
+                    <?= $city['label'] ?>
+                </option>
+            <?php } ?>
+        </optgroup>
+        <?php } ?>
+    </select>
+</div>
+<script>
+
+require(['jquery', 'Magento_Customer/js/customer-data', 'jquery/jquery.cookie'], function($, customerData){
+    $('.rest-of-india').hide();
+
+    $(function(){
+        var city = $.cookie('selected_city');
+        if(city) {
+            var cityExists = $('#product_cities option[value="'+city+'"]').length;
+            if(cityExists) {
+                $('#product_cities').val(city);
+            }
+            changeText(city);
+        }
+    });
+
+    $('#product_cities').on('change', function(){
+        var city = $(this).val();
+        $('.product_cities_select').val(city);
+        $.cookie('selected_city', city, { expires: 30, path: '/', domain: '.tyresnmore.com' })
+
+        changeText(city)
+    });
+
+    function changeText(city) {
+        var fittment = $('#product_cities').find("option:selected").data('fittment');
+        if(fittment) {
+            $('.rest-of-india').show();
+            $('.delivery-city').hide();
+        } else {
+            $('.delivery-city').show();
+            $('.rest-of-india').hide();
+        }
+        var sections = ['checkout-data'];
+        customerData.invalidate(sections);
+        customerData.reload(sections, true);
+    }
+});
+</script>

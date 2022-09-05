@@ -1,0 +1,32 @@
+<?php
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+$blockObj = $objectManager->get('\Ves\Brand\Model\Brand');
+
+$_brandCollection = $blockObj->getCollection()
+->setOrder('position','ASC')           
+->addFieldToFilter('status',1)
+->addFieldToFilter('group_id',1);
+
+//$blockObj= $this->getLayout()->createBlock('\Ves\Brand\Block\Brandlist');
+
+//$_brandCollection = $this->getBrandCollection();
+//$show_brand_name = $this->getConfig('brand_list_page/show_brand_name');
+//echo $_brandCollection->getSelect()->__toString();
+
+
+$mediaUrl =  $this->getUrl('pub/media');
+if(count($_brandCollection) > 0):
+	
+  ?>
+          <?php $c = 0; foreach($_brandCollection as $key => $_brand):  
+           /*if ($c == 8) { break; }*/?>
+					<div class="br_col4_inner">
+						<a href="<?php echo $_brand->getUrl(); ?>">
+							<img alt="<?php echo  $_brand->getName();?> Car Tyres" loading="lazy" class="img-responsive tnm-logo-adjust" src="<?php echo $_brand->getThumbnailUrl(); ?>">
+						  </a>
+					</div>
+          <?php $c++; endforeach; ?>
+<?php endif; ?>
+

@@ -1,0 +1,28 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<div class="opc-block-summary" data-bind="blockLoader: isLoading">
+
+<!--<div class="fieldset" style=" background-color: grey width: 100%; margin: 10px 0px; font-size: 13px; font-weight: 600; text-align: center;">
+	<h4><b>BUY MORE GET MORE!</b></h4>
+	<p>Discount available on buying 4 car tyres<br></p>
+	<font color="red">- Rs 400 off on 4 tyres of 12 to 15 inch wheel size<br>
+	- Rs 600 off on 4 tyres of 16 to 20 inch wheel size<br>
+	</font>
+</div>-->
+    <span data-bind="i18n: 'Order Summary'" class="title"></span>
+    <!-- ko foreach: elems() -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+	<div class="emi_container">
+		<span id="emi_starting_from"></Span>
+		<a id="pdp-emi" class=" action primary emi-button" data-bind="click:getPopUp"><span>LEARN MORE</span>
+		</a>
+		<span class="estimated-price" data-bind="text:getGrandTotal()"></span>
+		<div id="popup-mpdal" style="display:none"></div>
+	</div>
+</div>
